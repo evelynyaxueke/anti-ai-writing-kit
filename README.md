@@ -1,8 +1,8 @@
 # Anti-AI Writing Skill
 
-A portable agent skill for writing, rewriting, polishing, and reviewing prose so it sounds less machine-made.
+A portable agentic writing skill for writing, editing, rewriting, polishing, and reviewing prose so it sounds less machine-made.
 
-This is the core skill inside the Anti-AI Writing Kit. The runtime file is `SKILL.md`.
+It can be used with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders. The runtime file is `SKILL.md`.
 
 This is an editing standard, not an AI detector. Treat the patterns as cleanup signals, not proof of authorship.
 
@@ -22,7 +22,9 @@ Use this skill for:
 
 The skill gives agents a writing standard, a guided customization flow, and a reset path for returning to the default rules.
 
-## Install in Codex
+## Install
+
+### Codex
 
 Choose one location.
 
@@ -48,12 +50,18 @@ If the skill still does not appear, start a new Codex session or restart Codex.
 
 An agent turn that was already running before installation cannot retroactively see the new skill list.
 
+### Other agents
+
+For Claude Code or another agent, use the agent's supported skill, plugin, or custom-instructions location and point it at this folder or at `SKILL.md`.
+
+The core rule file is plain Markdown, so agents can also use it directly when they do not support packaged skills.
+
 ## Basic use
 
 Invoke the skill in your agent, then send a piece, topic, or brief.
 
 ```text
-Use $anti-ai-writing-kit to rewrite this draft without AI smell.
+Use anti-ai-writing-kit to write, edit, or review this without AI smell.
 ```
 
 If no customized file exists, the agent uses `SKILL.md`.
@@ -137,4 +145,4 @@ MIT License. Copyright (c) 2026 Evelyn Ke.
 
 ## Publishing notes
 
-If you want Claude Code plugin installation later, add `.claude-plugin/plugin.json` after the package name, author, homepage, and license are chosen.
+Platform-specific adapters can be added later without changing the core `SKILL.md` rule document.

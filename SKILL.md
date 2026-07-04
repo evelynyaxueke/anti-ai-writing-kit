@@ -1,6 +1,6 @@
 ---
 name: anti-ai-writing-kit
-description: "Write, rewrite, polish, edit, or review professional prose so it does not sound AI-generated. Use when Codex is asked to draft or revise articles, essays, posts, emails, captions, scripts, page copy, social copy, launch copy, or any user-facing text. Also use when maintaining the Anti-AI Writing Kit, guiding section-by-section customization, creating, applying, or resetting skill-customized.md, or updating AI-writing smell rules."
+description: "Write, edit, rewrite, polish, or review professional prose so it does not sound AI-generated. Use when an agent is asked to draft, revise, polish, critique, or review articles, essays, posts, emails, captions, scripts, page copy, social copy, launch copy, or any user-facing text. Also use when maintaining the Anti-AI Writing Kit, guiding section-by-section customization, creating, applying, or resetting skill-customized.md, or updating AI-writing smell rules."
 ---
 
 # Anti-AI Writing Skill

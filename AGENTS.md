@@ -4,7 +4,7 @@ Guidance for agents working in this skill folder.
 
 ## What this repo is
 
-This is a portable agent skill for writing and editing prose without common AI-writing tells.
+This is a portable agentic writing skill for writing, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
 The main runtime file is `SKILL.md`. The operations file supports loading behavior, customization, reset, and everyday rule additions.
 
@@ -14,7 +14,7 @@ There is no build step.
 
 - `SKILL.md`: core writing rules and skill metadata. Keep frontmatter to `name` and `description`.
 - `LICENSE`: MIT license for public reuse.
-- `agents/openai.yaml`: Codex UI metadata. It controls the display name, short description, and default prompt shown in the app.
+- `agents/openai.yaml`: Codex UI metadata for Codex users. It controls the display name, short description, and default prompt shown in the app.
 - `operations/kit-operations.md`: loading behavior, guided customization workflow, reset behavior, everyday rule additions, and fixed agent replies.
 - `skill-customized.md`: generated local user version. Do not commit it.
 

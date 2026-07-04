@@ -1,4 +1,4 @@
 interface:
   display_name: "Anti-AI Writing Skill"
-  short_description: "Write and edit without AI smell"
+  short_description: "Write, edit, and review without AI smell"
   default_prompt: "Use $anti-ai-writing-kit."
