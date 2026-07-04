@@ -12,6 +12,12 @@ The patterns are editing signals for cleanup; they cannot prove whether a person
 2. **Use it for writing and editing.** Send a topic, brief, draft, or finished piece; the agent follows the active rules.
 3. **Add to it anytime.** When you notice a new AI-writing habit, tell the agent what to add; it checks the current rules, chooses the right section, and avoids duplicates.
 
+## Model recommendation
+
+For best results, use a current model with reliable instruction following, especially for long writing tasks.
+
+The kit can still improve smaller or older models, but they may miss subtle rules such as cross-sentence false contrast, rhythm cleanup, and the final audit. If an output still sounds AI-written, try a stronger model or a higher reasoning setting before judging the kit.
+
 ## Overview
 
 Anti-AI Writing Kit treats clean AI-assisted writing as an ongoing system. The default rules give an agent a strong starting standard. Customization lets the user keep, remove, or add rules based on their own taste. Maintenance keeps the file useful as new AI-writing habits show up.
