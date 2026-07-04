@@ -1,10 +1,42 @@
 # Anti-AI Writing Skill
 
-A portable agentic writing skill for writing, editing, rewriting, polishing, and reviewing prose so it sounds less machine-made.
+The core agentic writing skill inside the Anti-AI Writing Kit.
 
-It can be used with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders. The runtime file is `SKILL.md`.
+Use it to write, edit, rewrite, polish, or review prose without common AI-writing tells. It works with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders.
 
-This is an editing standard, not an AI detector. Treat the patterns as cleanup signals, not proof of authorship.
+The patterns are editing signals for cleanup; they cannot prove whether a person or model wrote a piece.
+
+## Overview
+
+Anti-AI Writing Kit treats clean AI-assisted writing as an ongoing system. The default rules give an agent a strong starting standard. Customization lets the user keep, remove, or add rules based on their own taste. Maintenance keeps the file useful as new AI-writing habits become annoying.
+
+The runtime file is `SKILL.md`. If the user customizes the kit, the agent creates `skill-customized.md` and uses that local version from then on.
+
+## Methodology
+
+The rules are organized by failure type:
+
+- empty AI vocabulary
+- fake depth
+- fake authority
+- vague claims
+- decorative structure
+- formulaic openings and endings
+- repeated sentence rhythm
+- false contrast
+- over-polished cleanup
+
+This helps the agent catch pattern families beyond exact phrases. A phrase list can miss variations. A category gives the agent the cause behind the rule.
+
+## What makes it different
+
+- **Kit structure.** `SKILL.md` starts the system. The repo also supports guided customization, local overrides, rule additions, reset, and maintenance.
+- **First-draft support.** The rules cover writing from a topic or brief and cleaning an existing draft.
+- **Short hard-ban layer.** The most visible failures stay near the top so the agent treats them as first-pass fail states.
+- **Rule taxonomy.** Rules are grouped by the reason they sound machine-made, which makes the file easier to scan and easier to update.
+- **Positive defaults.** The agent gets rules for what good prose should do: use plain words, keep the meaning true, name the real claim, repeat the accurate term, and stop when the point is made.
+- **Daily rule additions.** When you notice a new AI-writing habit, tell the agent. It should check whether the issue is already covered, place the rule in the right section, and avoid duplicates.
+- **Final audit.** Before sending, the agent checks the full active rule document and scans for visible failures.
 
 ## What it does
 
@@ -83,6 +115,12 @@ If `skill-customized.md` does not exist, the agent creates it by copying the cur
 If `skill-customized.md` already exists, the agent keeps editing that same file.
 
 During customization, rough replies are enough. You can add a few words, ask to remove a rule, or say the section is fine.
+
+## Maintain
+
+The kit gets better when you keep using it. When you notice a phrase, rhythm, or structure that sounds like AI, tell the agent to add it.
+
+For cleanup, ask the agent to maintain `skill-customized.md`: remove duplicates, place rough notes in the right section, and make the rules easier for agents to follow.
 
 ## Add a rule
 
