@@ -2,17 +2,15 @@
 
 A portable agentic writing system for writing, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-It works with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders. Use the default rules first, customize them when you want your own taste, then keep adding patterns as new AI-writing habits show up.
+It works with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders. Recommended use: customize it once, use it for writing and editing, then add new rules whenever a pattern starts bothering you.
 
 The patterns are editing signals for cleanup; they cannot prove whether a person or model wrote a piece.
 
-## How to use it
+## Recommended use
 
-1. **Start with the default skill.** If no custom file exists, the agent uses `SKILL.md`.
-2. **Customize when you want your own version.** Type `customize`; the agent creates `skill-customized.md` and walks through the rules with you.
-3. **Use it for writing and editing.** Send a topic, brief, draft, or finished piece.
-4. **Maintain it during real use.** When you notice a phrase, rhythm, or structure that sounds like AI, tell the agent to add it. The agent should check the existing rules, place the new rule in the right section, and avoid duplicates.
-5. **Reset when needed.** Type `reset` or delete `skill-customized.md` to return to the original `SKILL.md`.
+1. **Customize it.** Type `customize`; the agent walks through the rules with you and creates your local `skill-customized.md`.
+2. **Use it for writing and editing.** Send a topic, brief, draft, or finished piece; the agent follows the active rules.
+3. **Add to it anytime.** When you notice a new AI-writing habit, tell the agent what to add; it checks the current rules, chooses the right section, and avoids duplicates.
 
 ## Overview
 
