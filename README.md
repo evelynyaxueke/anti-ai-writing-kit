@@ -16,7 +16,7 @@ The patterns are editing signals for cleanup; they cannot prove whether a person
 
 For best results, use a current model with reliable instruction following, especially for long writing tasks.
 
-The kit can still improve smaller or older models, but they may miss subtle rules such as cross-sentence false contrast, rhythm cleanup, and the final audit. If an output still sounds AI-written, try a stronger model or a higher reasoning setting before judging the kit.
+The kit can still improve smaller or older models, but they may miss subtle rules such as cross-sentence false contrast, rhythm cleanup, and the final audit. If an output still sounds AI-written, rerun it with a stronger model or a higher reasoning setting.
 
 ## Overview
 
