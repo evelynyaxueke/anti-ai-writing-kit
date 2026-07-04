@@ -6,7 +6,7 @@ It works with Codex, Claude Code, and other agents that can load Markdown skills
 
 The patterns are editing signals for cleanup; they cannot prove whether a person or model wrote a piece.
 
-## Recommended use
+## How to use the kit
 
 1. **Customize it.** Type `customize`; the agent walks through the rules with you and creates your local `skill-customized.md`.
 2. **Use it for writing and editing.** Send a topic, brief, draft, or finished piece; the agent follows the active rules.
