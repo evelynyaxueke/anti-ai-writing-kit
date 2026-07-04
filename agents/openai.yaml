@@ -1,0 +1,4 @@
+interface:
+  display_name: "Anti-AI Writing Skill"
+  short_description: "Write and edit without AI smell"
+  default_prompt: "Use $anti-ai-writing-kit to rewrite this draft without AI smell."
