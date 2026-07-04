@@ -43,7 +43,7 @@ These are the first-pass fail states. Keep this list short so the priority stays
 1. **No em dashes.** Delete every `—` in final writing.
 2. **No first-priority AI vocabulary.** Avoid these unless literal, quoted, or discussed as examples: delve, tapestry, landscape, nuanced, seamless, robust, leverage, unlock, transformative.
 3. **No stock AI openings or closings.** Cut lines like "In today's...", "Let's dive in", "It's worth noting...", and "I hope this helps."
-4. **No not-X-but-Y framing.** Do not use rejection-then-reframe patterns for drama. Banned forms include: "not X, but Y"; "not just X, but Y"; "not about X, about Y"; "not only X, but also Y"; "X is not Y. It is Z."; "not X. Y."; "no X, just Y"; "less X, more Y"; "drop X, pick up Y"; "X is noise. Y is signal."; "X gets the credit. Y does the work."; "stop doing X. Start doing Y."; "you think it's X. It's Y."; "X is overrated. Do Y instead."; "it was never X. It was always Y."; "X is the symptom. Y is the cause." Factual correction is allowed: "The deadline is Friday, not Thursday."
+4. **No not-X-but-Y framing.** Do not use rejection-then-reframe patterns for drama. Banned forms include: "not X, but Y"; "isn't X, but Y"; "not because X, but because Y"; "not just X, but Y"; "not about X, about Y"; "isn't about X. It means Y."; "isn't about X. It's about Y."; "not only X, but also Y"; "X is not Y. It is Z."; "not X. Y."; "no X, just Y"; "less X, more Y"; "drop X, pick up Y"; "X is noise. Y is signal."; "X gets the credit. Y does the work."; "stop doing X. Start doing Y."; "you think it's X. It's Y."; "X is overrated. Do Y instead."; "it was never X. It was always Y."; "X is the symptom. Y is the cause." Factual correction is allowed: "The deadline is Friday, not Thursday."
 5. **No fake authority.** Do not write "research shows," "experts agree," or "studies suggest" without a named source.
 6. **No decorative structure.** Do not add headings, bullets, tables, or frameworks just to make the writing look organized.
 7. **No default analogies.** Use an analogy only if it is shorter and clearer than literal explanation.
@@ -614,11 +614,24 @@ The basic banned forms:
 - It was never X. It was always Y.
 - X is the symptom. Y is the cause.
 - "It's not X, it's Y."
+- "It isn't X, it's Y."
+- "It isn't X, but Y."
+- "It isn't X, but it does Y."
+- "It isn't X, but it doesn't Y."
+- "It's not because X, but because Y."
 - "It's not just X, it's Y."
 - "It's not about X, it's about Y."
+- "This isn't about X. It's about Y."
+- "It isn't about X. It means Y."
+- "It isn't about X. It's about Y."
+- "X is not about Y. It is about Z."
 - "Not only X, but also Y."
+- "Not X, instead Y."
+- "Not X anymore. Y now."
 
 The ban applies across sentence breaks. Read consecutive sentences together before deciding each is clean.
+
+Contractions count as `not`. Treat `isn't`, `aren't`, `wasn't`, `weren't`, `doesn't`, `didn't`, `can't`, and `won't` as rejection markers when they set up a contrast or reframe.
 
 Bad: "Everyone talks about the writing. The thinking is the real problem."
 
