@@ -1,14 +1,22 @@
 # Anti-AI Writing Skill
 
-The core agentic writing skill inside the Anti-AI Writing Kit.
+A portable agentic writing system for writing, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-Use it to write, edit, rewrite, polish, or review prose without common AI-writing tells. It works with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders.
+It works with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders. Use the default rules first, customize them when you want your own taste, then keep adding patterns as new AI-writing habits show up.
 
 The patterns are editing signals for cleanup; they cannot prove whether a person or model wrote a piece.
 
+## How to use it
+
+1. **Start with the default skill.** If no custom file exists, the agent uses `SKILL.md`.
+2. **Customize when you want your own version.** Type `customize`; the agent creates `skill-customized.md` and walks through the rules with you.
+3. **Use it for writing and editing.** Send a topic, brief, draft, or finished piece.
+4. **Maintain it during real use.** When you notice a phrase, rhythm, or structure that sounds like AI, tell the agent to add it. The agent should check the existing rules, place the new rule in the right section, and avoid duplicates.
+5. **Reset when needed.** Type `reset` or delete `skill-customized.md` to return to the original `SKILL.md`.
+
 ## Overview
 
-Anti-AI Writing Kit treats clean AI-assisted writing as an ongoing system. The default rules give an agent a strong starting standard. Customization lets the user keep, remove, or add rules based on their own taste. Maintenance keeps the file useful as new AI-writing habits become annoying.
+Anti-AI Writing Kit treats clean AI-assisted writing as an ongoing system. The default rules give an agent a strong starting standard. Customization lets the user keep, remove, or add rules based on their own taste. Maintenance keeps the file useful as new AI-writing habits show up.
 
 The runtime file is `SKILL.md`. If the user customizes the kit, the agent creates `skill-customized.md` and uses that local version from then on.
 
