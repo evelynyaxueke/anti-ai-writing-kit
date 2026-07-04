@@ -1,4 +1,4 @@
-# Anti-AI Writing Skill
+# Anti-AI Writing Kit
 
 A portable agentic writing system for writing, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
