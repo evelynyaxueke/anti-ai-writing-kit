@@ -4,6 +4,8 @@ A portable agent skill for writing, rewriting, polishing, and reviewing prose so
 
 This is the core skill inside the Anti-AI Writing Kit. The runtime file is `SKILL.md`.
 
+This is an editing standard, not an AI detector. Treat the patterns as cleanup signals, not proof of authorship.
+
 ## What it does
 
 Use this skill for:
@@ -19,6 +21,28 @@ Use this skill for:
 - public or professional writing
 
 The skill gives agents a writing standard, a guided customization flow, and a reset path for returning to the default rules.
+
+## Install in Codex
+
+Choose one location.
+
+User-level install, available in every Codex project:
+
+```sh
+mkdir -p ~/.codex/skills
+git clone https://github.com/evelynyaxueke/anti-ai-writing-kit.git ~/.codex/skills/anti-ai-writing-kit
+```
+
+Project-level install, available only inside one project:
+
+```sh
+mkdir -p .agents/skills
+git clone https://github.com/evelynyaxueke/anti-ai-writing-kit.git .agents/skills/anti-ai-writing-kit
+```
+
+For a private repo, the machine must be signed in to a GitHub account that has access to this repository.
+
+After installing, start a new Codex session so the skill list refreshes.
 
 ## Basic use
 
