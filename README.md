@@ -42,7 +42,11 @@ git clone https://github.com/evelynyaxueke/anti-ai-writing-kit.git .agents/skill
 
 For a private repo, the machine must be signed in to a GitHub account that has access to this repository.
 
-After installing, start a new Codex session so the skill list refreshes.
+After installing in the Codex app, open the command menu with `Cmd+K` or `Cmd+Shift+P`, then choose `Force Reload Skills`.
+
+If the skill still does not appear, start a new Codex session or restart Codex.
+
+An agent turn that was already running before installation cannot retroactively see the new skill list.
 
 ## Basic use
 
