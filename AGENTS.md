@@ -32,8 +32,6 @@ Do not create `skill-customized.md` during normal loading, writing, editing, or 
 
 If the user says `reset` or clearly asks to delete the customized version, delete only `skill-customized.md`.
 
-Do not explain monthly update syncing, merge behavior, or update reminders to users until that process is deliberately designed.
-
 ## Rule editing
 
 Before adding a new rule, search the target file for an existing rule that already covers the issue.

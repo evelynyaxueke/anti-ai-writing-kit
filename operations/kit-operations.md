@@ -21,8 +21,6 @@ If `skill-customized.md` conflicts with `SKILL.md` on writing rules, follow `ski
 
 For loading, customization, reset, rule additions, and other kit behavior, follow this file even when `skill-customized.md` exists.
 
-Do not explain monthly update syncing, merge behavior, or update reminders during normal loading, customization, reset, or user-facing help. That process is not designed yet.
-
 ## Normal load behavior
 
 Use this when the user invokes the skill without providing a writing task.
