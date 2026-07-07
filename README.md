@@ -2,27 +2,43 @@
 
 A portable agentic writing system for writing, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-It works with Codex, Claude Code, and other agents that can load Markdown skills or custom instruction folders. Recommended use: customize it once, use it for writing and editing, then add new rules whenever a pattern starts bothering you.
+This repo is a skill set, not a single prompt. `SKILL.md` gives agents a strong writing standard. `operations/kit-operations.md` adds customization, reset, and rule maintenance. `skill-customized.md` lets each user keep a local version. Together, they give AI a stronger, more effective, more systematic way to produce cleaner prose by avoiding common bad patterns.
 
-The patterns are editing signals for cleanup; they cannot prove whether a person or model wrote a piece.
+## Scope and boundaries
 
-## How to use the kit
+This kit improves AI writing by giving the model explicit patterns to avoid and a process for checking its own output. It is for cleaner writing, writing review, and editing. It is not for proving who wrote a piece.
 
-1. **Customize it.** Type `customize`; the agent walks through the rules with you and creates your local `skill-customized.md`.
-2. **Use it for writing and editing.** Send a topic, brief, draft, or finished piece; the agent follows the active rules.
-3. **Add to it anytime.** When you notice a new AI-writing habit, tell the agent what to add; it checks the current rules, chooses the right section, and avoids duplicates.
+It does not serve these goals:
+
+- passing AI detectors, including academic and non-academic detectors
+- teaching AI to write in your personal style
+- supplying platform-specific templates, formats, or genre voices
+
+The core rules are meant to work across formats. Personal style and platform-specific writing can be handled by separate skills layered on top of this kit.
+
+## Using it with an agent
+
+The recommended path is to use this kit with an agent that can load a skill folder, Markdown skill, or custom instruction folder.
+
+With an agent, the kit can do more than apply rules once. It can guide customization, create `skill-customized.md`, add new rules in the right section, reset customization, and maintain the rule file over time.
+
+## Using it with webpage AI
+
+For ChatGPT, Claude, Gemini, or another web AI without skill-folder support, upload `SKILL.md` or paste its contents into the chat.
+
+Tell the model to use `SKILL.md` as the active writing standard for that session. If you also have `skill-customized.md`, upload that file instead.
+
+## Getting started
+
+1. **Step 1: Customize it once.** Type `customize`; the agent walks through the rules with you and creates your local `skill-customized.md`.
+2. **Step 2: Use it for writing and editing.** Send a topic, brief, draft, or finished piece; the agent follows the active rules.
+3. **Step 3: Add to it anytime.** When you notice a new AI-writing habit, tell the agent what to add; it checks the current rules, chooses the right section, and avoids duplicates.
 
 ## Model recommendation
 
 For best results, use a current model with reliable instruction following, especially for long writing tasks.
 
 The kit can still improve smaller or older models, but they may miss subtle rules such as cross-sentence false contrast, rhythm cleanup, and the final audit. If an output still sounds AI-written, rerun it with a stronger model or a higher reasoning setting.
-
-## Overview
-
-Anti-AI Writing Kit treats clean AI-assisted writing as an ongoing system. The default rules give an agent a strong starting standard. Customization lets the user keep, remove, or add rules based on their own taste. Maintenance keeps the file useful as new AI-writing habits show up.
-
-The runtime file is `SKILL.md`. If the user customizes the kit, the agent creates `skill-customized.md` and uses that local version from then on.
 
 ## Methodology
 
