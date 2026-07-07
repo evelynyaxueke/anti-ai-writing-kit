@@ -2,7 +2,13 @@
 
 A portable agentic writing system for writing, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-This repo is a skill set, not a single prompt. `SKILL.md` gives agents a strong writing standard. `operations/kit-operations.md` adds customization, reset, and rule maintenance. `skill-customized.md` lets each user keep a local version. Together, they give AI a stronger, more effective, more systematic way to produce cleaner prose by avoiding common bad patterns.
+This repo is a skill set, not a single prompt:
+
+- `SKILL.md` gives agents a strong writing standard.
+- `operations/kit-operations.md` adds customization, reset, and rule maintenance.
+- `skill-customized.md` lets each user keep a local version.
+
+Together, they give AI a stronger, more effective, more systematic way to produce cleaner prose by avoiding common bad patterns.
 
 ## Scope and boundaries
 
@@ -14,7 +20,7 @@ It does not serve these goals:
 - teaching AI to write in your personal style
 - supplying platform-specific templates, formats, or genre voices
 
-The core rules are meant to work across formats. Personal style and platform-specific writing can be handled by separate skills layered on top of this kit.
+The core rules are meant to work across formats. I plan to publish a separate skill for teaching AI to write in your personal style, and that skill can be used together with this kit. Platform-specific writing can also be handled by separate skills layered on top of this kit.
 
 ## Using it with an agent
 
@@ -40,22 +46,6 @@ For best results, use a current model with reliable instruction following, espec
 
 The kit can still improve smaller or older models, but they may miss subtle rules such as cross-sentence false contrast, rhythm cleanup, and the final audit. If an output still sounds AI-written, rerun it with a stronger model or a higher reasoning setting.
 
-## Methodology
-
-The rules are organized by failure type:
-
-- empty AI vocabulary
-- fake depth
-- fake authority
-- vague claims
-- decorative structure
-- formulaic openings and endings
-- repeated sentence rhythm
-- false contrast
-- over-polished cleanup
-
-This helps the agent catch pattern families beyond exact phrases. A phrase list can miss variations. A category gives the agent the cause behind the rule.
-
 ## What makes it different
 
 - **Kit structure.** `SKILL.md` starts the system. The repo also supports guided customization, local overrides, rule additions, reset, and maintenance.
@@ -66,21 +56,17 @@ This helps the agent catch pattern families beyond exact phrases. A phrase list 
 - **Daily rule additions.** When you notice a new AI-writing habit, tell the agent. It should check whether the issue is already covered, place the rule in the right section, and avoid duplicates.
 - **Final audit.** Before sending, the agent checks the full active rule document and scans for visible failures.
 
-## What it does
+Rule overview:
 
-Use this skill for:
-
-- articles
-- essays
-- posts
-- emails
-- captions
-- scripts
-- page copy
-- launch copy
-- public or professional writing
-
-The skill gives agents a writing standard, a guided customization flow, and a reset path for returning to the default rules.
+- empty AI vocabulary
+- fake depth
+- fake authority
+- vague claims
+- decorative structure
+- formulaic openings and endings
+- repeated sentence rhythm
+- false contrast
+- over-polished cleanup
 
 ## Install
 
