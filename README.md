@@ -58,17 +58,45 @@ The kit can still improve smaller or older models, but they may miss subtle rule
 - **Daily rule additions.** When you notice a new AI-writing habit, tell the agent. It should check whether the issue is already covered, place the rule in the right section, and avoid duplicates.
 - **Final audit.** Before sending, the agent checks the full active rule document and scans for visible failures.
 
-Rule overview:
+## Rule overview
 
-- empty AI vocabulary
-- fake depth
-- fake authority
-- vague claims
-- decorative structure
-- formulaic openings and endings
-- repeated sentence rhythm
-- false contrast
-- over-polished cleanup
+The core rule document is organized by failure type and final check behavior:
+
+1. Hard bans
+
+2. Positive defaults
+
+3. Word and phrase cleanup
+   3.1 Vocabulary that performs depth
+   3.2 Phrases that perform depth
+   3.3 Bloated verbs and copula avoidance
+   3.4 Inflation of ordinary facts
+   3.5 Metaphors and analogies
+
+4. Claims and evidence
+   4.1 False authority
+   4.2 Hedging, false balance, and vague qualifiers
+   4.3 Missing facts and current information
+   4.4 Reader assumptions
+
+5. Structure and formatting
+   5.1 Section scaffolding
+   5.2 Lists, bullets, and tables
+   5.3 Punctuation
+   5.4 Transitions
+   5.5 Meta-commentary
+
+6. Rhythm and repetition
+   6.1 Synonym rotation
+   6.2 Openings, closings, and engagement bait
+   6.3 Sentence and paragraph rhythm
+   6.4 False contrast, false ranges, and formula patterns
+
+7. Final check
+   7.1 Final pass questions
+   7.2 Final audit
+
+8. Additional user preferences
 
 ## Install
 
