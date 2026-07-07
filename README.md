@@ -22,6 +22,8 @@ It does not serve these goals:
 
 The core rules are meant to work across formats. I plan to publish a separate skill for teaching AI to write in your personal style, and that skill can be used together with this kit. Platform-specific writing can also be handled by separate skills layered on top of this kit.
 
+Even when this kit works better than some peer skills, it cannot promise 100 percent removal of AI smell in every run. AI-writing smell is not a stable checklist, and current models still have uneven instruction following, context retention limits, and inconsistent self-review. A model may follow a rule in one paragraph and miss the same pattern later, especially in long outputs or multi-step agent workflows.
+
 ## Using it with an agent
 
 The recommended path is to use this kit with an agent that can load a skill folder, Markdown skill, or custom instruction folder.
