@@ -328,6 +328,7 @@ test('missing controller EOF marker fails closed in API and CLI', (t) => {
 test('live repository markers and one-file rule layout are intact', () => {
   const skill = fs.readFileSync(path.join(LIVE_SKILL_DIR, 'SKILL.md'), 'utf8');
   const operations = fs.readFileSync(path.join(LIVE_SKILL_DIR, 'operations', 'kit-operations.md'), 'utf8');
+  const readme = fs.readFileSync(path.join(LIVE_SKILL_DIR, 'README.md'), 'utf8');
   assert.ok(skill.trimEnd().endsWith(SKILL_MARKER));
   assert.equal(skill.split(SKILL_MARKER).length - 1, 1);
   assert.doesNotMatch(skill, /__ANTI_AI_[A-Z0-9_]+__/u);
@@ -336,6 +337,10 @@ test('live repository markers and one-file rule layout are intact', () => {
   assert.match(skill, /checker rejects interactive terminal input immediately/u);
   assert.equal(fs.existsSync(path.join(LIVE_SKILL_DIR, 'references', 'patterns-and-examples.md')), false);
   assert.ok(operations.trimEnd().endsWith('<!-- ANTI_AI_WRITING_OPERATIONS_EOF -->'));
+  assert.match(operations, /Every rule added during normal use goes to `skill-customized\.md`/u);
+  assert.doesNotMatch(operations, /Should I add this to your personal customized file or the default SKILL\.md/u);
+  assert.match(readme, /Every rule added during normal use goes to `skill-customized\.md`/u);
+  assert.doesNotMatch(readme, /Put this in the default skill/u);
 });
 
 test('printer CLI executes through a symlink', (t) => {

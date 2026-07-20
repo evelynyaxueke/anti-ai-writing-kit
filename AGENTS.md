@@ -40,7 +40,7 @@ Before adding a rule, search `SKILL.md`, the scanner, and tests for the exact ph
 
 Keep rules short and actionable. State what to do instead. Keep examples only when they clarify an edge case. Check that cleanup does not make accurate prose stiff or vague.
 
-Keep personal preferences in `skill-customized.md` unless the user explicitly requests a public default change.
+Send every normal add-rule, remember-rule, or save-rule request to `skill-customized.md`. Do not offer users a choice between the customized file and `SKILL.md`. Treat a deliberate change to the repository's shipped defaults as maintainer work with its own validation and release.
 
 Keep candidate binding honest. The runtime workflow should prefer a fresh mode-`0600` temporary file and use `--stdin` only with complete preattached framed input. The checker must reject an interactive terminal before reading. Verify the latest receipt's `candidate_sha256` against the exact candidate and require a full rerun after any character change. Without runtime or harness comparison, documentation must not claim that the receipt proves final assistant-message equality.
 

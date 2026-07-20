@@ -22,6 +22,8 @@
   - [3.6 Technical failures and preservation](#36-technical-failures-and-preservation)
   - [3.7 Limits](#37-limits)
 - [4. Skill loading and final-check audit](#4-skill-loading-and-final-check-audit)
+  - [4.1 Original V5 audit](#41-original-v5-audit)
+  - [4.2 Current skill follow-up](#42-current-skill-follow-up)
 - [Appendix A: Exact prompts](#appendix-a-exact-prompts)
   - [A.1 Stage 1 prompts](#a1-stage-1-prompts)
   - [A.2 Stage 2 prompts](#a2-stage-2-prompts)
@@ -237,11 +239,41 @@ The first evaluation freeze had an incorrect source-artifact path. All four work
 
 # 4. Skill loading and final-check audit
 
+## 4.1 Original V5 audit
+
 The complete Anti-AI Writing Kit file and active-rules receipt appeared in all 64 kit runs. The loading mechanism therefore worked in every tested run.
 
 The delivery check was not fully reliable. A final-check receipt appeared in 63 of 64 runs. The exact last checked candidate matched the delivered output in 60 runs. One Stage 1 output had no final-check receipt. Three Stage 2 outputs changed after their last recorded check. Two changes repaired damaged text; one added a factual comparison clause.
 
 The benchmark kept the first valid delivered output in every case. These four exceptions remain part of the results and identify a delivery-control issue for future versions.
+
+## 4.2 Current skill follow-up
+
+We ran another 64 generations after moving the complete rule set into `SKILL.md` and changing the loader to deliver 12 verified chunks through separate tool calls. The follow-up used the same 16 direct-writing prompts, four repetitions per prompt, `gpt-5.6-sol`, and medium reasoning. It tested commit `5c4eeb1300f6152809a7f9ba72981d2f17302ff8` with snapshot checksum `4f799fe040044af76dfe255053ddd9f2257a6e634f999e59f6fe951202f4889d`.
+
+| Loading check | Result |
+|---|---:|
+| Accepted runs | 64 |
+| Runs that loaded chunks 1 through 12 | 64 |
+| Runs that used one matching digest for all chunks | 64 |
+| Runs that reached the final active-rules marker | 64 |
+| Runs that batched chunk commands | 0 |
+| First-attempt accepted outputs | 63 |
+| Accepted outputs after a preserved technical timeout | 1 |
+
+The generation traces answer the loading question: yes, the current skill loaded completely in every accepted run. The failed first gate also identified the exact risk the new rule addresses. One agent put all chunk commands in a shell loop, and the combined output was truncated. After the loader required one tool call per chunk, all 64 accepted runs received every verified chunk.
+
+The benchmark environment was read-only and had no supported input path for the mechanical final checker, so the documented manual fallback applied. No run launched the checker. It had passed all 91 code tests before this batch.
+
+The 64 new outputs were scored anonymously with the same frozen 48-pattern method. Six false positives were removed during the documented source-rule audit.
+
+| Result set | Words in flagged sentences or lines | Total words | AI-smell rate |
+|---|---:|---:|---:|
+| Current Anti-AI Writing Kit, combined | 520 | 35,935 | 1.45% |
+| Current Anti-AI Writing Kit, Stage 1 | 267 | 19,295 | 1.38% |
+| Current Anti-AI Writing Kit, Stage 2 | 253 | 16,640 | 1.52% |
+
+For context, the original comparison recorded 2.11% for Stop Slop and 2.21% for Humanizer. Those skills were not regenerated in this follow-up, so the figures do not form a new head-to-head test.
 
 # Appendix A: Exact prompts
 
