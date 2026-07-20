@@ -70,7 +70,9 @@ Create one only when the user asks to customize or explicitly asks to save a per
 
 ## Add a rule or preference
 
-Use this when the user asks to add, remember, save, or update a writing rule. If the user only asks whether wording sounds AI-generated, answer first, then ask: `Do you want me to add this as a rule?`
+Use this when the user asks to add, remember, save, or update a writing rule. A direct request is confirmation to save it.
+
+If the user complains about, dislikes, or points out an AI-writing habit without asking to save it, acknowledge the concern and ask: `Do you want me to add this as a rule?` Do not save a complaint without confirmation.
 
 Every rule added during normal use goes to `skill-customized.md`. Do not offer `SKILL.md` as a second target and do not ask the user to choose between personal and default rules. If the customized file is missing, create the compact customized file first.
 
