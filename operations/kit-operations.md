@@ -72,12 +72,9 @@ Create one only when the user asks to customize or explicitly asks to save a per
 
 Use this when the user asks to add, remember, save, or update a writing rule. If the user only asks whether wording sounds AI-generated, answer first, then ask: `Do you want me to add this as a rule?`
 
-### Choose the target
+Every rule added during normal use goes to `skill-customized.md`. Do not offer `SKILL.md` as a second target and do not ask the user to choose between personal and default rules. If the customized file is missing, create the compact customized file first.
 
-- `default`, `public`, `core`, `SKILL.md`, or `for everyone` means the default skill.
-- `my rules`, `personal`, `customized`, or `skill-customized.md` means the customized file.
-- If unclear, ask: `Should I add this to your personal customized file or the default SKILL.md?`
-- If the personal target is missing, create the compact customized file first.
+A direct request to maintain the published repository's shipped defaults is a repository-maintenance task outside this add-rule workflow. Handle that work as a deliberate skill release with its supporting scripts, tests, and documentation.
 
 ### Search and place
 
@@ -96,21 +93,14 @@ Place new behavior in the smallest fitting section:
 
 Keep a rule short: name the pattern, explain the failure, say what to do instead, and add an example only when needed.
 
-For a default change, update every applicable layer:
-
-- `SKILL.md` for the default rule, explanation, phrase list, and examples
-- `scripts/scan-writing.mjs` only when a safe exact or candidate check is possible
-- `scripts/check-final.mjs` when final-gate behavior changes
-- tests for changed script behavior
-
 After editing, report what changed and where.
 
 ## Manual customization
 
 The user can delete unwanted numbered rules or add rough notes. A few words are enough. Never edit the controller through customization.
 
-- To change public defaults, edit `SKILL.md` and any applicable supporting layer.
-- To change personal preferences, edit `skill-customized.md`.
+- Add and change user preferences in `skill-customized.md`.
+- Treat changes to the published `SKILL.md` as repository maintenance, separate from personal customization.
 - Keep an existing legacy custom file as-is and edit it in place.
 
 ## Reset customization

@@ -12,16 +12,16 @@ This is a kit, not a single prompt:
 
 ## Test report
 
-We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. All generations used `gpt-5.6-sol` with medium reasoning.
+We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks using `gpt-5.6-sol` with medium reasoning. A 64-output follow-up tested the current Anti-AI Writing Kit. All 64 accepted runs loaded the complete skill through all 12 verified chunks and reached the final loading marker.
 
-| Condition | AI-smell rate |
-|---|---:|
-| Anti-AI Writing Kit | 1.18% |
-| Stop Slop | 2.11% |
-| Humanizer | 2.21% |
-| No skill | 4.24% |
+| Condition | Combined | Stage 1 | Stage 2 |
+|---|---:|---:|---:|
+| Anti-AI Writing Kit, current follow-up | 1.45% | 1.38% | 1.52% |
+| Stop Slop, original test | 2.11% | 1.89% | 2.37% |
+| Humanizer, original test | 2.21% | 2.47% | 1.90% |
+| No skill, original test | 4.24% | 4.73% | 3.61% |
 
-The report tests whether our approach works. It does not declare a ranking or position among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+The peer figures come from the original test because the follow-up regenerated only the current Anti-AI Writing Kit. The report tests whether our approach works and whether the current skill loads completely. It does not establish a fixed ranking among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
 
 ## Scope and limits
 
@@ -54,7 +54,7 @@ Use the whole folder with an agentic AI that can load skills and run files.
 
 1. Customize it once. Type `customize` and the agent will create your local preference file.
 2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
-3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
+3. Add personal rules when you find a new AI-writing habit. The agent will save each rule in `skill-customized.md`.
 
 ### Install
 
@@ -104,17 +104,13 @@ Rough replies are enough during customization. You can add a fragment, give an e
 
 ### Add a rule
 
-Tell the agent what to remember and whether the change is personal or public.
+Tell the agent what to remember. Every rule added during normal use goes to `skill-customized.md`. If the file does not exist, the agent creates it first. `SKILL.md` stays unchanged.
 
 ```text
 Add this to my rules: never use "X" as a punchline.
 ```
 
-```text
-Put this in the default skill: avoid X because it sounds fake.
-```
-
-The agent first searches for an existing rule, then revises the smallest applicable section. A public rule change may also require an example update, a scanner check, and a test.
+The agent first checks whether the rule already exists. New rules go in the smallest applicable section of the customized file.
 
 ### Reset
 
