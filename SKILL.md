@@ -1,6 +1,6 @@
 ---
 name: anti-ai-writing-kit
-description: "Write, edit, rewrite, polish, or review professional prose so it does not sound AI-generated. Use for articles, essays, posts, emails, captions, scripts, page copy, social copy, launch copy, or any user-facing text. Open SKILL.md at the exact registered path shown by the runtime, never an inferred .system path; read through EOF, run the active-rule loader, and run the final gate before delivering prose. Also use to load, customize, reset, maintain, or add rules to the Anti-AI Writing Kit."
+description: "Write, edit, rewrite, polish, or review professional prose so it does not sound AI-generated. Use for articles, essays, posts, emails, captions, scripts, page copy, social copy, launch copy, or any user-facing text. Open SKILL.md at the exact registered path shown by the runtime, never an inferred .system path; read through EOF, run the active-rule loader, and run the final gate before delivering prose. Also use to load, customize, reset, maintain, or add rules to the Anti-AI Writing Kit, and when a user complains about an AI-writing habit during an active writing session."
 ---
 
 # Anti-AI Writing Skill

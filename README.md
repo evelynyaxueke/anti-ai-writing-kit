@@ -106,11 +106,21 @@ Rough replies are enough during customization. You can add a fragment, give an e
 
 ### Add a rule
 
-Tell the agent what to remember. Every rule added during normal use goes to `skill-customized.md`. If the file does not exist, the agent creates it first. `SKILL.md` stays unchanged.
+Every rule added during normal use goes to `skill-customized.md`. If the file does not exist, the agent creates it first. `SKILL.md` stays unchanged.
+
+In a new session, the safest instruction names both the skill and the action:
+
+```text
+Use Anti-AI Writing Kit. Add this to my rules: never use "X" as a punchline.
+```
+
+If the skill is already active in the session, the shorter version is enough:
 
 ```text
 Add this to my rules: never use "X" as a punchline.
 ```
+
+If you complain about an AI-writing habit while the skill is active, the agent should understand the context and ask whether you want to save it. A complaint is not saved without your confirmation. In a new session, name Anti-AI Writing Kit so the agent knows which rules you mean.
 
 The agent first checks whether the rule already exists. New rules go in the smallest applicable section of the customized file.
 

@@ -338,9 +338,13 @@ test('live repository markers and one-file rule layout are intact', () => {
   assert.equal(fs.existsSync(path.join(LIVE_SKILL_DIR, 'references', 'patterns-and-examples.md')), false);
   assert.ok(operations.trimEnd().endsWith('<!-- ANTI_AI_WRITING_OPERATIONS_EOF -->'));
   assert.match(operations, /Every rule added during normal use goes to `skill-customized\.md`/u);
+  assert.match(operations, /Do not save a complaint without confirmation/u);
   assert.doesNotMatch(operations, /Should I add this to your personal customized file or the default SKILL\.md/u);
   assert.match(readme, /Every rule added during normal use goes to `skill-customized\.md`/u);
+  assert.match(readme, /Use Anti-AI Writing Kit\. Add this to my rules/u);
+  assert.match(readme, /A complaint is not saved without your confirmation/u);
   assert.doesNotMatch(readme, /Put this in the default skill/u);
+  assert.match(skill, /when a user complains about an AI-writing habit during an active writing session/u);
 });
 
 test('printer CLI executes through a symlink', (t) => {
