@@ -14,7 +14,7 @@ This is a kit, not a single prompt:
 
 We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. Each condition used the same prompt set, model settings, and evaluation method. All generations used `gpt-5.6-sol` with medium reasoning.
 
-Lower primary AI-smell rates are better.
+Lower AI-smell rates are better.
 
 | Condition | Stage 1 | Stage 2 | Combined |
 |---|---:|---:|---:|
