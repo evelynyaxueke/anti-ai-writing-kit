@@ -4,7 +4,7 @@ A portable writing skill for drafting, editing, rewriting, polishing, and review
 
 ## Test result
 
-We tested Anti-AI Writing Kit against Humanizer, Stop Slop, and a no-skill baseline across 256 English direct-writing outputs. The test used 16 prompts, four repetitions, and `gpt-5.6-sol` at the medium setting.
+We tested Anti-AI Writing Kit against [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline across 256 English direct-writing outputs. The test used 16 prompts, four repetitions, and `gpt-5.6-sol` at the medium setting.
 
 | Condition | AI-smell rate |
 |---|---:|
