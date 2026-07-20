@@ -2,6 +2,8 @@
 
 A portable writing kit for drafting, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
+[简体中文版](https://github.com/evelynyaxueke/anti-ai-writing-kit-zh)
+
 This is a kit, not a single prompt:
 
 - `SKILL.md` gives the agent its writing rules.
