@@ -14,8 +14,6 @@ This is a kit, not a single prompt:
 
 We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. Each condition used the same prompt set, model settings, and evaluation method. All generations used `gpt-5.6-sol` with medium reasoning.
 
-The primary AI-smell rate excludes `P032: Repeated recap, conclusion, or recommendation`. Repetition is reported separately as redundant explanation because it is a writing-quality problem, not a reliable AI-writing pattern. This is a post-hoc reporting correction. The frozen outputs and adjudicated findings were not changed or regenerated.
-
 Lower primary AI-smell rates are better.
 
 | Condition | Stage 1 | Stage 2 | Combined |
