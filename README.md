@@ -25,9 +25,9 @@ The report tests whether our approach works. It does not declare a ranking or po
 
 ## Scope and limits
 
-This kit helps an agent produce cleaner prose and review its own draft. It does not determine who wrote a piece, promise a detector result, teach a personal voice by itself, or supply platform-specific templates.
+This kit helps AI write and edit without common AI-writing habits. It is not an AI detector, a personal-voice trainer, or a set of platform-specific templates.
 
-No rule file can force perfect instruction following in every model or every run. The compact controller and EOF checks reduce partial loading. They cannot repair a runtime that never opens the registered skill path. Agents with weaker instruction following may still miss a semantic rule even after the mechanical scan passes. A local PASS receipt applies to the candidate supplied to the script. Unless the runtime or a test runner compares that candidate with the emitted assistant message, the receipt cannot prove byte-for-byte equality with what was sent.
+The kit gives AI clear rules and checks, but no rule file can make every model follow every instruction perfectly.
 
 ## Rule overview
 
