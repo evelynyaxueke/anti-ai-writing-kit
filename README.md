@@ -23,27 +23,13 @@ We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer),
 
 The report tests whether our approach works. It does not declare a ranking or position among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
 
-## Use with webpage AI
-
-Download [SKILL.md](SKILL.md). You can edit the file before uploading it to your chat.
-
-## Use with agentic AI
-
-Use the whole folder with an agentic AI that can load skills and run files.
-
-### Getting started
-
-1. Customize it once. Type `customize` and the agent will create your local preference file.
-2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
-3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
-
-### Scope and limits
+## Scope and limits
 
 This kit helps an agent produce cleaner prose and review its own draft. It does not determine who wrote a piece, promise a detector result, teach a personal voice by itself, or supply platform-specific templates.
 
 No rule file can force perfect instruction following in every model or every run. The compact controller and EOF checks reduce partial loading. They cannot repair a runtime that never opens the registered skill path. Agents with weaker instruction following may still miss a semantic rule even after the mechanical scan passes. A local PASS receipt applies to the candidate supplied to the script. Unless the runtime or a test runner compares that candidate with the emitted assistant message, the receipt cannot prove byte-for-byte equality with what was sent.
 
-### Rule overview
+## Rule overview
 
 The complete runtime rules fit in one compact file:
 
@@ -57,6 +43,20 @@ The complete runtime rules fit in one compact file:
 8. Additional user preferences, used only in a customized file
 
 The longer taxonomy, phrase families, explanations, and examples live in `references/patterns-and-examples.md`. A fail condition should remain in `SKILL.md`; the reference should never be the only place that defines one.
+
+## Use with webpage AI
+
+Download [SKILL.md](SKILL.md). You can edit the file before uploading it to your chat.
+
+## Use with agentic AI
+
+Use the whole folder with an agentic AI that can load skills and run files.
+
+### Getting started
+
+1. Customize it once. Type `customize` and the agent will create your local preference file.
+2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
+3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
 
 ### Install
 
