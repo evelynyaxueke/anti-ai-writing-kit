@@ -60,9 +60,9 @@ Default rule six.
 
 Default rule seven.
 
-## References and maintenance
+## Maintenance
 
-KEEP REFERENCE ROUTING.
+KEEP MAINTENANCE ROUTING.
 
 ## 8. Additional preferences
 
@@ -86,13 +86,15 @@ function capture() {
   };
 }
 
-test('default output verifies the already-read controller and names active defaults', (t) => {
+test('default output includes the complete controller and names active defaults', (t) => {
   const directory = fixture(t);
   const output = buildActiveRules(directory);
-  assert.match(output, /Controller receipt: SKILL\.md was read separately/u);
+  assert.match(output, /<!-- ANTI_AI_SKILL_BEGIN -->/u);
+  assert.match(output, /# Controller/u);
+  assert.match(output, /<!-- ANTI_AI_SKILL_END -->/u);
   assert.match(output, /controller_sha256=[a-f0-9]{64}/u);
   assert.match(output, /default Sections 1 through 7/u);
-  assert.doesNotMatch(output, /Default rule one\./u);
+  assert.match(output, /Default rule one\./u);
   assert.match(output, /Customized rules: none/u);
   assert.match(output, /NEXT REQUIRED ACTION BEFORE DELIVERY/u);
   assert.match(output, /private paragraph ledger/u);
@@ -127,23 +129,23 @@ test('custom template contains Sections 1 through 8 but no controller text', (t)
   assert.ok(custom.endsWith(`${CUSTOM_EOF_MARKER}\n`));
   for (let section = 1; section <= 8; section += 1) assert.match(custom, new RegExp(`^## ${section}\\.`, 'mu'));
   assert.doesNotMatch(custom, /KEEP CURRENT CONTROLLER/u);
-  assert.doesNotMatch(custom, /KEEP REFERENCE ROUTING/u);
+  assert.doesNotMatch(custom, /KEEP MAINTENANCE ROUTING/u);
   assert.doesNotMatch(custom, /ANTI_AI_WRITING_SKILL_EOF/u);
 });
 
-test('compact custom output omits overridden defaults and applies Section 8', (t) => {
+test('compact custom output carries replacement instructions and applies Section 8', (t) => {
   const directory = fixture(t);
   const custom = buildCustomTemplate(directory)
     .replace('Default rule one.', 'Personal rule one.')
     .replace('Default section eight.', 'Keep contractions.');
   fs.writeFileSync(path.join(directory, 'skill-customized.md'), custom);
   const output = buildActiveRules(directory);
-  assert.match(output, /Controller receipt/u);
+  assert.match(output, /<!-- ANTI_AI_SKILL_BEGIN -->/u);
   assert.match(output, /custom_sha256=[a-f0-9]{64}/u);
   assert.match(output, /Personal rule one\./u);
   assert.match(output, /Keep contractions\./u);
   assert.match(output, /Section 8 supplements them/u);
-  assert.doesNotMatch(output, /Default rule one\./u);
+  assert.match(output, /Default rule one\./u);
   assert.ok(output.endsWith(`${ACTIVE_RULES_MARKER}\n`));
 });
 
@@ -165,7 +167,7 @@ Keep the product name.
 `;
   fs.writeFileSync(path.join(directory, 'skill-customized.md'), legacy);
   const output = buildActiveRules(directory);
-  assert.ok(output.indexOf('Controller receipt') < output.indexOf('Use contractions.'));
+  assert.ok(output.indexOf('<!-- ANTI_AI_SKILL_BEGIN -->') < output.indexOf('Use contractions.'));
   assert.match(output, /numbered and unnumbered writing preferences/u);
   assert.match(output, /Ignore legacy loading or process text/u);
   assert.ok(output.indexOf('Controller reminder:') > output.indexOf('The customized file replaces everything.'));
@@ -173,7 +175,7 @@ Keep the product name.
   assert.match(output, /capability-promotion check/u);
   assert.match(output, /recommendation-once check/u);
   assert.match(output, /lexical tokens rather than standalone Markdown control markers/u);
-  assert.doesNotMatch(output, /Default rule one\./u);
+  assert.match(output, /Default rule one\./u);
   assert.ok(output.endsWith(`${ACTIVE_RULES_MARKER}\n`));
 });
 
@@ -256,7 +258,7 @@ test('one huge legacy line is split by UTF-8 byte size without data loss', (t) =
   assert.match(stdout.read(), /node '\/private\/tmp\/Skill Folder\/scripts\/print-active-rules\.mjs' --chunk 1/u);
 });
 
-test('controller sections and references must be unique and ordered', (t) => {
+test('controller sections and maintenance must be unique and ordered', (t) => {
   const missing = CONTROLLER.replace('## 4. Claims\n\nDefault rule four.\n\n', '');
   assert.throws(() => buildActiveRules(fixture(t, missing)), /exactly one Section 4/u);
 
@@ -270,11 +272,11 @@ test('controller sections and references must be unique and ordered', (t) => {
   const reversedBlock = '## 5. Structure\n\nDefault rule five.\n\n## 4. Claims\n\nDefault rule four.';
   assert.throws(() => buildActiveRules(fixture(t, CONTROLLER.replace(orderedBlock, reversedBlock))), /must be in order/u);
 
-  const duplicateReference = CONTROLLER.replace(
+  const duplicateMaintenance = CONTROLLER.replace(
     '## 8. Additional preferences',
-    '## References and maintenance\n\nDuplicate.\n\n## 8. Additional preferences'
+    '## Maintenance\n\nDuplicate.\n\n## 8. Additional preferences'
   );
-  assert.throws(() => buildActiveRules(fixture(t, duplicateReference)), /exactly one References/u);
+  assert.throws(() => buildActiveRules(fixture(t, duplicateMaintenance)), /exactly one Maintenance/u);
 });
 
 test('compact custom sections must be unique and ordered', (t) => {
@@ -323,16 +325,16 @@ test('missing controller EOF marker fails closed in API and CLI', (t) => {
   assert.match(stderr.read(), /^print-active-rules: SKILL\.md is incomplete/u);
 });
 
-test('live repository markers and compact line budget are intact', () => {
+test('live repository markers and one-file rule layout are intact', () => {
   const skill = fs.readFileSync(path.join(LIVE_SKILL_DIR, 'SKILL.md'), 'utf8');
   const operations = fs.readFileSync(path.join(LIVE_SKILL_DIR, 'operations', 'kit-operations.md'), 'utf8');
-  const reference = fs.readFileSync(path.join(LIVE_SKILL_DIR, 'references', 'patterns-and-examples.md'), 'utf8');
   assert.ok(skill.trimEnd().endsWith(SKILL_MARKER));
   assert.equal(skill.split(SKILL_MARKER).length - 1, 1);
   assert.doesNotMatch(skill, /__ANTI_AI_[A-Z0-9_]+__/u);
-  assert.ok(skill.split('\n').length <= 241);
+  assert.match(skill, /^## Anti-overfitting$/mu);
+  assert.match(skill, /^### 7\.2 Final audit$/mu);
+  assert.equal(fs.existsSync(path.join(LIVE_SKILL_DIR, 'references', 'patterns-and-examples.md')), false);
   assert.ok(operations.trimEnd().endsWith('<!-- ANTI_AI_WRITING_OPERATIONS_EOF -->'));
-  assert.ok(reference.trimEnd().endsWith('<!-- ANTI_AI_WRITING_REFERENCE_EOF -->'));
 });
 
 test('printer CLI executes through a symlink', (t) => {
@@ -342,5 +344,7 @@ test('printer CLI executes through a symlink', (t) => {
   fs.symlinkSync(path.join(LIVE_SKILL_DIR, 'scripts', 'print-active-rules.mjs'), link);
   const result = spawnSync(process.execPath, [link], { encoding: 'utf8' });
   assert.equal(result.status, 0, result.stderr);
-  assert.ok(result.stdout.endsWith(`${ACTIVE_RULES_MARKER}\n`));
+  assert.match(result.stdout, /^__ANTI_AI_ACTIVE_RULES_CHUNKED__/u);
+  assert.match(result.stdout, /sha256=[a-f0-9]{64}/u);
+  assert.match(result.stdout, /--chunk 1 --sha256 [a-f0-9]{64}/u);
 });

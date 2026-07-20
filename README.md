@@ -31,7 +31,7 @@ The kit gives AI clear rules and checks, but no rule file can make every model f
 
 ## Rule overview
 
-The complete runtime rules fit in one compact file:
+The complete runtime rules, explanations, phrase lists, and examples are in `SKILL.md`:
 
 1. Hard bans
 2. Positive defaults
@@ -41,8 +41,6 @@ The complete runtime rules fit in one compact file:
 6. Rhythm and repetition
 7. Final-check preferences
 8. Additional user preferences, used only in a customized file
-
-The longer taxonomy, phrase families, explanations, and examples live in `references/patterns-and-examples.md`. A fail condition should remain in `SKILL.md`; the reference should never be the only place that defines one.
 
 ## Use with webpage AI
 
@@ -84,7 +82,7 @@ After installing in the Codex app, open the command menu with `Cmd+K` or `Cmd+Sh
 
 #### Other agents
 
-Use the agent's supported skill, plugin, or custom-instruction location and point it at the whole folder. `SKILL.md` alone is a manual fallback when relative scripts and references are unavailable.
+Use the agent's supported skill, plugin, or custom-instruction location and point it at the whole folder. `SKILL.md` alone is a manual fallback when relative scripts are unavailable.
 
 ### Model choice
 
@@ -98,7 +96,7 @@ Type:
 customize
 ```
 
-The agent creates `skill-customized.md` only when requested, then walks through the numbered writing sections. The printer's `--custom-template` option extracts Sections 1 through 8 without copying the controller or reference-routing block. New files include format and EOF markers.
+The agent creates `skill-customized.md` only when requested, then walks through the numbered writing sections. The printer's `--custom-template` option extracts Sections 1 through 8 without copying the controller or maintenance block. New files include format and EOF markers.
 
 Existing customized files remain supported. A file without the new format marker is treated as a legacy full-copy preference layer. The agent edits it in place and does not overwrite or silently convert it.
 
@@ -135,7 +133,6 @@ anti-ai-writing-kit/
 ├── SKILL.md
 ├── README.md
 ├── reports/
-├── references/
 ├── scripts/
 ├── tests/
 ├── operations/

@@ -21,11 +21,10 @@ const HELP = `Usage:
   node scripts/print-active-rules.mjs --chunk <number> --sha256 <digest>
   node scripts/print-active-rules.mjs --custom-template
 
-The default prints a checksum receipt for the already-read SKILL.md controller
-plus any active customized preferences. Long customized preferences produce a
-chunk manifest. Each chunk is bounded by both lines and UTF-8 bytes. Run every
-listed digest-bound command in order. The active-rules EOF marker appears in the
-final chunk.
+The default prints the complete SKILL.md plus any active customized preferences.
+Long output produces a chunk manifest. Each chunk is bounded by both lines and
+UTF-8 bytes. Run every listed digest-bound command in order. The active-rules EOF
+marker appears in the final chunk.
 `;
 
 function readController(skillDir) {
@@ -46,22 +45,22 @@ function controllerBoundaries(controller) {
     if (matches.length !== 1) throw new Error(`SKILL.md must contain exactly one Section ${section}.`);
     offsets.set(section, matches[0].index);
   }
-  const referenceMatches = [...controller.matchAll(/^## References and maintenance[ \t]*$/gmu)];
-  if (referenceMatches.length !== 1) {
-    throw new Error('SKILL.md must contain exactly one References and maintenance section.');
+  const maintenanceMatches = [...controller.matchAll(/^## Maintenance[ \t]*$/gmu)];
+  if (maintenanceMatches.length !== 1) {
+    throw new Error('SKILL.md must contain exactly one Maintenance section.');
   }
-  const references = referenceMatches[0].index;
+  const maintenance = maintenanceMatches[0].index;
   const eof = controller.lastIndexOf(SKILL_MARKER);
   const ordered = [
     ...Array.from({ length: 7 }, (_, index) => offsets.get(index + 1)),
-    references,
+    maintenance,
     offsets.get(8),
     eof
   ];
   if (ordered.some((offset, index) => index > 0 && offset <= ordered[index - 1])) {
-    throw new Error('SKILL.md Sections 1 through 7, References, Section 8, and EOF must be in order.');
+    throw new Error('SKILL.md Sections 1 through 7, Maintenance, Section 8, and EOF must be in order.');
   }
-  return { section1: offsets.get(1), references, section8: offsets.get(8), eof };
+  return { section1: offsets.get(1), maintenance, section8: offsets.get(8), eof };
 }
 
 function classifyCustom(custom) {
@@ -107,7 +106,7 @@ function validateCompactCustom(custom) {
 export function buildCustomTemplate(skillDir = DEFAULT_SKILL_DIR) {
   const controller = readController(skillDir);
   const boundaries = controllerBoundaries(controller);
-  const sections1to7 = controller.slice(boundaries.section1, boundaries.references).trim();
+  const sections1to7 = controller.slice(boundaries.section1, boundaries.maintenance).trim();
   const section8 = controller.slice(boundaries.section8, boundaries.eof).trim();
   const custom = `${CUSTOM_FORMAT_MARKER}\n\n${sections1to7}\n\n${section8}\n\n${CUSTOM_EOF_MARKER}\n`;
   validateCompactCustom(custom);
@@ -125,14 +124,16 @@ export function buildActiveRules(skillDir = DEFAULT_SKILL_DIR) {
 
   const parts = [
     '__ANTI_AI_ACTIVE_RULES_BEGIN__',
-    'Controller receipt: SKILL.md was read separately and its structure and trailing EOF were validated.',
-    `controller_sha256=${controllerDigest}`
+    `controller_sha256=${controllerDigest}`,
+    '<!-- ANTI_AI_SKILL_BEGIN -->',
+    controller.trimEnd(),
+    '<!-- ANTI_AI_SKILL_END -->'
   ];
 
   if (customKind === 'none') {
     parts.push(
       'Customized rules: none.',
-      'Active preferences: default Sections 1 through 7 in the already-read SKILL.md.'
+      'Active preferences: default Sections 1 through 7 in the complete SKILL.md above.'
     );
   } else {
     parts.push(
