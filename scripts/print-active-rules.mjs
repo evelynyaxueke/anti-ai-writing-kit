@@ -23,8 +23,9 @@ const HELP = `Usage:
 
 The default prints the complete SKILL.md plus any active customized preferences.
 Long output produces a chunk manifest. Each chunk is bounded by both lines and
-UTF-8 bytes. Run every listed digest-bound command in order. The active-rules EOF
-marker appears in the final chunk.
+UTF-8 bytes. Run every listed digest-bound command in order as a separate tool
+call. Never use a loop, pipeline, batch, compound command, or parallel call. The
+active-rules EOF marker appears in the final chunk.
 `;
 
 function readController(skillDir) {
@@ -197,7 +198,9 @@ function chunkManifest(output, chunks, digest, scriptPath) {
     `bytes=${Buffer.byteLength(output, 'utf8')}`,
     `max_chunk_bytes=${Math.max(...chunks.map((chunk) => Buffer.byteLength(chunk, 'utf8')))}`,
     `sha256=${digest}`,
-    'Run these commands in order:',
+    'Run each command below in order as a separate tool call.',
+    'Never combine them in a loop, pipeline, batch, compound shell command, or parallel call.',
+    'After each call, require that chunk\'s begin and end markers and this same SHA-256.',
     ...chunks.map((_, index) => `node ${shellQuote(scriptPath)} --chunk ${index + 1} --sha256 ${digest}`),
     `Do not draft until chunk ${chunks.length} ends with the active-rules EOF marker.`,
     '__ANTI_AI_ACTIVE_RULES_MANIFEST_EOF__',
