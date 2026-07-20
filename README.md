@@ -6,9 +6,9 @@ A portable writing kit for drafting, editing, rewriting, polishing, and reviewin
 
 This is a kit, not a single prompt:
 
-- `SKILL.md` gives the agent its writing rules.
+- `SKILL.md` contains the default operating instructions and writing rules.
 - `operations/kit-operations.md` handles customization, reset, and rule maintenance.
-- `skill-customized.md` stores each user's local preferences.
+- `skill-customized.md`, when created, is a complete standalone copy with the user's changes.
 
 ## Test report
 
@@ -98,9 +98,9 @@ Type:
 customize
 ```
 
-The agent creates `skill-customized.md` only when requested, then walks through the numbered writing sections. The printer's `--custom-template` option extracts Sections 1 through 8 without copying the controller or maintenance block. New files include format and EOF markers.
+The agent creates `skill-customized.md` only when requested, then walks through the numbered writing sections. The file contains the complete operating instructions and all eight writing sections, so it can be loaded as one standalone customized skill.
 
-Existing customized files remain supported. A file without the new format marker is treated as a legacy full-copy preference layer. The agent edits it in place and does not overwrite or silently convert it.
+Older compact and legacy customized files remain supported. The agent edits an existing file in place and does not overwrite or silently convert it.
 
 Rough replies are enough during customization. You can add a fragment, give an example, remove a rule, or say the section is fine.
 
@@ -132,7 +132,7 @@ Type:
 reset
 ```
 
-The agent deletes only `skill-customized.md`. The controller then uses the default numbered rules again.
+The agent deletes only `skill-customized.md`, then returns to the complete default `SKILL.md`.
 
 ## File layout
 

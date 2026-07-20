@@ -10,6 +10,7 @@ import {
   ACTIVE_RULES_MARKER,
   CHUNK_BYTE_LIMIT,
   CUSTOM_EOF_MARKER,
+  CUSTOM_FULL_FORMAT_MARKER,
   CUSTOM_FORMAT_MARKER,
   SKILL_MARKER,
   activeRulesSha256,
@@ -22,7 +23,12 @@ import {
 const TEST_DIR = path.dirname(fileURLToPath(import.meta.url));
 const LIVE_SKILL_DIR = path.dirname(TEST_DIR);
 
-const CONTROLLER = `# Controller
+const CONTROLLER = `---
+name: test-skill
+description: Test fixture.
+---
+
+# Controller
 
 ## Mandatory delivery gate
 
@@ -122,31 +128,71 @@ test('empty custom file falls back to default rules', (t) => {
   assert.doesNotMatch(buildActiveRules(directory), /ANTI_AI_CUSTOM_RULES_BEGIN/u);
 });
 
-test('custom template contains Sections 1 through 8 but no controller text', (t) => {
+test('custom template is a complete standalone skill', (t) => {
   const directory = fixture(t);
   const custom = buildCustomTemplate(directory);
-  assert.ok(custom.startsWith(`${CUSTOM_FORMAT_MARKER}\n`));
-  assert.ok(custom.endsWith(`${CUSTOM_EOF_MARKER}\n`));
+  assert.ok(custom.startsWith('---\n'));
+  assert.match(custom, new RegExp(`^---\\n[\\s\\S]*?\\n---\\n${CUSTOM_FULL_FORMAT_MARKER}$`, 'mu'));
+  assert.ok(custom.endsWith(`${SKILL_MARKER}\n`));
   for (let section = 1; section <= 8; section += 1) assert.match(custom, new RegExp(`^## ${section}\\.`, 'mu'));
-  assert.doesNotMatch(custom, /KEEP CURRENT CONTROLLER/u);
-  assert.doesNotMatch(custom, /KEEP MAINTENANCE ROUTING/u);
-  assert.doesNotMatch(custom, /ANTI_AI_WRITING_SKILL_EOF/u);
+  assert.match(custom, /KEEP CURRENT CONTROLLER/u);
+  assert.match(custom, /KEEP MAINTENANCE ROUTING/u);
 });
 
-test('compact custom output carries replacement instructions and applies Section 8', (t) => {
+test('standalone custom is the only active skill source', (t) => {
   const directory = fixture(t);
   const custom = buildCustomTemplate(directory)
     .replace('Default rule one.', 'Personal rule one.')
     .replace('Default section eight.', 'Keep contractions.');
   fs.writeFileSync(path.join(directory, 'skill-customized.md'), custom);
   const output = buildActiveRules(directory);
-  assert.match(output, /<!-- ANTI_AI_SKILL_BEGIN -->/u);
+  assert.match(output, /active_source=skill-customized\.md/u);
+  assert.match(output, /<!-- ANTI_AI_CUSTOM_SKILL_BEGIN -->/u);
+  assert.doesNotMatch(output, /<!-- ANTI_AI_SKILL_BEGIN -->/u);
   assert.match(output, /custom_sha256=[a-f0-9]{64}/u);
   assert.match(output, /Personal rule one\./u);
   assert.match(output, /Keep contractions\./u);
-  assert.match(output, /Section 8 supplements them/u);
-  assert.match(output, /Default rule one\./u);
+  assert.doesNotMatch(output, /Default rule one\./u);
+  assert.match(output, /Do not load default SKILL\.md rules in addition/u);
   assert.ok(output.endsWith(`${ACTIVE_RULES_MARKER}\n`));
+});
+
+test('create, customize, and reset lifecycle switches the active source cleanly', (t) => {
+  const directory = fixture(t);
+  const customPath = path.join(directory, 'skill-customized.md');
+
+  assert.match(buildActiveRules(directory), /active_source=SKILL\.md/u);
+
+  const custom = buildCustomTemplate(directory)
+    .replace('Default section eight.', 'Never use the phrase silver bullet.');
+  fs.writeFileSync(customPath, custom);
+  const customized = buildActiveRules(directory);
+  assert.match(customized, /active_source=skill-customized\.md/u);
+  assert.match(customized, /Never use the phrase silver bullet\./u);
+  assert.doesNotMatch(customized, /<!-- ANTI_AI_SKILL_BEGIN -->/u);
+
+  fs.rmSync(customPath);
+  const reset = buildActiveRules(directory);
+  assert.match(reset, /active_source=SKILL\.md/u);
+  assert.match(reset, /Default section eight\./u);
+  assert.doesNotMatch(reset, /Never use the phrase silver bullet\./u);
+});
+
+test('incomplete standalone custom fails closed instead of falling back', (t) => {
+  const directory = fixture(t);
+  const customPath = path.join(directory, 'skill-customized.md');
+  fs.writeFileSync(customPath, buildCustomTemplate(directory).replace(SKILL_MARKER, ''));
+  assert.throws(() => buildActiveRules(directory), /standalone skill-customized\.md is incomplete/u);
+});
+
+test('older compact custom remains supported', (t) => {
+  const directory = fixture(t);
+  const custom = `${CUSTOM_FORMAT_MARKER}\n\n${Array.from({ length: 8 }, (_, index) => `## ${index + 1}. Rules\n\nPersonal ${index + 1}.`).join('\n\n')}\n\n${CUSTOM_EOF_MARKER}\n`;
+  fs.writeFileSync(path.join(directory, 'skill-customized.md'), custom);
+  const output = buildActiveRules(directory);
+  assert.match(output, /active_source=SKILL\.md/u);
+  assert.match(output, /Compact customized Sections 1 through 7 replace the defaults/u);
+  assert.match(output, /Personal 8\./u);
 });
 
 test('legacy custom keeps numbered and unnumbered preferences without old process authority', (t) => {
@@ -170,7 +216,7 @@ Keep the product name.
   assert.ok(output.indexOf('<!-- ANTI_AI_SKILL_BEGIN -->') < output.indexOf('Use contractions.'));
   assert.match(output, /numbered and unnumbered writing preferences/u);
   assert.match(output, /Ignore legacy loading or process text/u);
-  assert.ok(output.indexOf('Controller reminder:') > output.indexOf('The customized file replaces everything.'));
+  assert.ok(output.indexOf('Required process reminder:') > output.indexOf('The customized file replaces everything.'));
   assert.match(output, /outcome-by-outcome coverage check/u);
   assert.match(output, /capability-promotion check/u);
   assert.match(output, /recommendation-once check/u);
@@ -191,7 +237,7 @@ test('compact custom file fails closed without EOF or any numbered section', (t)
   fs.writeFileSync(customPath, `${CUSTOM_FORMAT_MARKER}\n## 1. Rules\n`);
   assert.throws(() => buildActiveRules(directory), /incomplete or missing/u);
 
-  const incomplete = buildCustomTemplate(directory).replace(/^## 4\.[\s\S]*?(?=^## 5\.)/mu, '');
+  const incomplete = `${CUSTOM_FORMAT_MARKER}\n\n${Array.from({ length: 8 }, (_, index) => index === 3 ? '' : `## ${index + 1}. Rules\n\nPersonal ${index + 1}.`).join('\n\n')}\n\n${CUSTOM_EOF_MARKER}\n`;
   fs.writeFileSync(customPath, incomplete);
   assert.throws(() => buildActiveRules(directory), /exactly one Section 4/u);
 });

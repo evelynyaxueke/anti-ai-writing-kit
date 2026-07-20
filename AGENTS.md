@@ -6,13 +6,13 @@ Guidance for agents maintaining this skill folder.
 
 This is a portable writing skill for drafting, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-`SKILL.md` is the permanent runtime controller and the single source of truth for default rules, explanations, phrase lists, and examples. Keep the load contract near the top and the EOF marker at the end.
+`SKILL.md` is the complete default skill and the single source of truth for default rules, explanations, phrase lists, and examples. Keep the load contract near the top and the EOF marker at the end.
 
 There is no package installation or build step. The scripts use Node.js standard-library modules only.
 
 ## Key files
 
-- `SKILL.md`: metadata, permanent controller, complete default rules, explanations, phrase lists, and examples. Frontmatter contains only `name` and `description`.
+- `SKILL.md`: metadata, operating instructions, complete default rules, explanations, phrase lists, and examples. Frontmatter contains only `name` and `description`.
 - `scripts/print-active-rules.mjs`: deterministic full-skill loading, chunking, checksum validation, and preference resolution.
 - `scripts/check-final.mjs`: strict final rule reload, long-rule digest verification, framed-stdin enforcement, and a private candidate receipt with candidate and rules hashes. Its local receipt covers the supplied candidate only and does not prove equality with a later assistant message.
 - `scripts/scan-writing.mjs`: deterministic mechanical and candidate checks. It must not claim semantic judgment or rewrite input.
@@ -20,7 +20,7 @@ There is no package installation or build step. The scripts use Node.js standard
 - `operations/kit-operations.md`: loading without a task, customization, reset, rule additions, maintenance, and fixed replies.
 - `README.md`: public user manual.
 - `agents/openai.yaml`: Codex display metadata and default prompt.
-- `skill-customized.md`: local user preferences. Never commit, overwrite, or silently migrate it.
+- `skill-customized.md`: a complete standalone customized skill created locally on request. Never commit, overwrite, or silently migrate it.
 
 ## Ownership
 
@@ -32,7 +32,7 @@ Change the smallest applicable layer, then synchronize every layer affected by t
 - Put customization, reset, and fixed replies in operations.
 - Keep public behavior in README consistent with operations.
 
-`SKILL.md` remains active when a customized file exists. A compact custom file replaces numbered Sections 1 through 7 and adds Section 8. A legacy full-copy custom file remains supported as a preference layer. Never let customized process text remove the current controller, fact preservation, delivery gate, semantic review, or final-only output.
+A new V2 `skill-customized.md` is the only active skill source and contains the operating instructions plus all eight writing sections. Older compact and legacy files remain supported as preference layers over `SKILL.md`. Never let personal changes remove fact preservation, the delivery gate, semantic review, or final-only output.
 
 ## Rule editing
 
@@ -53,8 +53,8 @@ Before finishing a change:
 1. Confirm the EOF markers in `SKILL.md` and operations.
 2. Run `node --check` on all three scripts.
 3. Run `node --test tests/*.test.mjs`.
-4. Test full-skill loading and active-rule resolution for no custom, whitespace-only custom, valid and malformed compact custom, reserved runtime markers, legacy custom, a long multiline legacy file, and a huge one-line legacy file. Confirm chunks are digest-bound, byte-bounded, and invoked through the absolute loader path.
-5. Verify `--custom-template` includes all eight numbered sections and excludes the controller and maintenance section.
+4. Test full-skill loading and active-rule resolution for no custom, whitespace-only custom, valid and malformed standalone custom, older compact custom, reserved runtime markers, legacy custom, a long multiline legacy file, and a huge one-line legacy file. Confirm chunks are digest-bound, byte-bounded, and invoked through the absolute loader path.
+5. Verify `--custom-template` preserves valid YAML metadata and includes the operating instructions, maintenance section, all eight numbered sections, and the skill EOF marker.
 6. Run scanner fixtures for code masking, Unicode locations, list nesting and lazy continuation, CRLF, failure thresholds, and deterministic output.
 7. Verify strict final-gate arguments, lexical word-bound enforcement that excludes standalone Markdown control markers, private finding output, digest changes, and long-rule checks.
 8. Check README and operations for the same customization model and fixed responses.
