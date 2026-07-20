@@ -126,61 +126,18 @@ reset
 
 The agent deletes only `skill-customized.md`. The controller then uses the default numbered rules again.
 
-## Local verification
-
-From the skill folder:
-
-```sh
-node scripts/print-active-rules.mjs
-node scripts/check-final.mjs --input draft.md --format text --fail-on review
-node scripts/scan-writing.mjs --input draft.md --format text --fail-on blocking
-node --test tests/*.test.mjs
-```
-
-Successful active-rule output ends with `__ANTI_AI_ACTIVE_RULES_EOF__`. The scanner returns exit code `1` when findings meet the selected failure level and `2` for input or usage errors. Review-level findings require judgment and may be legitimate quoted material or factual contrast.
-
-When the user specifies a word range, pass it to the combined gate:
-
-```sh
-node scripts/check-final.mjs --input draft.md --min-words 130 --max-words 170
-```
-
-Word bounds count lexical tokens and ignore standalone Markdown markers such as `#`, `-`, and numbered-list markers. Heading text still counts.
-
-For a long customized file, copy the SHA-256 from the manifest, run every listed chunk command without changing it, then use:
-
-```sh
-node scripts/check-final.mjs --input draft.md --format text --fail-on review --rules-sha256 <manifest-digest>
-```
-
-The combined gate intentionally supports only text output and the review threshold, with optional word bounds and a long-rule digest. A review finding blocks delivery unless the agent fixes it or reruns with that exact `--allow-review <occurrence-id>` after confirming the active rules allow it. The gate reports occurrence IDs and locations without printing matched candidate text. Use `scan-writing.mjs` directly when machine-readable JSON or full excerpts are needed for local debugging.
-
-For agent delivery, use a fresh mode-`0600` temporary file with `--input` by default. If private file input is unavailable, append exactly `\n__ANTI_AI_CANDIDATE_INPUT_EOF__\n` for framed interactive stdin; the gate strips the frame and rejects malformed transfers. Retain only the latest complete receipt, verify its `candidate_sha256` against the checked file, and send the checked candidate without changing a character. Any edit invalidates the receipt and requires the semantic check and gate again. This procedure reduces mismatches, but only runtime-level comparison can prove equality with the final assistant message.
-
 ## File layout
 
 ```text
 anti-ai-writing-kit/
 ├── SKILL.md
 ├── README.md
-├── AGENTS.md
-├── LICENSE
-├── agents/
-│   └── openai.yaml
-├── operations/
-│   └── kit-operations.md
-├── references/
-│   └── patterns-and-examples.md
 ├── reports/
-│   └── 2026-07-19-anti-ai-writing-skills-comparison-report.md
+├── references/
 ├── scripts/
-│   ├── print-active-rules.mjs
-│   ├── check-final.mjs
-│   └── scan-writing.mjs
-└── tests/
-    ├── check-final.test.mjs
-    ├── print-active-rules.test.mjs
-    └── scan-writing.test.mjs
+├── tests/
+├── operations/
+└── agents/
 ```
 
 Generated local files:
