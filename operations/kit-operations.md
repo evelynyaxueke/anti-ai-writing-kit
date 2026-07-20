@@ -4,9 +4,9 @@ Use this file for loading without a writing task, customization, reset, rule add
 
 ## File roles
 
-1. `SKILL.md` is the permanent controller and the single source of truth for default rules, explanations, phrase lists, and examples.
-2. `skill-customized.md` is an optional local preference layer. It can replace default Sections 1 through 7 and supplement them with Section 8. It never replaces the controller.
-3. `scripts/print-active-rules.mjs` validates and prints the complete skill in digest-bound chunks, then resolves active customized preferences.
+1. `SKILL.md` is the complete default skill.
+2. A new `skill-customized.md` is a complete standalone copy of the skill with personal changes. When present, it is the only active skill source.
+3. `scripts/print-active-rules.mjs` validates and prints one complete active skill in digest-bound chunks. It also supports older compact and legacy customized files without silently migrating them.
 4. `scripts/check-final.mjs` reloads ordinary active rules, verifies the manifest digest for long rules, enforces supplied word bounds, and emits private finding metadata plus candidate and rules hashes without candidate excerpts. Its receipt applies to the supplied candidate only; it does not compare that candidate with a later assistant message.
 5. `scripts/scan-writing.mjs` performs deterministic mechanical checks. It does not judge meaning or truth.
 6. `README.md` is the public manual. `AGENTS.md` is maintainer guidance.
@@ -15,7 +15,7 @@ Use this file for loading without a writing task, customization, reset, rule add
 
 - Follow the user's facts, constraints, and direct instructions first.
 - Do not create a customized file during normal writing, editing, loading, or explanation.
-- The controller, fact-preservation rule, delivery gate, semantic check, and final-only requirement always remain active.
+- The operating instructions, fact-preservation rule, delivery gate, semantic check, and final-only requirement remain active in either complete skill file.
 - Prefer a fresh mode-`0600` temporary candidate file for the final gate. Use interactive stdin framed with `__ANTI_AI_CANDIDATE_INPUT_EOF__` only when private file input is unavailable. The candidate must already contain every final Markdown character and use UTF-8 without a BOM, LF-only internal line breaks, no leading blank line, no terminal horizontal whitespace, and no terminal line break.
 - Treat the latest complete PASS receipt and exact checked candidate as a locked pair. Any post-PASS character change invalidates the pair and requires the semantic check and gate again.
 - Without runtime or harness comparison, never claim that a local PASS receipt proves the final assistant message is byte-for-byte identical to the checked candidate.
@@ -25,7 +25,7 @@ Use this file for loading without a writing task, customization, reset, rule add
 - Keep either an original claim or its `In other words` restatement unless both perform distinct required functions. Give each recommendation one primary location; later sentences may add conditions, owners, or actions without reissuing it.
 - Treat a whitespace-only customized file as absent.
 - Never overwrite, regenerate, or silently migrate an existing customized file.
-- A file whose first nonblank line is `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->` is a compact custom file. Every other nonempty file is a legacy full-copy custom file, even if it quotes that marker later.
+- A file whose first nonblank line after its YAML header is `<!-- ANTI_AI_WRITING_CUSTOM_FULL_V2 -->` is a standalone customized skill. A file beginning with `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->` is an older compact custom file. Every other nonempty file is a legacy file.
 - Apply numbered and unnumbered writing preferences from a legacy file, including an edited operating standard or anti-overfitting note, but ignore old load or process instructions that conflict with the current controller.
 - Edit a legacy file in place. Preserve its deletions, rough notes, and structure as user choices.
 
@@ -35,10 +35,9 @@ When Node.js is available, run `node scripts/print-active-rules.mjs` from the sk
 
 Without Node.js:
 
-1. Read `SKILL.md` through `<!-- ANTI_AI_WRITING_SKILL_EOF -->`.
-2. If `skill-customized.md` is nonempty, read a compact file through `<!-- ANTI_AI_WRITING_CUSTOM_EOF -->`. For a legacy file, obtain its physical line count and read consecutive nonoverlapping ranges through physical EOF, including every unnumbered preference after the last numbered section. Do not rely on one possibly truncated read.
-3. Use customized Sections 1 through 7 instead of the default numbered sections. Apply customized Section 8 in addition.
-4. Keep the `SKILL.md` controller active.
+1. Check `skill-customized.md` first.
+2. If the first nonblank line after its YAML header is `<!-- ANTI_AI_WRITING_CUSTOM_FULL_V2 -->`, read it through `<!-- ANTI_AI_WRITING_SKILL_EOF -->` and use it alone.
+3. Otherwise, read `SKILL.md` through `<!-- ANTI_AI_WRITING_SKILL_EOF -->`, then apply an older compact or legacy customized file as a preference layer.
 
 ## Final candidate transport and receipt
 
@@ -53,20 +52,20 @@ Without Node.js:
 
 Use this when the user invokes the skill without a writing task.
 
-- With a nonempty customized file, say exactly: `Loaded. I'll use the SKILL.md controller with your customized rules for this session. Send the piece, topic, or brief.`
-- Without one, say exactly: `Loaded. No customized file found, so I'll use the SKILL.md controller with its default rules. Send the piece, topic, or brief.`
+- With a V2 standalone custom file, say exactly: `Loaded. I'll use the complete skill-customized.md for this session. Send the piece, topic, or brief.`
+- With an older compact or legacy custom file, say exactly: `Loaded. I'll use the default operating instructions with your customized rules for this session. Send the piece, topic, or brief.`
+- Without one, say exactly: `Loaded. No customized file found, so I'll use the default SKILL.md. Send the piece, topic, or brief.`
 - Do not ask whether the user wants customization.
 - Do not mention customization unless the user asks about it.
 
-## Create a compact customized file
+## Create a standalone customized skill
 
 Create one only when the user asks to customize or explicitly asks to save a personal rule and no custom file exists.
 
 1. With Node.js, run `node scripts/print-active-rules.mjs --custom-template` and use that complete output as the new file. Without Node.js, follow Steps 2 through 5 manually.
-2. Start with `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->`, then copy Sections 1 through 7 and Section 8 from `SKILL.md`. Skip the `Maintenance` block between Sections 7 and 8. Do not copy frontmatter, the load contract, delivery gate, operating priorities, or the `SKILL.md` EOF marker.
-3. End with `<!-- ANTI_AI_WRITING_CUSTOM_EOF -->`.
-4. Keep the customized rule text complete enough to stand on its own.
-5. Before saving, verify that all eight numbered section headings and the custom EOF marker are present. A user may empty a section, but its heading remains so truncation cannot silently remove the rest of the rules.
+2. Copy the complete current `SKILL.md`, including its YAML header, operating instructions, and final skill EOF marker. Add `<!-- ANTI_AI_WRITING_CUSTOM_FULL_V2 -->` as the first nonblank line after the YAML header.
+3. Apply personal changes only to the numbered writing sections.
+4. Before saving, verify that the operating instructions, all eight numbered sections, and the skill EOF marker are present.
 
 ## Add a rule or preference
 
@@ -74,7 +73,7 @@ Use this when the user asks to add, remember, save, or update a writing rule. A 
 
 If the user complains about, dislikes, or points out an AI-writing habit without asking to save it, acknowledge the concern and ask: `Do you want me to add this as a rule?` Do not save a complaint without confirmation.
 
-Every rule added during normal use goes to `skill-customized.md`. Do not offer `SKILL.md` as a second target and do not ask the user to choose between personal and default rules. If the customized file is missing, create the compact customized file first.
+Every rule added during normal use goes to `skill-customized.md`. Do not offer `SKILL.md` as a second target and do not ask the user to choose between personal and default rules. If the customized file is missing, create the standalone customized skill first.
 
 A direct request to maintain the published repository's shipped defaults is a repository-maintenance task outside this add-rule workflow. Handle that work as a deliberate skill release with its supporting scripts, tests, and documentation.
 
@@ -99,7 +98,7 @@ After editing, report what changed and where.
 
 ## Manual customization
 
-The user can delete unwanted numbered rules or add rough notes. A few words are enough. Never edit the controller through customization.
+The user can delete unwanted numbered rules or add rough notes. A few words are enough. Keep the operating instructions unchanged during personal customization.
 
 - Add and change user preferences in `skill-customized.md`.
 - Treat changes to the published `SKILL.md` as repository maintenance, separate from personal customization.
@@ -111,21 +110,21 @@ Use this when the user says `reset`, `reset customization`, `start over from def
 
 - If the request is clear, delete only `skill-customized.md` without another question.
 - Do not change `SKILL.md`, scripts, operations, or any other file.
-- If deleted, say exactly: `Reset done. I deleted skill-customized.md. The skill will use the SKILL.md controller with its default rules unless you customize again.`
-- If no file exists, say exactly: `No customized file found. The skill is already using the SKILL.md controller with its default rules.`
+- If deleted, say exactly: `Reset done. I deleted skill-customized.md. The skill will use the default SKILL.md unless you customize again.`
+- If no file exists, say exactly: `No customized file found. The skill is already using the default SKILL.md.`
 - If `start over` is ambiguous, confirm before deleting.
 
 ## Guided customization workflow
 
 1. Check for a nonempty customized file.
-2. If none exists, create the compact customized file. If one exists, edit that same file and do not convert it.
+2. If none exists, create the standalone customized skill. If one exists, edit that same file and do not convert it.
 3. Send the fixed opening below and wait for confirmation.
 4. Work through numbered Sections 1 through 7 in the active customized file, then Section 8.
 5. Show the full current content of each editable section before asking for changes. Do not summarize it.
 6. If a legacy section has subcategories, show its category overview, then work through each subcategory.
 7. Accept fragments, examples, dislikes, short notes, or `no`. Treat `no`, `nothing`, `looks good`, and similar replies as no change.
 8. Apply requested changes immediately to the matching section, briefly confirm, then continue.
-9. Use the relevant material in `SKILL.md` when the user needs a rationale, example, or edge case.
+9. Use the relevant material in the active custom file when the user needs a rationale, example, or edge case. For an older compact or legacy file, use `SKILL.md` where needed.
 10. After Section 7, send the fixed final preference prompt and put the reply in Section 8.
 11. Verify the complete customized file and its EOF behavior. Then send the fixed closing.
 
@@ -181,7 +180,7 @@ Do you have any preference, style description, example, reference, or pet peeve 
 ```text
 Done. I updated skill-customized.md with your choices.
 
-The SKILL.md controller and your customized writing rules will be used from now on.
+The complete skill-customized.md will be used from now on.
 ```
 
 ## Maintenance checks
@@ -189,12 +188,12 @@ The SKILL.md controller and your customized writing rules will be used from now 
 Before finishing a kit change:
 
 1. Confirm all required EOF markers.
-2. Test active-rule resolution with no custom, whitespace-only custom, compact custom, malformed order or duplicate sections, reserved runtime markers, short legacy custom, and chunked legacy custom fixtures.
+2. Test active-rule resolution with no custom, whitespace-only custom, standalone custom, malformed standalone and compact files, older compact custom, reserved runtime markers, short legacy custom, and chunked legacy custom fixtures.
 3. Run `node --check` on all three scripts.
 4. Run the Node test suite.
 5. Test digest changes, strict final-gate arguments, private finding output, and long-rule verification.
 6. Keep README behavior synchronized.
-7. Confirm the controller, operations, README, and maintainer guidance describe the same candidate-lock procedure and do not overstate what a local receipt proves.
+7. Confirm SKILL, operations, README, and maintainer guidance describe the same active-source and candidate-lock behavior and do not overstate what a local receipt proves.
 8. Test aggregate group-boundary, recap-label, reader-coaching, stacked-limit, relationship-scope, subgroup-to-whole, outcome-by-outcome coverage, future-causal-proof, capability-promotion, restatement-label, and recommendation-repetition candidates, plus source-silence, one-answer, reader-trust, and paragraph-ledger instructions.
 9. Test that file and framed-stdin candidates with a terminal carriage return or line feed fail closed, and that the checked candidate already contains every final Markdown character.
 

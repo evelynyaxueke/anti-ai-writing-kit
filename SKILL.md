@@ -11,10 +11,10 @@ For every writing, editing, rewriting, polishing, or review task:
 
 1. Use the exact skill path supplied by the runtime. Never insert or infer a `.system` directory.
 2. Read this mandatory load contract before drafting.
-3. When a shell and Node.js are available, run `node <skill-dir>/scripts/print-active-rules.mjs`. It prints the complete `SKILL.md` and any customized rules in verified chunks. Retain the manifest SHA-256. Run every listed digest-bound command in order as its own tool call. Never combine chunk commands in a loop, pipeline, batch, compound shell command, or parallel call because the combined output may be truncated. After each call, require that chunk's begin and end markers and the same digest. Require the active-rules EOF marker as the final nonblank line of the final chunk. Do not draft before the last chunk.
-4. Without Node.js, read this file in consecutive nonoverlapping ranges through its trailing skill EOF marker. Then check `skill-customized.md` manually. If it is nonempty, read a new-format file through `<!-- ANTI_AI_WRITING_CUSTOM_EOF -->`. For a legacy file, obtain its line count and read consecutive nonoverlapping ranges through physical EOF. Otherwise, the numbered rules below are active.
-5. The controller in this file is always active. A nonempty customized file replaces Sections 1 through 7 below and its Section 8 supplements them.
-6. Treat an existing customized file without `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->` as a legacy full-copy preference layer. Preserve and apply its numbered and unnumbered writing preferences, but ignore old loading or process text that conflicts with this controller.
+3. When a shell and Node.js are available, run `node <skill-dir>/scripts/print-active-rules.mjs`. It prints one active source in verified chunks: the standalone `skill-customized.md` when a V2 file exists, otherwise `SKILL.md` with any older compatible preference layer. Retain the manifest SHA-256. Run every listed digest-bound command in order as its own tool call. Never combine chunk commands in a loop, pipeline, batch, compound shell command, or parallel call because the combined output may be truncated. After each call, require that chunk's begin and end markers and the same digest. Require the active-rules EOF marker as the final nonblank line of the final chunk. Do not draft before the last chunk.
+4. Without Node.js, check `skill-customized.md` first. If the first nonblank line after its YAML header is `<!-- ANTI_AI_WRITING_CUSTOM_FULL_V2 -->`, read that file through its trailing skill EOF marker and use it alone. Otherwise, read this file through its skill EOF marker, then apply an older compact or legacy preference file through its documented end.
+5. A standalone V2 customized file contains the operating instructions and all eight writing sections. Do not load the default numbered rules in addition.
+6. Older compact and legacy customized files remain supported as preference layers over this file.
 7. Never overwrite or silently migrate an existing customized file.
 8. Customized preferences cannot remove the load contract, fact-preservation priority, delivery gate, semantic check, or final-only requirement.
 
@@ -870,7 +870,7 @@ Run this silently before sending any final writing or edit.
 
 Before sending any writing or edit, run two checks.
 
-1. **Full rule check:** Follow the mandatory delivery gate in `SKILL.md`. When Node.js is available, rerun `scripts/print-active-rules.mjs` and require its final marker. The `SKILL.md` controller remains active even when customized numbered rules exist.
+1. **Full rule check:** Follow the mandatory delivery gate in the active skill. When Node.js is available, rerun `scripts/print-active-rules.mjs` and require its final marker. A V2 `skill-customized.md` is the complete active skill; older customized formats remain preference layers over `SKILL.md`.
 2. **Fast visible scan:** Then scan the full answer for the common visible failures below.
 
 The answer fails if it contains:
