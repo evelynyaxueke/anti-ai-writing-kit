@@ -1,18 +1,33 @@
 # Anti-AI Writing Kit
 
-A portable writing skill for drafting, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
+A portable writing kit for drafting, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
+
+This is a kit, not a single prompt:
+
+- `SKILL.md` gives the agent its writing rules.
+- `operations/kit-operations.md` handles customization, reset, and rule maintenance.
+- `skill-customized.md` stores each user's local preferences.
+
+## Getting started
+
+1. Customize it once. Type `customize` and the agent will create your local preference file.
+2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
+3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
 
 ## Test report
 
-We tested Anti-AI Writing Kit against [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline using `gpt-5.6-sol` at the medium setting. The test asks whether our approach works across a larger set of writing tasks. It does not establish a ranking or leading position. [Read the complete report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. All generations used `gpt-5.6-sol` with medium reasoning.
 
-The kit separates five jobs:
+| Condition | AI-smell rate |
+|---|---:|
+| Anti-AI Writing Kit | 1.18% |
+| Stop Slop | 2.11% |
+| Humanizer | 2.21% |
+| No skill | 4.24% |
 
-- `SKILL.md` is a compact controller with the complete default rule set.
-- `scripts/print-active-rules.mjs` validates the already-read controller, emits its checksum receipt, and resolves active customized preferences with an EOF marker. It cannot prove that a model attended to every rule.
-- `scripts/check-final.mjs` combines the required final rule reload and mechanical scan. It accepts only the text format and review threshold, enforces supplied lexical word bounds while ignoring standalone Markdown control markers, suppresses candidate matches and excerpts, and emits a private receipt with candidate and rules hashes.
-- `scripts/scan-writing.mjs` checks the finished candidate for exact mechanical patterns.
-- `references/patterns-and-examples.md` explains the rules with examples and edge cases.
+The report tests whether our approach works. It does not declare a ranking or position among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+
+## Reliability checks
 
 The controller requires a complete initial read, a checksum-backed active-preference receipt, a mechanical scan when Node.js is available, a private paragraph ledger, a one-answer sentence test, a reader-trust deletion pass, a source-silence and relationship-scope review, and another scan after every edit. These checks reject preview leads, recap closings, claim-evidence-claim repetition, reader coaching, repeated demonstrations of caution, paragraphs whose only function is summary or transition, and relationships extended beyond the source's named scope. The source audit checks all/every quantifiers, coverage status outcome by outcome, future causal-proof claims, capability promotion from records or audits, restatement labels, and repeated recommendations. A prior status cannot be assigned to a list unless every item has it, and auditable recorded events do not prove missing events, completeness, adherence, or compliance.
 
