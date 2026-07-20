@@ -14,7 +14,9 @@ This is a kit, not a single prompt:
 
 We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks using `gpt-5.6-sol` with medium reasoning. A 64-output follow-up tested the current Anti-AI Writing Kit. All 64 accepted runs loaded the complete skill through all 12 verified chunks and reached the final loading marker.
 
-| Condition | Combined | Stage 1 | Stage 2 |
+Lower AI-smell rates are better.
+
+| Condition | Combined rate | Stage 1 rate | Stage 2 rate |
 |---|---:|---:|---:|
 | Anti-AI Writing Kit, current follow-up | 1.45% | 1.38% | 1.52% |
 | Stop Slop, original test | 2.11% | 1.89% | 2.37% |
