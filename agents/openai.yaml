@@ -1,4 +1,4 @@
 interface:
   display_name: "Anti-AI Writing Skill"
   short_description: "Write, edit, and review without AI smell"
-  default_prompt: "Use $anti-ai-writing-kit."
+  default_prompt: "Use $anti-ai-writing-kit. Open SKILL.md at the exact registered path shown by the runtime without inserting .system, read through EOF, run the active-rule loader, and run the final gate before returning prose."
