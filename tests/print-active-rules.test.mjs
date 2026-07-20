@@ -139,6 +139,13 @@ test('custom template is a complete standalone skill', (t) => {
   assert.match(custom, /KEEP MAINTENANCE ROUTING/u);
 });
 
+test('live SKILL creates a valid custom template when its instructions mention the format marker', () => {
+  const custom = buildCustomTemplate(LIVE_SKILL_DIR);
+  assert.match(custom, new RegExp(`^---\\n[\\s\\S]*?\\n---\\n${CUSTOM_FULL_FORMAT_MARKER}$`, 'mu'));
+  assert.ok(custom.endsWith(`${SKILL_MARKER}\n`));
+  assert.equal(custom.split(/\r?\n/u).filter((line) => line.trim() === CUSTOM_FULL_FORMAT_MARKER).length, 1);
+});
+
 test('standalone custom is the only active skill source', (t) => {
   const directory = fixture(t);
   const custom = buildCustomTemplate(directory)
