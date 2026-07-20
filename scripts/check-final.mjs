@@ -61,6 +61,11 @@ function decodeUtf8(buffer) {
 }
 
 function readCandidate(options, io) {
+  const injectedStdin = io.stdinBuffer !== undefined || io.stdinText !== undefined;
+  const stdinIsTty = io.stdinIsTTY ?? process.stdin.isTTY;
+  if (options.stdin && !options.interactiveStdin && !injectedStdin && stdinIsTty) {
+    throw new GateUsageError('Plain --stdin requires framed input to be attached when the process starts. Use --interactive-stdin only with a writable process session.');
+  }
   const raw = options.stdin
     ? asBuffer(io.stdinBuffer ?? io.stdinText ?? fs.readFileSync(0))
     : fs.readFileSync(options.input);
@@ -114,6 +119,7 @@ function parseArgs(argv) {
   const options = {
     input: null,
     stdin: false,
+    interactiveStdin: false,
     includeCode: false,
     format: 'text',
     failOn: 'review',
@@ -128,6 +134,10 @@ function parseArgs(argv) {
     if (seen.has(arg)) throw new GateUsageError(`Duplicate argument: ${arg}`);
     if (arg === '--stdin') {
       options.stdin = true;
+      seen.add(arg);
+    } else if (arg === '--interactive-stdin') {
+      options.stdin = true;
+      options.interactiveStdin = true;
       seen.add(arg);
     } else if (arg === '--include-code') {
       options.includeCode = true;
@@ -164,6 +174,9 @@ function parseArgs(argv) {
   }
   if (options.minWords !== null && options.maxWords !== null && options.minWords > options.maxWords) {
     throw new GateUsageError('--min-words cannot exceed --max-words.');
+  }
+  if (seen.has('--stdin') && seen.has('--interactive-stdin')) {
+    throw new GateUsageError('Choose --stdin or --interactive-stdin, not both.');
   }
   if (options.input && options.stdin) throw new GateUsageError('Choose --input or --stdin, not both.');
   if (options.input === '-') {

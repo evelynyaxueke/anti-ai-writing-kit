@@ -333,7 +333,7 @@ test('live repository markers and one-file rule layout are intact', () => {
   assert.doesNotMatch(skill, /__ANTI_AI_[A-Z0-9_]+__/u);
   assert.match(skill, /^## Anti-overfitting$/mu);
   assert.match(skill, /^### 7\.2 Final audit$/mu);
-  assert.match(skill, /Never launch `--stdin` as an ordinary blocking shell command/u);
+  assert.match(skill, /Plain `--stdin` accepts only framed bytes attached when the process starts/u);
   assert.equal(fs.existsSync(path.join(LIVE_SKILL_DIR, 'references', 'patterns-and-examples.md')), false);
   assert.ok(operations.trimEnd().endsWith('<!-- ANTI_AI_WRITING_OPERATIONS_EOF -->'));
 });
