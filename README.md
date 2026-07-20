@@ -27,7 +27,7 @@ The report tests whether our approach works and whether the skill loads complete
 
 ## Scope and limits
 
-This kit helps AI write and edit without common AI-writing habits. It is not an AI detector, a personal-voice trainer, or a set of platform-specific templates.
+This kit focuses on helping AI write and edit without common AI-writing patterns. It is not an AI detector, a personal-voice trainer, or a set of platform-specific templates.
 
 The kit gives AI clear rules and checks, but no rule file can make every model follow every instruction perfectly.
 
