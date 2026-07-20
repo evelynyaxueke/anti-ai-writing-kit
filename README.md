@@ -2,24 +2,9 @@
 
 A portable writing skill for drafting, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-## Test result
+## Test report
 
-We tested Anti-AI Writing Kit against [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline across 256 English direct-writing outputs. The test used 16 prompts, four repetitions, and `gpt-5.6-sol` at the medium setting.
-
-| Condition | AI-smell rate |
-|---|---:|
-| **Anti-AI Writing Kit** | **1.18%** |
-| Stop Slop | 2.11% |
-| Humanizer | 2.21% |
-| No skill | 4.24% |
-
-Lower is better. The rate is the share of output words located in complete sentences or Markdown lines containing one of 48 documented AI-writing patterns. It does not estimate who wrote the text or count individually bad words.
-
-The percentage-point gaps are small, but one conspicuous pattern can affect how a whole piece reads. The test measured pattern frequency, not reader perception. It also used one model, so older models may produce different rates or wider gaps. That requires a separate comparison.
-
-The test used the frozen V5 snapshot at commit `eb02ce2`. The repository has since added stronger loading and final-delivery checks, so these numbers describe the tested snapshot rather than every later commit.
-
-[Read the complete comparison report, methodology, prompts, outputs, and issue evidence](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+We tested Anti-AI Writing Kit against [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline using `gpt-5.6-sol` at the medium setting. The test asks whether our approach works across a larger set of writing tasks. It does not establish a ranking or leading position. [Read the complete report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
 
 The kit separates five jobs:
 
