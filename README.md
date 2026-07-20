@@ -25,24 +25,7 @@ Lower primary AI-smell rates are better.
 | Humanizer | 0.89% | 0.95% | 0.92% |
 | No skill | 3.09% | 2.75% | 2.94% |
 
-Combined redundant-explanation rates from the same frozen peer outputs:
-
-| Condition | Redundant explanation |
-|---|---:|
-| Anti-AI Writing Kit | 0.92% |
-| Stop Slop | 1.61% |
-| Humanizer | 1.30% |
-| No skill | 1.30% |
-
-The current-skill follow-up used another 64 generations and is reported separately because the peer skills were not regenerated in that batch.
-
-| Set | Primary AI smell | Redundant explanation | Original mixed rate |
-|---|---:|---:|---:|
-| Combined | 0.08% | 1.37% | 1.45% |
-| Stage 1 | 0.03% | 1.36% | 1.38% |
-| Stage 2 | 0.14% | 1.38% | 1.52% |
-
-The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. The original mixed rates remain in the report as audit history. [Read the full report](reports/2026-07-20-anti-ai-writing-skills-comparison-report.md).
+The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. Detailed results and methodology are in the [full report](reports/2026-07-20-anti-ai-writing-skills-comparison-report.md).
 
 ## Scope and limits
 
