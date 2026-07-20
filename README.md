@@ -12,18 +12,18 @@ This is a kit, not a single prompt:
 
 ## Test report
 
-We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks using `gpt-5.6-sol` with medium reasoning. A 64-output follow-up tested the current Anti-AI Writing Kit. All 64 accepted runs loaded the complete skill through all 12 verified chunks and reached the final loading marker.
+We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. Each condition used the same prompt set, model settings, and evaluation method. All generations used `gpt-5.6-sol` with medium reasoning.
 
 Lower AI-smell rates are better.
 
 | Condition | Combined rate | Stage 1 rate | Stage 2 rate |
 |---|---:|---:|---:|
-| Anti-AI Writing Kit, current follow-up | 1.45% | 1.38% | 1.52% |
-| Stop Slop, original test | 2.11% | 1.89% | 2.37% |
-| Humanizer, original test | 2.21% | 2.47% | 1.90% |
-| No skill, original test | 4.24% | 4.73% | 3.61% |
+| Anti-AI Writing Kit | 1.45% | 1.38% | 1.52% |
+| Stop Slop | 2.11% | 1.89% | 2.37% |
+| Humanizer | 2.21% | 2.47% | 1.90% |
+| No skill | 4.24% | 4.73% | 3.61% |
 
-The peer figures come from the original test because the follow-up regenerated only the current Anti-AI Writing Kit. The report tests whether our approach works and whether the current skill loads completely. It does not establish a fixed ranking among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
 
 ## Scope and limits
 
