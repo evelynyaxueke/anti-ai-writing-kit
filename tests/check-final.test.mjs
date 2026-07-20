@@ -154,6 +154,20 @@ test('stdin framing rejects missing, embedded, duplicate, malformed, trailing, a
   }
 });
 
+test('plain stdin rejects an interactive terminal before reading', (t) => {
+  const directory = fixture(t);
+  const stdout = capture();
+  const stderr = capture();
+  assert.equal(runCli(['--stdin'], {
+    skillDir: directory,
+    stdinIsTTY: true,
+    stdout: stdout.stream,
+    stderr: stderr.stream
+  }), 2);
+  assert.equal(stdout.read(), '');
+  assert.match(stderr.read(), /requires framed input to be attached/u);
+});
+
 test('final gate rejects terminal line breaks for stdin and file candidates', (t) => {
   const directory = fixture(t);
   for (const candidate of ['Plain result.\n', 'Plain result.\r', 'Plain result.\r\n']) {
