@@ -8,16 +8,15 @@
     - [1.2.3 Anti-AI Writing Kit](#123-anti-ai-writing-kit)
   - [1.3 Test at a glance](#13-test-at-a-glance)
 - [2. Results](#2-results)
-  - [2.1 Combined result](#21-combined-result)
-  - [2.2 Interpretation](#22-interpretation)
-  - [2.3 Stage results](#23-stage-results)
-    - [2.3.1 Stage 1](#231-stage-1)
-    - [2.3.2 Stage 2](#232-stage-2)
+  - [2.1 Corrected primary AI-smell result](#21-corrected-primary-ai-smell-result)
+  - [2.2 Redundant explanation](#22-redundant-explanation)
+  - [2.3 Interpretation](#23-interpretation)
+  - [2.4 Original mixed rates](#24-original-mixed-rates)
 - [3. Methodology](#3-methodology)
   - [3.1 Test design](#31-test-design)
   - [3.2 Pattern codebook](#32-pattern-codebook)
   - [3.3 Blind evaluation](#33-blind-evaluation)
-  - [3.4 AI-smell rate](#34-ai-smell-rate)
+  - [3.4 Primary AI-smell rate and redundant explanation](#34-primary-ai-smell-rate-and-redundant-explanation)
   - [3.5 Evaluation audit and corrections](#35-evaluation-audit-and-corrections)
   - [3.6 Technical failures and preservation](#36-technical-failures-and-preservation)
   - [3.7 Limits](#37-limits)
@@ -73,54 +72,64 @@ As of July 19, 2026, Humanizer and Stop Slop were the two most-starred English-l
 
 # 2. Results
 
-## 2.1 Combined result
+## 2.1 Corrected primary AI-smell result
 
-The result uses all 48 operational patterns documented by at least one tested skill. Lower is better.
+The primary AI-smell rate excludes `P032: Repeated recap, conclusion, or recommendation`. Repetition is reported separately in Section 2.2 because it is a writing-quality problem, not a reliable AI-writing pattern.
 
-| Condition | Words in flagged sentences or lines | Total words | AI-smell rate |
+This distinction was made after the English benchmark had been completed. It is a post-hoc reporting correction, not a change to the frozen evaluation. No outputs were regenerated, and the locked evaluator and adjudication records remain unchanged.
+
+Lower primary AI-smell rates are better.
+
+| Condition | Stage 1 | Stage 2 | Combined |
 |---|---:|---:|---:|
-| Anti-AI Writing Kit | 437 | 37,143 | 1.18% |
-| Stop Slop | 791 | 37,515 | 2.11% |
-| Humanizer | 828 | 37,451 | 2.21% |
-| No skill | 1,640 | 38,715 | 4.24% |
+| Anti-AI Writing Kit | 0.16% | 0.38% | 0.26% |
+| Stop Slop | 0.55% | 0.43% | 0.50% |
+| Humanizer | 0.89% | 0.95% | 0.92% |
+| No skill | 3.09% | 2.75% | 2.94% |
 
-AI-smell rate is the share of output words located in complete sentences or Markdown lines containing a detected pattern. It is not an authorship estimate. It is also not the percentage of individually bad words.
+The AI-smell rate is the share of output words located in complete sentences or Markdown lines containing a primary AI-writing pattern. It is not an authorship estimate or the percentage of individually bad words.
 
-## 2.2 Interpretation
+## 2.2 Redundant explanation
 
-- All three skills reduced the rate from the no-skill baseline of 4.24%: Humanizer recorded 2.21%, Stop Slop 2.11%, and Anti-AI Writing Kit 1.18%. This happened with a current OpenAI model in the test environment, whose no-skill output was already relatively clean.
+`P032` is now reported as redundant explanation. The same whole-sentence and whole-line counting method is used.
 
-- Anti-AI Writing Kit had the lowest observed combined rate at 1.18% across all 48 patterns. That is the result of this test, not proof of a general or permanent position.
+| Condition | Redundant explanation |
+|---|---:|
+| Anti-AI Writing Kit | 0.92% |
+| Stop Slop | 1.61% |
+| Humanizer | 1.30% |
+| No skill | 1.30% |
 
-- The gaps among the three skills were small in absolute percentage points. We ran only two stages. More prompts, repetitions, models, or future skill versions could narrow, widen, or reverse those gaps.
+The Anti-AI Writing Kit still contains a one-answer test that removes repeated conclusions, limitations, and recommendations. That instruction remains useful for writing quality. This reporting correction does not change `SKILL.md`.
+
+## 2.3 Interpretation
+
+- All three skills reduced the primary AI-smell rate from the no-skill baseline of 2.94%: Humanizer recorded 0.92%, Stop Slop 0.50%, and Anti-AI Writing Kit 0.26%.
+
+- Anti-AI Writing Kit had the lowest observed combined primary rate at 0.26% in this frozen comparison. The result applies to the tested versions, prompts, and model. It does not establish a general or permanent ranking.
+
+- Redundant explanation followed a different pattern. Anti-AI Writing Kit recorded 0.92%, Humanizer and the no-skill baseline each recorded 1.30%, and Stop Slop recorded 1.61%.
+
+- We ran only two stages. More prompts, repetitions, models, or future skill versions could narrow, widen, or reverse the observed gaps.
 
 - A single conspicuous AI-writing pattern can affect how a whole piece reads even when the percentage-point gap is small. This test measured pattern frequency, not reader perception, so it cannot quantify that effect. All outputs used `gpt-5.6-sol` at the medium setting. Older models may produce different rates or wider gaps, but this test did not compare model generations.
 
-- This test does not support a zero-rate guarantee. Anti-AI Writing Kit still produced flagged sentences. The practical aim is to reduce their frequency and improve the chance of receiving a clean draft.
+- This test does not support a zero-rate guarantee. Anti-AI Writing Kit still produced sentences flagged for primary AI smell and redundant explanation.
 
 - These skills can change. Maintainers may update them, and users may customize them. Later tests should freeze new snapshots and treat the results as a new comparison.
 
-The combined tables contain Stage 1 and Stage 2. We stopped after those two stages for this report.
+The combined rates contain Stage 1 and Stage 2. We stopped after those two stages for this report.
 
-## 2.3 Stage results
+## 2.4 Original mixed rates
 
-### 2.3.1 Stage 1
+The report originally combined `P032` with the other 47 patterns. Those mixed rates are preserved here as audit history. They should not be treated as the corrected primary AI-smell result.
 
-| Condition | Words in flagged sentences or lines | Total words | AI-smell rate |
+| Condition | Stage 1 mixed rate | Stage 2 mixed rate | Combined mixed rate |
 |---|---:|---:|---:|
-| Anti-AI Writing Kit | 145 | 20,253 | 0.72% |
-| Stop Slop | 387 | 20,497 | 1.89% |
-| Humanizer | 509 | 20,645 | 2.47% |
-| No skill | 1,018 | 21,503 | 4.73% |
-
-### 2.3.2 Stage 2
-
-| Condition | Words in flagged sentences or lines | Total words | AI-smell rate |
-|---|---:|---:|---:|
-| Anti-AI Writing Kit | 292 | 16,890 | 1.73% |
-| Stop Slop | 404 | 17,018 | 2.37% |
-| Humanizer | 319 | 16,806 | 1.90% |
-| No skill | 622 | 17,212 | 3.61% |
+| Anti-AI Writing Kit | 0.72% | 1.73% | 1.18% |
+| Stop Slop | 1.89% | 2.37% | 2.11% |
+| Humanizer | 2.47% | 1.90% | 2.21% |
+| No skill | 4.73% | 3.61% | 4.24% |
 
 # 3. Methodology
 
@@ -140,7 +149,7 @@ Every generation attempt used a new temporary working directory and temporary `C
 
 The codebook began with the documented bad-AI-writing rules in the three frozen skills. Related rules were merged into operational patterns. Each pattern has an inclusion rule, an exclusion rule, examples, and source references. The evaluator had to identify an exact excerpt and explain why it met the rule. It could not flag general writing quality, factual validity, prompt following, or a stylistic preference unless a codebook pattern applied.
 
-The public result contains 48 patterns supported by at least one skill. It uses one word-rate metric throughout the report.
+The frozen codebook contains 48 patterns supported by at least one skill. The corrected primary AI-smell rate uses 47 of them. `P032` is reported separately as redundant explanation.
 
 <details><summary>Operational pattern list</summary>
 
@@ -203,11 +212,15 @@ The 256 existing outputs received opaque evaluation IDs. Evaluators saw the exac
 
 All 256 evaluations were accepted on the first scoring attempt. Their records were validated and checksum-locked before labels were restored. The frozen evaluator used `gpt-5.6-sol` at the medium setting.
 
-## 3.4 AI-smell rate
+## 3.4 Primary AI-smell rate and redundant explanation
 
 For each detected issue, the exact excerpt was expanded to the complete sentence or Markdown line it touched. If several issues touched the same unit, that unit counted once. The numerator is the number of unique lexical words in flagged units. The denominator is every lexical word in the output set.
 
 A lexical word contains Unicode letters or numbers and may contain one internal straight or curly apostrophe. Sentence boundaries were produced with `Intl.Segmenter` for English. A long sentence contributes all of its words when a qualifying pattern appears inside it. This makes the rate direct to read, but it also gives long sentences more weight.
+
+The corrected report applies that counting method to two disjoint pattern sets. The primary AI-smell rate includes `P001` through `P031` and `P033` through `P048`. The redundant-explanation rate includes only `P032`.
+
+This split was decided after the frozen English benchmark. Repetition alone was judged insufficient as an AI-writing signal, even though the Anti-AI Writing Kit correctly treats unnecessary repetition as a writing-quality problem. The reporting layer now reflects that distinction. The original outputs, evaluator records, adjudicated findings, excerpts, and word boundaries were not changed.
 
 ## 3.5 Evaluation audit and corrections
 
@@ -230,6 +243,8 @@ The first evaluation freeze had an incorrect source-artifact path. All four work
 - The 16 prompts were designed for this test. They were not sampled randomly from all writing tasks.
 
 - The codebook was derived from the three tested skills. It is not an independent scientific taxonomy and may align more closely with the most detailed skill.
+
+- Separating `P032` from the primary AI-smell rate was a post-hoc reporting decision made after testing. The original mixed rates are preserved in Section 2.4.
 
 - The test covers English direct drafting, not editing, other languages, factual quality, usefulness, or human preference.
 
@@ -265,15 +280,17 @@ The generation traces answer the loading question: yes, the current skill loaded
 
 The benchmark environment was read-only and had no supported input path for the mechanical final checker, so the documented manual fallback applied. No run launched the checker. It had passed all 91 code tests before this batch.
 
-The 64 new outputs were scored anonymously with the same frozen 48-pattern method. Six false positives were removed during the documented source-rule audit.
+The 64 new outputs were scored anonymously with the same frozen 48-pattern method. Six false positives were removed during the documented source-rule audit. The post-hoc reporting split was then applied to the preserved adjudicated findings without regenerating outputs or changing evaluator records.
 
-| Result set | Words in flagged sentences or lines | Total words | AI-smell rate |
+| Set | Primary AI smell | Redundant explanation | Original mixed rate |
 |---|---:|---:|---:|
-| Current Anti-AI Writing Kit, combined | 520 | 35,935 | 1.45% |
-| Current Anti-AI Writing Kit, Stage 1 | 267 | 19,295 | 1.38% |
-| Current Anti-AI Writing Kit, Stage 2 | 253 | 16,640 | 1.52% |
+| Combined | 0.08% | 1.37% | 1.45% |
+| Stage 1 | 0.03% | 1.36% | 1.38% |
+| Stage 2 | 0.14% | 1.38% | 1.52% |
 
-For context, the original comparison recorded 2.11% for Stop Slop and 2.21% for Humanizer. Those skills were not regenerated in this follow-up, so the figures do not form a new head-to-head test.
+The combined follow-up used 35,935 words. Its primary AI-smell rate contains 29 words in flagged units, its redundant-explanation rate contains 491, and the original mixed rate contains 520. The exact recalculation uses the frozen benchmark's Unicode word-counting method.
+
+The peer skills were not regenerated in this follow-up, so these figures do not form a new head-to-head test.
 
 # Appendix A: Exact prompts
 
