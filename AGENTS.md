@@ -6,15 +6,14 @@ Guidance for agents maintaining this skill folder.
 
 This is a portable writing skill for drafting, editing, rewriting, polishing, and reviewing prose without common AI-writing tells.
 
-`SKILL.md` is the permanent runtime controller and compact default rule set. Keep it self-contained, keep the load and delivery gates near the top, and keep its EOF marker within a 240-line read.
+`SKILL.md` is the permanent runtime controller and the single source of truth for default rules, explanations, phrase lists, and examples. Keep the load contract near the top and the EOF marker at the end.
 
 There is no package installation or build step. The scripts use Node.js standard-library modules only.
 
 ## Key files
 
-- `SKILL.md`: metadata, permanent controller, and compact operative rules. Frontmatter contains only `name` and `description`.
-- `references/patterns-and-examples.md`: expanded explanations, phrase families, examples, and edge cases. Do not leave an operative fail condition only in this file.
-- `scripts/print-active-rules.mjs`: deterministic controller validation, checksum receipt, and preference resolution.
+- `SKILL.md`: metadata, permanent controller, complete default rules, explanations, phrase lists, and examples. Frontmatter contains only `name` and `description`.
+- `scripts/print-active-rules.mjs`: deterministic full-skill loading, chunking, checksum validation, and preference resolution.
 - `scripts/check-final.mjs`: strict final rule reload, long-rule digest verification, framed-stdin enforcement, and a private candidate receipt with candidate and rules hashes. Its local receipt covers the supplied candidate only and does not prove equality with a later assistant message.
 - `scripts/scan-writing.mjs`: deterministic mechanical and candidate checks. It must not claim semantic judgment or rewrite input.
 - `tests/*.test.mjs`: printer and scanner regression tests.
@@ -27,8 +26,7 @@ There is no package installation or build step. The scripts use Node.js standard
 
 Change the smallest applicable layer, then synchronize every layer affected by the behavior:
 
-- Put compact runtime rules in `SKILL.md`.
-- Put rationale, longer pattern lists, and examples in the reference.
+- Put every public writing rule, explanation, phrase list, and example in `SKILL.md`.
 - Add a scanner rule only when an exact or clearly labeled candidate check is safe.
 - Add a regression test for every scanner or printer behavior change.
 - Put customization, reset, and fixed replies in operations.
@@ -38,7 +36,7 @@ Change the smallest applicable layer, then synchronize every layer affected by t
 
 ## Rule editing
 
-Before adding a rule, search the default rules, reference, scanner, and tests for the exact phrase, close variants, and the underlying pattern. Prefer revising one rule to adding a near-duplicate.
+Before adding a rule, search `SKILL.md`, the scanner, and tests for the exact phrase, close variants, and the underlying pattern. Prefer revising one rule to adding a near-duplicate.
 
 Keep rules short and actionable. State what to do instead. Keep examples only when they clarify an edge case. Check that cleanup does not make accurate prose stiff or vague.
 
@@ -52,18 +50,17 @@ Keep semantic enforcement concrete. The paragraph ledger, one-answer sentence te
 
 Before finishing a change:
 
-1. Confirm the EOF markers in `SKILL.md`, operations, and the reference.
-2. Confirm the complete `SKILL.md` fits within 240 lines.
-3. Run `node --check` on all three scripts.
-4. Run `node --test tests/*.test.mjs`.
-5. Test active-rule resolution for no custom, whitespace-only custom, valid and malformed compact custom, reserved runtime markers, legacy custom, a long multiline legacy file, and a huge one-line legacy file. Confirm chunks are digest-bound, byte-bounded, and invoked through the absolute loader path.
-6. Verify `--custom-template` includes all eight numbered sections and excludes controller and reference-routing text.
-7. Run scanner fixtures for code masking, Unicode locations, list nesting and lazy continuation, CRLF, failure thresholds, and deterministic output.
-8. Verify strict final-gate arguments, lexical word-bound enforcement that excludes standalone Markdown control markers, private finding output, digest changes, and long-rule checks.
-9. Check README and operations for the same customization model and fixed responses.
-10. Check that SKILL, operations, README, and this file describe the same candidate transport, latest-receipt lock, post-PASS rerun rule, and final-message equality limitation.
-11. Check aggregate group-boundary, recap-label, reader-coaching, stacked-limit, relationship-scope, subgroup-to-whole, outcome-by-outcome coverage, future-causal-proof, capability-promotion, restatement-label, and recommendation-repetition fixtures, including negative cases that preserve ordinary uses.
-12. Check that terminal line breaks fail for file and framed-stdin candidates and that delivery instructions prohibit post-gate Markdown or formatting changes.
+1. Confirm the EOF markers in `SKILL.md` and operations.
+2. Run `node --check` on all three scripts.
+3. Run `node --test tests/*.test.mjs`.
+4. Test full-skill loading and active-rule resolution for no custom, whitespace-only custom, valid and malformed compact custom, reserved runtime markers, legacy custom, a long multiline legacy file, and a huge one-line legacy file. Confirm chunks are digest-bound, byte-bounded, and invoked through the absolute loader path.
+5. Verify `--custom-template` includes all eight numbered sections and excludes the controller and maintenance section.
+6. Run scanner fixtures for code masking, Unicode locations, list nesting and lazy continuation, CRLF, failure thresholds, and deterministic output.
+7. Verify strict final-gate arguments, lexical word-bound enforcement that excludes standalone Markdown control markers, private finding output, digest changes, and long-rule checks.
+8. Check README and operations for the same customization model and fixed responses.
+9. Check that SKILL, operations, README, and this file describe the same candidate transport, latest-receipt lock, post-PASS rerun rule, and final-message equality limitation.
+10. Check aggregate group-boundary, recap-label, reader-coaching, stacked-limit, relationship-scope, subgroup-to-whole, outcome-by-outcome coverage, future-causal-proof, capability-promotion, restatement-label, and recommendation-repetition fixtures, including negative cases that preserve ordinary uses.
+11. Check that terminal line breaks fail for file and framed-stdin candidates and that delivery instructions prohibit post-gate Markdown or formatting changes.
 
 ## Publishing
 

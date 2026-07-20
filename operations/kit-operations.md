@@ -4,13 +4,12 @@ Use this file for loading without a writing task, customization, reset, rule add
 
 ## File roles
 
-1. `SKILL.md` is the permanent controller and compact default writing rules.
+1. `SKILL.md` is the permanent controller and the single source of truth for default rules, explanations, phrase lists, and examples.
 2. `skill-customized.md` is an optional local preference layer. It can replace default Sections 1 through 7 and supplement them with Section 8. It never replaces the controller.
-3. `references/patterns-and-examples.md` holds expanded explanations, examples, and edge cases.
-4. `scripts/print-active-rules.mjs` validates the already-read controller, prints its checksum receipt, and resolves active customized preferences.
-5. `scripts/check-final.mjs` reloads ordinary active rules, verifies the manifest digest for long rules, enforces supplied word bounds, and emits private finding metadata plus candidate and rules hashes without candidate excerpts. Its receipt applies to the supplied candidate only; it does not compare that candidate with a later assistant message.
-6. `scripts/scan-writing.mjs` performs deterministic mechanical checks. It does not judge meaning or truth.
-7. `README.md` is the public manual. `AGENTS.md` is maintainer guidance.
+3. `scripts/print-active-rules.mjs` validates and prints the complete skill in digest-bound chunks, then resolves active customized preferences.
+4. `scripts/check-final.mjs` reloads ordinary active rules, verifies the manifest digest for long rules, enforces supplied word bounds, and emits private finding metadata plus candidate and rules hashes without candidate excerpts. Its receipt applies to the supplied candidate only; it does not compare that candidate with a later assistant message.
+5. `scripts/scan-writing.mjs` performs deterministic mechanical checks. It does not judge meaning or truth.
+6. `README.md` is the public manual. `AGENTS.md` is maintainer guidance.
 
 ## Invariants
 
@@ -64,9 +63,9 @@ Use this when the user invokes the skill without a writing task.
 Create one only when the user asks to customize or explicitly asks to save a personal rule and no custom file exists.
 
 1. With Node.js, run `node scripts/print-active-rules.mjs --custom-template` and use that complete output as the new file. Without Node.js, follow Steps 2 through 5 manually.
-2. Start with `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->`, then copy Sections 1 through 7 and Section 8 from `SKILL.md`. Skip the `References and maintenance` block between Sections 7 and 8. Do not copy frontmatter, the load contract, delivery gate, operating priorities, or the `SKILL.md` EOF marker.
+2. Start with `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->`, then copy Sections 1 through 7 and Section 8 from `SKILL.md`. Skip the `Maintenance` block between Sections 7 and 8. Do not copy frontmatter, the load contract, delivery gate, operating priorities, or the `SKILL.md` EOF marker.
 3. End with `<!-- ANTI_AI_WRITING_CUSTOM_EOF -->`.
-4. Keep operative rules in the compact file. Put long explanations and examples in the reference.
+4. Keep the customized rule text complete enough to stand on its own.
 5. Before saving, verify that all eight numbered section headings and the custom EOF marker are present. A user may empty a section, but its heading remains so truncation cannot silently remove the rest of the rules.
 
 ## Add a rule or preference
@@ -99,8 +98,7 @@ Keep a rule short: name the pattern, explain the failure, say what to do instead
 
 For a default change, update every applicable layer:
 
-- `SKILL.md` for the compact operative rule
-- `references/patterns-and-examples.md` when explanation or examples change
+- `SKILL.md` for the default rule, explanation, phrase list, and examples
 - `scripts/scan-writing.mjs` only when a safe exact or candidate check is possible
 - `scripts/check-final.mjs` when final-gate behavior changes
 - tests for changed script behavior
@@ -120,7 +118,7 @@ The user can delete unwanted numbered rules or add rough notes. A few words are 
 Use this when the user says `reset`, `reset customization`, `start over from default`, `delete customized version`, or clearly requests removal.
 
 - If the request is clear, delete only `skill-customized.md` without another question.
-- Do not change `SKILL.md`, references, scripts, operations, or any other file.
+- Do not change `SKILL.md`, scripts, operations, or any other file.
 - If deleted, say exactly: `Reset done. I deleted skill-customized.md. The skill will use the SKILL.md controller with its default rules unless you customize again.`
 - If no file exists, say exactly: `No customized file found. The skill is already using the SKILL.md controller with its default rules.`
 - If `start over` is ambiguous, confirm before deleting.
@@ -135,7 +133,7 @@ Use this when the user says `reset`, `reset customization`, `start over from def
 6. If a legacy section has subcategories, show its category overview, then work through each subcategory.
 7. Accept fragments, examples, dislikes, short notes, or `no`. Treat `no`, `nothing`, `looks good`, and similar replies as no change.
 8. Apply requested changes immediately to the matching section, briefly confirm, then continue.
-9. Use `references/patterns-and-examples.md` when the user needs a rationale, example, or edge case.
+9. Use the relevant material in `SKILL.md` when the user needs a rationale, example, or edge case.
 10. After Section 7, send the fixed final preference prompt and put the reply in Section 8.
 11. Verify the complete customized file and its EOF behavior. Then send the fixed closing.
 
@@ -202,11 +200,10 @@ Before finishing a kit change:
 2. Test active-rule resolution with no custom, whitespace-only custom, compact custom, malformed order or duplicate sections, reserved runtime markers, short legacy custom, and chunked legacy custom fixtures.
 3. Run `node --check` on all three scripts.
 4. Run the Node test suite.
-5. Confirm `SKILL.md` still fits within a 240-line read.
-6. Test digest changes, strict final-gate arguments, private finding output, and long-rule verification.
-7. Keep README behavior synchronized.
-8. Confirm the controller, operations, README, and maintainer guidance describe the same candidate-lock procedure and do not overstate what a local receipt proves.
-9. Test aggregate group-boundary, recap-label, reader-coaching, stacked-limit, relationship-scope, subgroup-to-whole, outcome-by-outcome coverage, future-causal-proof, capability-promotion, restatement-label, and recommendation-repetition candidates, plus source-silence, one-answer, reader-trust, and paragraph-ledger instructions.
-10. Test that file and framed-stdin candidates with a terminal carriage return or line feed fail closed, and that the checked candidate already contains every final Markdown character.
+5. Test digest changes, strict final-gate arguments, private finding output, and long-rule verification.
+6. Keep README behavior synchronized.
+7. Confirm the controller, operations, README, and maintainer guidance describe the same candidate-lock procedure and do not overstate what a local receipt proves.
+8. Test aggregate group-boundary, recap-label, reader-coaching, stacked-limit, relationship-scope, subgroup-to-whole, outcome-by-outcome coverage, future-causal-proof, capability-promotion, restatement-label, and recommendation-repetition candidates, plus source-silence, one-answer, reader-trust, and paragraph-ledger instructions.
+9. Test that file and framed-stdin candidates with a terminal carriage return or line feed fail closed, and that the checked candidate already contains every final Markdown character.
 
 <!-- ANTI_AI_WRITING_OPERATIONS_EOF -->

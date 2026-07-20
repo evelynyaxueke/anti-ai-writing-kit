@@ -58,9 +58,9 @@ Vary rhythm.
 
 Review the candidate.
 
-## References and maintenance
+## Maintenance
 
-Read references when needed.
+Maintain the skill here.
 
 ## 8. Additional preferences
 
@@ -443,9 +443,10 @@ test('final gate CLI executes through a symlink', (t) => {
   t.after(() => fs.rmSync(directory, { recursive: true, force: true }));
   const link = path.join(directory, 'gate-link.mjs');
   fs.symlinkSync(path.join(TEST_DIR, '..', 'scripts', 'check-final.mjs'), link);
+  const rulesDigest = activeRulesSha256(buildActiveRules(path.join(TEST_DIR, '..')));
   const result = spawnSync(
     process.execPath,
-    [link, '--stdin', '--format', 'text', '--fail-on', 'review'],
+    [link, '--stdin', '--format', 'text', '--fail-on', 'review', '--rules-sha256', rulesDigest],
     { input: frameStdinCandidate('The trial cut review time from 18 minutes to 11 minutes.'), encoding: 'utf8' }
   );
   assert.equal(result.status, 0, result.stderr);
