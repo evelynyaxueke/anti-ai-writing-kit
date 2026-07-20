@@ -1,136 +1,145 @@
 # Kit operations
 
-Use this file for skill behavior that is not part of the writing rules. Keep the core writing rules in `SKILL.md`.
+Use this file for loading without a writing task, customization, reset, rule additions, and maintenance. Read through `<!-- ANTI_AI_WRITING_OPERATIONS_EOF -->` before acting.
 
 ## File roles
 
-1. `SKILL.md`: the core Anti-AI Writing Skill. This is the default rule document.
-2. `skill-customized.md`: optional user-created version. If this file exists and has content, use it instead of the default rules in `SKILL.md`.
-3. `README.md`: public user manual and GitHub intro.
-4. `AGENTS.md`: maintainer guidance for agents editing this repo.
+1. `SKILL.md` is the permanent controller and compact default writing rules.
+2. `skill-customized.md` is an optional local preference layer. It can replace default Sections 1 through 7 and supplement them with Section 8. It never replaces the controller.
+3. `references/patterns-and-examples.md` holds expanded explanations, examples, and edge cases.
+4. `scripts/print-active-rules.mjs` validates the already-read controller, prints its checksum receipt, and resolves active customized preferences.
+5. `scripts/check-final.mjs` reloads ordinary active rules, verifies the manifest digest for long rules, enforces supplied word bounds, and emits private finding metadata plus candidate and rules hashes without candidate excerpts. Its receipt applies to the supplied candidate only; it does not compare that candidate with a later assistant message.
+6. `scripts/scan-writing.mjs` performs deterministic mechanical checks. It does not judge meaning or truth.
+7. `README.md` is the public manual. `AGENTS.md` is maintainer guidance.
 
-## Operating order
+## Invariants
 
-1. Follow the user's instructions and factual accuracy.
-2. Customization is opt-in. Start guided customization only when the user explicitly asks to customize, personalize, tune, or make the skill fit their taste.
-3. Do not create `skill-customized.md` during normal writing, editing, or skill-loading.
-4. If `skill-customized.md` exists and is not empty, use it as the active writing rule document.
-5. If no customized file exists, apply the default rules in `SKILL.md`.
+- Follow the user's facts, constraints, and direct instructions first.
+- Do not create a customized file during normal writing, editing, loading, or explanation.
+- The controller, fact-preservation rule, delivery gate, semantic check, and final-only requirement always remain active.
+- Prefer a fresh mode-`0600` temporary candidate file for the final gate. Use interactive stdin framed with `__ANTI_AI_CANDIDATE_INPUT_EOF__` only when private file input is unavailable. The candidate must already contain every final Markdown character and use UTF-8 without a BOM, LF-only internal line breaks, no leading blank line, no terminal horizontal whitespace, and no terminal line break.
+- Treat the latest complete PASS receipt and exact checked candidate as a locked pair. Any post-PASS character change invalidates the pair and requires the semantic check and gate again.
+- Without runtime or harness comparison, never claim that a local PASS receipt proves the final assistant message is byte-for-byte identical to the checked candidate.
+- Complete the private paragraph ledger before the final gate. Delete preview leads, recap closings, claim-evidence-claim sandwiches, and labels that merely repackage a preceding result, quotation, or example. Repeat the primary-location check across headings; a required section does not justify restating a number, result, design fact, limit, or recommendation.
+- Run the source-silence check. Do not infer a group boundary, whole-group fact, unmentioned measurement, schedule capability, future causal-proof capability, motive, or relationship from what the source omits. Audit every all/every quantifier and every claim about prior coverage status outcome by outcome against an explicit supplied proposition. Treat cover, include, track, record, report, assess, and observe like measure. Audit future confirm, demonstrate, determine, establish, prove, reveal, and show claims against the supplied design even when `that` is omitted or an adverb separates the subject and verb. Treat candidate scanner results as review prompts, not semantic verdicts.
+- Keep each claimed capability one inference hop from the source. Auditable recorded events do not establish missing events, completeness, adherence, compliance, or consistency unless the source says so.
+- Keep either an original claim or its `In other words` restatement unless both perform distinct required functions. Give each recommendation one primary location; later sentences may add conditions, owners, or actions without reissuing it.
+- Treat a whitespace-only customized file as absent.
+- Never overwrite, regenerate, or silently migrate an existing customized file.
+- A file whose first nonblank line is `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->` is a compact custom file. Every other nonempty file is a legacy full-copy custom file, even if it quotes that marker later.
+- Apply numbered and unnumbered writing preferences from a legacy file, including an edited operating standard or anti-overfitting note, but ignore old load or process instructions that conflict with the current controller.
+- Edit a legacy file in place. Preserve its deletions, rough notes, and structure as user choices.
 
-If `skill-customized.md` conflicts with `SKILL.md` on writing rules, follow `skill-customized.md`. The customized file represents the user's chosen writing version.
+## Resolve active rules
 
-For loading, customization, reset, rule additions, and other kit behavior, follow this file even when `skill-customized.md` exists.
+When Node.js is available, run `node scripts/print-active-rules.mjs` from the skill directory. If it prints a chunk manifest, record its SHA-256 and run every listed digest-bound `--chunk` command exactly as printed. Require the same digest in every chunk and the active-rules EOF marker as the final nonblank line of the last chunk. Pass that digest to `check-final.mjs` with `--rules-sha256`; the gate fails if the active rules changed after the manifest was printed.
+
+Without Node.js:
+
+1. Read `SKILL.md` through `<!-- ANTI_AI_WRITING_SKILL_EOF -->`.
+2. If `skill-customized.md` is nonempty, read a compact file through `<!-- ANTI_AI_WRITING_CUSTOM_EOF -->`. For a legacy file, obtain its physical line count and read consecutive nonoverlapping ranges through physical EOF, including every unnumbered preference after the last numbered section. Do not rely on one possibly truncated read.
+3. Use customized Sections 1 through 7 instead of the default numbered sections. Apply customized Section 8 in addition.
+4. Keep the `SKILL.md` controller active.
+
+## Final candidate transport and receipt
+
+1. Put the complete candidate, including every final Markdown character, in a fresh temporary file with mode `0600`. Encode it as UTF-8 without a BOM, use LF-only internal line breaks, and remove leading blank lines, terminal horizontal whitespace, and the terminal line break. Then use `check-final.mjs --input <temporary-file>`; the gate rejects a noncanonical candidate.
+2. If private file input is unavailable, use interactive stdin as a framed fallback by appending exactly `\n__ANTI_AI_CANDIDATE_INPUT_EOF__\n`. The gate rejects a missing, embedded, duplicate, malformed, or nonfinal frame and excludes the frame from the candidate.
+3. After the semantic check and latest PASS, retain only the complete receipt bounded by `__ANTI_AI_CANDIDATE_RECEIPT_BEGIN__` and `__ANTI_AI_CANDIDATE_RECEIPT_EOF__`. Verify its `candidate_sha256` against the checked file and retain its byte, lexical-word, line, and rules-digest fields. Standalone Markdown control markers do not count as words; visible heading text does.
+4. Load the final response from the checked candidate. Do not recompose it from memory or add Markdown during delivery. Any later character change requires the full semantic check and gate again.
+5. Delete the temporary file after loading the locked candidate for delivery.
+6. This is a procedural lock, not proof of final-message equality. Only a runtime or test harness that compares the checked candidate with the emitted assistant message can establish that equality.
 
 ## Normal load behavior
 
-Use this when the user invokes the skill without providing a writing task.
+Use this when the user invokes the skill without a writing task.
 
-- If `skill-customized.md` exists and is not empty, say exactly: `Loaded. I'll use skill-customized.md for this session. Send the piece, topic, or brief.`
-- If `skill-customized.md` does not exist or is empty, say exactly: `Loaded. No customized file found, so I'll use the original SKILL.md. Send the piece, topic, or brief.`
-- Do not ask whether the user wants to customize.
-- Do not mention guided customization unless the user asks how to customize or asks to start customization.
+- With a nonempty customized file, say exactly: `Loaded. I'll use the SKILL.md controller with your customized rules for this session. Send the piece, topic, or brief.`
+- Without one, say exactly: `Loaded. No customized file found, so I'll use the SKILL.md controller with its default rules. Send the piece, topic, or brief.`
+- Do not ask whether the user wants customization.
+- Do not mention customization unless the user asks about it.
+
+## Create a compact customized file
+
+Create one only when the user asks to customize or explicitly asks to save a personal rule and no custom file exists.
+
+1. With Node.js, run `node scripts/print-active-rules.mjs --custom-template` and use that complete output as the new file. Without Node.js, follow Steps 2 through 5 manually.
+2. Start with `<!-- ANTI_AI_WRITING_CUSTOM_RULES_V1 -->`, then copy Sections 1 through 7 and Section 8 from `SKILL.md`. Skip the `References and maintenance` block between Sections 7 and 8. Do not copy frontmatter, the load contract, delivery gate, operating priorities, or the `SKILL.md` EOF marker.
+3. End with `<!-- ANTI_AI_WRITING_CUSTOM_EOF -->`.
+4. Keep operative rules in the compact file. Put long explanations and examples in the reference.
+5. Before saving, verify that all eight numbered section headings and the custom EOF marker are present. A user may empty a section, but its heading remains so truncation cannot silently remove the rest of the rules.
 
 ## Add a rule or preference
 
-Use this when the user asks to add, remember, save, or update a writing rule, or when the user complains about a concrete AI-writing pattern and clearly wants the skill to remember it.
+Use this when the user asks to add, remember, save, or update a writing rule. If the user only asks whether wording sounds AI-generated, answer first, then ask: `Do you want me to add this as a rule?`
 
-Examples:
+### Choose the target
 
-- `Add this to my rules: never use "X".`
-- `Remember this: I hate when AI does X.`
-- `Put this in the default skill: avoid X because it sounds fake.`
-- `Is this AI-sounding? If yes, add it to the skill.`
+- `default`, `public`, `core`, `SKILL.md`, or `for everyone` means the default skill.
+- `my rules`, `personal`, `customized`, or `skill-customized.md` means the customized file.
+- If unclear, ask: `Should I add this to your personal customized file or the default SKILL.md?`
+- If the personal target is missing, create the compact customized file first.
 
-If the user only asks whether something sounds AI-generated and does not ask to save it, answer the question first. Then ask one short follow-up: `Do you want me to add this as a rule?`
+### Search and place
 
-### Choose the target file
+Before editing, search for the exact phrase, close variants, the root pattern, and the nearest existing rule. Revise an existing rule when it already covers the issue. Do not add a duplicate.
 
-- If the user says default, public, core skill, `SKILL.md`, or for everyone, edit `SKILL.md`.
-- If the user says my rules, personal, customized, or `skill-customized.md`, edit `skill-customized.md`.
-- If the target is unclear, ask one short question before editing: `Should I add this to your personal customized file or the default SKILL.md?`
+Place new behavior in the smallest fitting section:
 
-If the target is `skill-customized.md` and the file does not exist, create it by copying the current writing rules from `SKILL.md`. Exclude YAML frontmatter.
+- Hard bans for first-pass fail states
+- Positive defaults for what good writing should do
+- Word and phrase cleanup for vocabulary, filler, fake depth, and empty polish
+- Claims and evidence for authority, specificity, certainty, and sourcing
+- Structure and formatting for visible organization
+- Rhythm and repetition for cadence, formulas, and repeated shapes
+- Final-check preferences for audit items
+- Additional user preferences for personal examples, dislikes, or style notes
 
-### Search before adding
+Keep a rule short: name the pattern, explain the failure, say what to do instead, and add an example only when needed.
 
-Before editing, search the target file for:
+For a default change, update every applicable layer:
 
-1. The exact phrase or example the user gave.
-2. Close variants of the phrase.
-3. The root problem behind the phrase.
-4. The nearest existing category or subcategory.
+- `SKILL.md` for the compact operative rule
+- `references/patterns-and-examples.md` when explanation or examples change
+- `scripts/scan-writing.mjs` only when a safe exact or candidate check is possible
+- `scripts/check-final.mjs` when final-gate behavior changes
+- tests for changed script behavior
 
-If an existing rule already covers the issue, do not add a duplicate. If the user's note adds a sharper example or clearer wording, update the existing rule. If no change is needed, say where it is already covered.
-
-### Place the rule
-
-Add the rule where it belongs:
-
-- Hard bans: only for high-priority patterns that should always fail the final answer.
-- Positive defaults: rules that say what good writing should do.
-- Word and phrase cleanup: vocabulary, filler phrases, fake depth, empty polish.
-- Claims and evidence: fake authority, vague claims, unsupported certainty.
-- Structure and formatting: headings, bullets, tables, lists, decorative organization.
-- Rhythm and repetition: punchy lines, repeated sentence shapes, formulaic cadence.
-- Final check: audit items the agent should scan before sending.
-
-If no existing category fits, create the smallest useful new subcategory. Create a new top-level category only when no current section can hold the rule without confusion.
-
-### Write the rule
-
-Keep the addition short. Include:
-
-1. The pattern to avoid.
-2. Why it sounds machine-made or weak.
-3. What to do instead.
-4. A short example only if the rule would be unclear without one.
-
-After editing, say exactly what changed and where it was added.
+After editing, report what changed and where.
 
 ## Manual customization
 
-Simple. Delete rules you do not want the agent to follow. Add rough notes where they belong. A few words are enough.
+The user can delete unwanted numbered rules or add rough notes. A few words are enough. Never edit the controller through customization.
 
-Do not spend much time editing carefully in the first pass. Ask the agent to clean up duplicates and rough notes later if needed.
-
-For manual editing, edit `SKILL.md` directly if you want to change the default skill. Ask the agent to create `skill-customized.md` if you want a personal version that overrides the default without changing it.
+- To change public defaults, edit `SKILL.md` and any applicable supporting layer.
+- To change personal preferences, edit `skill-customized.md`.
+- Keep an existing legacy custom file as-is and edit it in place.
 
 ## Reset customization
 
-Use this when the user says `reset`, `reset customization`, `start over from default`, `delete customized version`, or clearly asks to remove their customized version.
+Use this when the user says `reset`, `reset customization`, `start over from default`, `delete customized version`, or clearly requests removal.
 
-- If the request is exactly `reset` or clearly asks to delete the customized version, delete `skill-customized.md` without asking another question.
-- Delete only `skill-customized.md`. Do not change `SKILL.md`, `operations/`, or any other file.
-- If `skill-customized.md` exists, delete it and say exactly: `Reset done. I deleted skill-customized.md. The skill will use the original SKILL.md unless you customize again.`
-- If `skill-customized.md` does not exist, say exactly: `No customized file found. The skill is already using the original SKILL.md.`
-- If the user says something vague like "start over" and it is not clear whether they mean reset customization, ask one short confirmation before deleting.
+- If the request is clear, delete only `skill-customized.md` without another question.
+- Do not change `SKILL.md`, references, scripts, operations, or any other file.
+- If deleted, say exactly: `Reset done. I deleted skill-customized.md. The skill will use the SKILL.md controller with its default rules unless you customize again.`
+- If no file exists, say exactly: `No customized file found. The skill is already using the SKILL.md controller with its default rules.`
+- If `start over` is ambiguous, confirm before deleting.
 
 ## Guided customization workflow
 
-Use this workflow when the user asks to customize, personalize, tune, or make the skill fit their taste.
+1. Check for a nonempty customized file.
+2. If none exists, create the compact customized file. If one exists, edit that same file and do not convert it.
+3. Send the fixed opening below and wait for confirmation.
+4. Work through numbered Sections 1 through 7 in the active customized file, then Section 8.
+5. Show the full current content of each editable section before asking for changes. Do not summarize it.
+6. If a legacy section has subcategories, show its category overview, then work through each subcategory.
+7. Accept fragments, examples, dislikes, short notes, or `no`. Treat `no`, `nothing`, `looks good`, and similar replies as no change.
+8. Apply requested changes immediately to the matching section, briefly confirm, then continue.
+9. Use `references/patterns-and-examples.md` when the user needs a rationale, example, or edge case.
+10. After Section 7, send the fixed final preference prompt and put the reply in Section 8.
+11. Verify the complete customized file and its EOF behavior. Then send the fixed closing.
 
-1. Check whether `skill-customized.md` exists.
-2. If it does not exist, create it by copying the current writing rules from `SKILL.md`. Exclude YAML frontmatter.
-3. Send the fixed customization opening message below. Do not ask the user to customize anything in this first message.
-4. Wait for the user to confirm before starting the first section. Treat "yes," "start," "go," "sure," or another positive reply as confirmation.
-5. Work through every numbered customization section in `SKILL.md`, starting with `## 1. Hard bans` and ending with `## 7. Final check`.
-6. Do not treat `## Operating standard` or `## Anti-overfitting` as customization sections or subcategories unless the user specifically asks to change setup behavior.
-7. If a numbered section has subcategories, first send the fixed category overview message. Use the parent section title, the parent section intro text before the first subcategory, and the subcategory titles as the overview. Do not ask for edits in the overview message.
-8. Wait for the user to confirm before starting the first subcategory. Treat "yes," "start," "go," "sure," or another positive reply as confirmation.
-9. Customize subcategorized sections subcategory by subcategory. Label each editable subcategory with its full subcategory number, such as `Section 3.1: Vocabulary that performs depth`. Do not label a subcategory with only its parent number, such as `Section 3`.
-10. If a numbered section has no subcategories, show the full section content at once.
-11. For every editable section or subcategory, show the full content in the chat before asking for feedback. Put the rule text between divider lines. Do not summarize instead of showing the content.
-12. Ask only the fixed question for that section or subcategory.
-13. Accept rough replies. The user can answer with fragments, examples, dislikes, short notes, or a simple "no." Treat "no," "nothing," "looks good," "this is fine," and similar replies as no change for that section.
-14. If the user requests no change, move directly to the next section or subcategory without saying that the section is unchanged.
-15. If the user requests a change, update the matching section in `skill-customized.md` immediately, then briefly confirm what changed before moving on. Do not save requested changes for a later batch.
-16. After all numbered customization sections are covered, send the fixed final preference prompt.
-17. Put the user's final preference notes in a section named `Additional user preferences` in `skill-customized.md`.
-18. At the end, send the fixed closing message below.
-
-Use the fixed messages exactly. Do not paraphrase them.
-
-## Fixed customization opening message
+## Fixed customization opening
 
 ```text
 I'll help you customize this writing kit section by section.
@@ -143,47 +152,31 @@ It usually takes 15 to 25 minutes. There are 8 customization steps:
 4. Claims and evidence
 5. Structure and formatting
 6. Rhythm and repetition
-7. Final check
+7. Final-check preferences
 8. Anything else you want to add
 
-If a step has subcategories, I'll show a short overview first. Then I'll go through those subcategories one at a time and show the full rule text in the chat before asking what you want to change.
+I'll show the full current rule text before asking what you want to change.
 
 Shall we start?
 ```
 
-## Fixed category overview message
-
-Use this before presenting the first subcategory in any numbered section that has subcategories.
+## Fixed section prompt
 
 ```text
 Section [number]: [section title]
-
-[paste the parent section intro text from SKILL.md]
-
-Subsections:
-
-- [number.subnumber]: [subcategory title]
-- [number.subnumber]: [subcategory title]
-- [number.subnumber]: [subcategory title]
-
-Shall we go through these now?
-```
-
-## Fixed section or subcategory prompt format
-
-```text
-Section [number or number.subnumber]: [section or subcategory title]
 
 Current rule text:
 
 ---
 
-[paste the full content of this section or subcategory]
+[paste the full content of this section]
 
 ---
 
 Do you have anything to add, remove, or change here?
 ```
+
+For a legacy subsection, use its full number and title in the same prompt.
 
 ## Fixed final preference prompt
 
@@ -193,10 +186,27 @@ Final step: Anything else you want to add.
 Do you have any preference, style description, example, reference, or pet peeve you want this kit to remember?
 ```
 
-## Fixed closing message
+## Fixed closing
 
 ```text
 Done. I updated skill-customized.md with your choices.
 
-The customized file will be used from now on. When you want, I can run maintenance on it to remove duplicates and make the rules easier for agents to follow.
+The SKILL.md controller and your customized writing rules will be used from now on.
 ```
+
+## Maintenance checks
+
+Before finishing a kit change:
+
+1. Confirm all required EOF markers.
+2. Test active-rule resolution with no custom, whitespace-only custom, compact custom, malformed order or duplicate sections, reserved runtime markers, short legacy custom, and chunked legacy custom fixtures.
+3. Run `node --check` on all three scripts.
+4. Run the Node test suite.
+5. Confirm `SKILL.md` still fits within a 240-line read.
+6. Test digest changes, strict final-gate arguments, private finding output, and long-rule verification.
+7. Keep README behavior synchronized.
+8. Confirm the controller, operations, README, and maintainer guidance describe the same candidate-lock procedure and do not overstate what a local receipt proves.
+9. Test aggregate group-boundary, recap-label, reader-coaching, stacked-limit, relationship-scope, subgroup-to-whole, outcome-by-outcome coverage, future-causal-proof, capability-promotion, restatement-label, and recommendation-repetition candidates, plus source-silence, one-answer, reader-trust, and paragraph-ledger instructions.
+10. Test that file and framed-stdin candidates with a terminal carriage return or line feed fail closed, and that the checked candidate already contains every final Markdown character.
+
+<!-- ANTI_AI_WRITING_OPERATIONS_EOF -->
