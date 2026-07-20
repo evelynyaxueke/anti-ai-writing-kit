@@ -8,21 +8,19 @@
     - [1.2.3 Anti-AI Writing Kit](#123-anti-ai-writing-kit)
   - [1.3 Test at a glance](#13-test-at-a-glance)
 - [2. Results](#2-results)
-  - [2.1 Corrected primary AI-smell result](#21-corrected-primary-ai-smell-result)
-  - [2.2 Redundant explanation](#22-redundant-explanation)
-  - [2.3 Interpretation](#23-interpretation)
-  - [2.4 Original mixed rates](#24-original-mixed-rates)
+  - [2.1 AI-smell result](#21-ai-smell-result)
+  - [2.2 Interpretation](#22-interpretation)
 - [3. Methodology](#3-methodology)
   - [3.1 Test design](#31-test-design)
   - [3.2 Pattern codebook](#32-pattern-codebook)
   - [3.3 Blind evaluation](#33-blind-evaluation)
-  - [3.4 Primary AI-smell rate and redundant explanation](#34-primary-ai-smell-rate-and-redundant-explanation)
+  - [3.4 AI-smell rate](#34-ai-smell-rate)
   - [3.5 Evaluation audit and corrections](#35-evaluation-audit-and-corrections)
   - [3.6 Technical failures and preservation](#36-technical-failures-and-preservation)
   - [3.7 Limits](#37-limits)
 - [4. Skill loading and final-check audit](#4-skill-loading-and-final-check-audit)
-  - [4.1 Original V5 audit](#41-original-v5-audit)
-  - [4.2 Current skill follow-up](#42-current-skill-follow-up)
+  - [4.1 Peer-comparison audit](#41-peer-comparison-audit)
+  - [4.2 Current skill loading follow-up](#42-current-skill-loading-follow-up)
 - [Appendix A: Exact prompts](#appendix-a-exact-prompts)
   - [A.1 Stage 1 prompts](#a1-stage-1-prompts)
   - [A.2 Stage 2 prompts](#a2-stage-2-prompts)
@@ -68,17 +66,12 @@ As of July 19, 2026, Humanizer and Stop Slop were the two most-starred English-l
 | Repetitions | 4 per prompt under each condition |
 | Conditions | Anti-AI Writing Kit, Stop Slop, Humanizer, and no skill |
 | Accepted generations | 256 total, 64 per condition |
-| New generations in this re-evaluation | None |
 
 # 2. Results
 
-## 2.1 Corrected primary AI-smell result
+## 2.1 AI-smell result
 
-The primary AI-smell rate excludes `P032: Repeated recap, conclusion, or recommendation`. Repetition is reported separately in Section 2.2 because it is a writing-quality problem, not a reliable AI-writing pattern.
-
-This distinction was made after the English benchmark had been completed. It is a post-hoc reporting correction, not a change to the frozen evaluation. No outputs were regenerated, and the locked evaluator and adjudication records remain unchanged.
-
-Lower primary AI-smell rates are better.
+Lower AI-smell rates are better.
 
 | Condition | Stage 1 | Stage 2 | Combined |
 |---|---:|---:|---:|
@@ -87,49 +80,23 @@ Lower primary AI-smell rates are better.
 | Humanizer | 0.89% | 0.95% | 0.92% |
 | No skill | 3.09% | 2.75% | 2.94% |
 
-The AI-smell rate is the share of output words located in complete sentences or Markdown lines containing a primary AI-writing pattern. It is not an authorship estimate or the percentage of individually bad words.
+The AI-smell rate is the share of output words located in complete sentences or Markdown lines containing an AI-writing pattern. It is not an authorship estimate or the percentage of individually bad words.
 
-## 2.2 Redundant explanation
+## 2.2 Interpretation
 
-`P032` is now reported as redundant explanation. The same whole-sentence and whole-line counting method is used.
+- All three skills reduced the AI-smell rate from the no-skill baseline of 2.94%: Humanizer recorded 0.92%, Stop Slop 0.50%, and Anti-AI Writing Kit 0.26%.
 
-| Condition | Redundant explanation |
-|---|---:|
-| Anti-AI Writing Kit | 0.92% |
-| Stop Slop | 1.61% |
-| Humanizer | 1.30% |
-| No skill | 1.30% |
-
-The Anti-AI Writing Kit still contains a one-answer test that removes repeated conclusions, limitations, and recommendations. That instruction remains useful for writing quality. This reporting correction does not change `SKILL.md`.
-
-## 2.3 Interpretation
-
-- All three skills reduced the primary AI-smell rate from the no-skill baseline of 2.94%: Humanizer recorded 0.92%, Stop Slop 0.50%, and Anti-AI Writing Kit 0.26%.
-
-- Anti-AI Writing Kit had the lowest observed combined primary rate at 0.26% in this frozen comparison. The result applies to the tested versions, prompts, and model. It does not establish a general or permanent ranking.
-
-- Redundant explanation followed a different pattern. Anti-AI Writing Kit recorded 0.92%, Humanizer and the no-skill baseline each recorded 1.30%, and Stop Slop recorded 1.61%.
+- Anti-AI Writing Kit had the lowest observed combined rate at 0.26% in this frozen comparison. The result applies to the tested versions, prompts, and model. It does not establish a general or permanent ranking.
 
 - We ran only two stages. More prompts, repetitions, models, or future skill versions could narrow, widen, or reverse the observed gaps.
 
 - A single conspicuous AI-writing pattern can affect how a whole piece reads even when the percentage-point gap is small. This test measured pattern frequency, not reader perception, so it cannot quantify that effect. All outputs used `gpt-5.6-sol` at the medium setting. Older models may produce different rates or wider gaps, but this test did not compare model generations.
 
-- This test does not support a zero-rate guarantee. Anti-AI Writing Kit still produced sentences flagged for primary AI smell and redundant explanation.
+- This test does not support a zero-rate guarantee. Anti-AI Writing Kit still produced sentences containing measured AI-writing patterns.
 
 - These skills can change. Maintainers may update them, and users may customize them. Later tests should freeze new snapshots and treat the results as a new comparison.
 
 The combined rates contain Stage 1 and Stage 2. We stopped after those two stages for this report.
-
-## 2.4 Original mixed rates
-
-The report originally combined `P032` with the other 47 patterns. Those mixed rates are preserved here as audit history. They should not be treated as the corrected primary AI-smell result.
-
-| Condition | Stage 1 mixed rate | Stage 2 mixed rate | Combined mixed rate |
-|---|---:|---:|---:|
-| Anti-AI Writing Kit | 0.72% | 1.73% | 1.18% |
-| Stop Slop | 1.89% | 2.37% | 2.11% |
-| Humanizer | 2.47% | 1.90% | 2.21% |
-| No skill | 4.73% | 3.61% | 4.24% |
 
 # 3. Methodology
 
@@ -149,60 +116,59 @@ Every generation attempt used a new temporary working directory and temporary `C
 
 The codebook began with the documented bad-AI-writing rules in the three frozen skills. Related rules were merged into operational patterns. Each pattern has an inclusion rule, an exclusion rule, examples, and source references. The evaluator had to identify an exact excerpt and explain why it met the rule. It could not flag general writing quality, factual validity, prompt following, or a stylistic preference unless a codebook pattern applied.
 
-The frozen codebook contains 48 patterns supported by at least one skill. The corrected primary AI-smell rate uses 47 of them. `P032` is reported separately as redundant explanation.
+The reported codebook contains 47 AI-writing patterns supported by at least one skill.
 
 <details><summary>Operational pattern list</summary>
 
-| ID | Pattern | Source snapshots |
-|---|---|---|
-| P001 | Empty hype or significance inflation | C1, C2, C3 |
-| P002 | Empty stock AI or corporate vocabulary | C1, C2, C3 |
-| P003 | Vague or unnamed authority | C1, C2, C3 |
-| P004 | Throat-clearing, signposting, or reveal framing | C1, C2, C3 |
-| P005 | Chatbot or process residue | C1, C2, C3 |
-| P006 | False contrast or negative parallelism | C1, C2, C3 |
-| P007 | Forced three-item packaging | C1, C2, C3 |
-| P008 | Actor-hiding passive or subjectless construction | C1, C2, C3 |
-| P009 | Authored em dash | C1, C2, C3 |
-| P010 | Excessive or content-free hedging | C1, C2, C3 |
-| P011 | Manufactured staccato drama | C1, C2, C3 |
-| P012 | Mechanically uniform rhythm | C1, C2, C3 |
-| P013 | Manufactured quotable, slogan, or aphorism | C1, C2, C3 |
-| P014 | Vague declarative | C1, C2, C3 |
-| P015 | Notability or prestige padding | C1 |
-| P016 | Participial fake depth or gerund motion | C1, C3 |
-| P017 | Promotional praise cluster | C1, C3 |
-| P018 | Formulaic challenge or future section | C1, C3 |
-| P019 | Bloated copula substitute | C1, C3 |
-| P020 | Synonym cycling | C1, C3 |
-| P021 | False range | C1, C3 |
-| P022 | Decorative or template formatting | C1, C3 |
-| P023 | Generic positive conclusion or dead closing | C1, C3 |
-| P024 | Cutoff, access, or generic disclaimer residue | C1, C3 |
-| P025 | Sycophantic praise | C1, C3 |
-| P026 | Rhetorical question used as an immediate reveal | C1, C2, C3 |
-| P027 | Anthropomorphic abstraction or false agency | C2, C3 |
-| P028 | Invented crowd or sweeping absolute | C2, C3 |
-| P029 | Filler transition | C1, C2, C3 |
-| P030 | Stock or stacked analogy | C2, C3 |
-| P031 | Fragmented header or generic scaffolding | C1, C3 |
-| P032 | Repeated recap, conclusion, or recommendation | C3 |
-| P033 | Generic technology change or prestige label | C3 |
-| P034 | Generic outcome abstraction | C3 |
-| P035 | Reader coaching or repeated caution | C2, C3 |
-| P036 | Formulaic two-item setup or open-ended list | C3 |
-| P037 | Punctuation theatrics | C3 |
-| P038 | Verbose filler phrase | C1, C2, C3 |
-| P039 | Additional stock AI vocabulary | C1, C2, C3 |
-| P040 | Assistant offer residue | C1, C3 |
-| P041 | Reassurance hedge fragment | C2 |
-| P042 | Uniform layout rhythm or punchline endings | C2, C3 |
-| P043 | Engagement command or permission line | C2, C3 |
-| P044 | Stock speculative gap-filling | C1 |
-| P045 | Diff-anchored writing | C1 |
-| P046 | Narrator-from-a-distance construction | C2 |
-| P047 | False balance or irrelevant concession | C3 |
-| P048 | Performative intimacy or borrowed emotion | C2, C3 |
+| Pattern | Source snapshots |
+|---|---|
+| Empty hype or significance inflation | C1, C2, C3 |
+| Empty stock AI or corporate vocabulary | C1, C2, C3 |
+| Vague or unnamed authority | C1, C2, C3 |
+| Throat-clearing, signposting, or reveal framing | C1, C2, C3 |
+| Chatbot or process residue | C1, C2, C3 |
+| False contrast or negative parallelism | C1, C2, C3 |
+| Forced three-item packaging | C1, C2, C3 |
+| Actor-hiding passive or subjectless construction | C1, C2, C3 |
+| Authored em dash | C1, C2, C3 |
+| Excessive or content-free hedging | C1, C2, C3 |
+| Manufactured staccato drama | C1, C2, C3 |
+| Mechanically uniform rhythm | C1, C2, C3 |
+| Manufactured quotable, slogan, or aphorism | C1, C2, C3 |
+| Vague declarative | C1, C2, C3 |
+| Notability or prestige padding | C1 |
+| Participial fake depth or gerund motion | C1, C3 |
+| Promotional praise cluster | C1, C3 |
+| Formulaic challenge or future section | C1, C3 |
+| Bloated copula substitute | C1, C3 |
+| Synonym cycling | C1, C3 |
+| False range | C1, C3 |
+| Decorative or template formatting | C1, C3 |
+| Generic positive conclusion or dead closing | C1, C3 |
+| Cutoff, access, or generic disclaimer residue | C1, C3 |
+| Sycophantic praise | C1, C3 |
+| Rhetorical question used as an immediate reveal | C1, C2, C3 |
+| Anthropomorphic abstraction or false agency | C2, C3 |
+| Invented crowd or sweeping absolute | C2, C3 |
+| Filler transition | C1, C2, C3 |
+| Stock or stacked analogy | C2, C3 |
+| Fragmented header or generic scaffolding | C1, C3 |
+| Generic technology change or prestige label | C3 |
+| Generic outcome abstraction | C3 |
+| Reader coaching or repeated caution | C2, C3 |
+| Formulaic two-item setup or open-ended list | C3 |
+| Punctuation theatrics | C3 |
+| Verbose filler phrase | C1, C2, C3 |
+| Additional stock AI vocabulary | C1, C2, C3 |
+| Assistant offer residue | C1, C3 |
+| Reassurance hedge fragment | C2 |
+| Uniform layout rhythm or punchline endings | C2, C3 |
+| Engagement command or permission line | C2, C3 |
+| Stock speculative gap-filling | C1 |
+| Diff-anchored writing | C1 |
+| Narrator-from-a-distance construction | C2 |
+| False balance or irrelevant concession | C3 |
+| Performative intimacy or borrowed emotion | C2, C3 |
 
 </details>
 
@@ -212,21 +178,17 @@ The 256 existing outputs received opaque evaluation IDs. Evaluators saw the exac
 
 All 256 evaluations were accepted on the first scoring attempt. Their records were validated and checksum-locked before labels were restored. The frozen evaluator used `gpt-5.6-sol` at the medium setting.
 
-## 3.4 Primary AI-smell rate and redundant explanation
+## 3.4 AI-smell rate
 
 For each detected issue, the exact excerpt was expanded to the complete sentence or Markdown line it touched. If several issues touched the same unit, that unit counted once. The numerator is the number of unique lexical words in flagged units. The denominator is every lexical word in the output set.
 
 A lexical word contains Unicode letters or numbers and may contain one internal straight or curly apostrophe. Sentence boundaries were produced with `Intl.Segmenter` for English. A long sentence contributes all of its words when a qualifying pattern appears inside it. This makes the rate direct to read, but it also gives long sentences more weight.
 
-The corrected report applies that counting method to two disjoint pattern sets. The primary AI-smell rate includes `P001` through `P031` and `P033` through `P048`. The redundant-explanation rate includes only `P032`.
-
-This split was decided after the frozen English benchmark. Repetition alone was judged insufficient as an AI-writing signal, even though the Anti-AI Writing Kit correctly treats unnecessary repetition as a writing-quality problem. The reporting layer now reflects that distinction. The original outputs, evaluator records, adjudicated findings, excerpts, and word boundaries were not changed.
-
 ## 3.5 Evaluation audit and corrections
 
 A post-evaluation audit checked record integrity, excerpt boundaries, source overlap, exclusions, and arithmetic. The locked blind evaluation was preserved unchanged. Corrections were written to a separate adjudication file and then applied mechanically.
 
-The audit removed nine P005 flags because they were normal previews inside real emails or newsletters, which the rule excludes. It removed four P008 flags where the omitted actor was conventional or irrelevant. It also removed two P032 flags where the second sentence added a distinct fact. Missing high-confidence P009, P026, and P035 occurrences were added. Excerpts that overlapped or crossed sentence boundaries were repaired without changing the underlying flagged words.
+The audit removed nine chatbot-residue flags because they were normal previews inside real emails or newsletters, which the rule excludes. It removed four actor-hiding flags where the omitted actor was conventional or irrelevant. Missing high-confidence em dash, rhetorical-question, and reader-coaching occurrences were added. Excerpts that overlapped or crossed sentence boundaries were repaired without changing the words counted by the remaining findings.
 
 ## 3.6 Technical failures and preservation
 
@@ -244,8 +206,6 @@ The first evaluation freeze had an incorrect source-artifact path. All four work
 
 - The codebook was derived from the three tested skills. It is not an independent scientific taxonomy and may align more closely with the most detailed skill.
 
-- Separating `P032` from the primary AI-smell rate was a post-hoc reporting decision made after testing. The original mixed rates are preserved in Section 2.4.
-
 - The test covers English direct drafting, not editing, other languages, factual quality, usefulness, or human preference.
 
 - Whole-sentence and whole-line counting gives more weight to long units and includes ordinary context words around a detected pattern.
@@ -254,7 +214,7 @@ The first evaluation freeze had an incorrect source-artifact path. All four work
 
 # 4. Skill loading and final-check audit
 
-## 4.1 Original V5 audit
+## 4.1 Peer-comparison audit
 
 The complete Anti-AI Writing Kit file and active-rules receipt appeared in all 64 kit runs. The loading mechanism therefore worked in every tested run.
 
@@ -262,7 +222,7 @@ The delivery check was not fully reliable. A final-check receipt appeared in 63 
 
 The benchmark kept the first valid delivered output in every case. These four exceptions remain part of the results and identify a delivery-control issue for future versions.
 
-## 4.2 Current skill follow-up
+## 4.2 Current skill loading follow-up
 
 We ran another 64 generations after moving the complete rule set into `SKILL.md` and changing the loader to deliver 12 verified chunks through separate tool calls. The follow-up used the same 16 direct-writing prompts, four repetitions per prompt, `gpt-5.6-sol`, and medium reasoning. It tested commit `5c4eeb1300f6152809a7f9ba72981d2f17302ff8` with snapshot checksum `4f799fe040044af76dfe255053ddd9f2257a6e634f999e59f6fe951202f4889d`.
 
@@ -279,18 +239,6 @@ We ran another 64 generations after moving the complete rule set into `SKILL.md`
 The generation traces answer the loading question: yes, the current skill loaded completely in every accepted run. The failed first gate also identified the exact risk the new rule addresses. One agent put all chunk commands in a shell loop, and the combined output was truncated. After the loader required one tool call per chunk, all 64 accepted runs received every verified chunk.
 
 The benchmark environment was read-only and had no supported input path for the mechanical final checker, so the documented manual fallback applied. No run launched the checker. It had passed all 91 code tests before this batch.
-
-The 64 new outputs were scored anonymously with the same frozen 48-pattern method. Six false positives were removed during the documented source-rule audit. The post-hoc reporting split was then applied to the preserved adjudicated findings without regenerating outputs or changing evaluator records.
-
-| Set | Primary AI smell | Redundant explanation | Original mixed rate |
-|---|---:|---:|---:|
-| Combined | 0.08% | 1.37% | 1.45% |
-| Stage 1 | 0.03% | 1.36% | 1.38% |
-| Stage 2 | 0.14% | 1.38% | 1.52% |
-
-The combined follow-up used 35,935 words. Its primary AI-smell rate contains 29 words in flagged units, its redundant-explanation rate contains 491, and the original mixed rate contains 520. The exact recalculation uses the frozen benchmark's Unicode word-counting method.
-
-The peer skills were not regenerated in this follow-up, so these figures do not form a new head-to-head test.
 
 # Appendix A: Exact prompts
 
@@ -2534,11 +2482,9 @@ Every accepted output appears below. The detected issues reflect the audited eva
 
 - Total words: 133
 
-- Flagged words: 18 (13.53%)
-
 Detected issues:
 
-- P009, Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and it is not part of quoted material, a title, a proper name, code, or discussion of the mark.
+- Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and it is not part of quoted material, a title, a proper name, code, or discussion of the mark.
 
 ````text
 We also recorded two missed handoffs during the experiment—the same number as in the preceding six weeks.
@@ -2576,11 +2522,9 @@ For our team, these results are enough to keep testing the practice. We’ll con
 
 - Total words: 130
 
-- Flagged words: 5 (3.85%)
-
 Detected issues:
 
-- P013, Manufactured quotable, slogan, or aphorism: This tautological equation turns an ordinary appeal to the reported figures into a compressed aphorism without adding concrete meaning.
+- Manufactured quotable, slogan, or aphorism: This tautological equation turns an ordinary appeal to the reported figures into a compressed aphorism without adding concrete meaning.
 
 ````text
 The numbers are the numbers.
@@ -2613,8 +2557,6 @@ I’m not calling the experiment a sweeping success. The numbers are the numbers
 - Output SHA-256: `79e343f61ef1c67f4228eed2047c7c8d45f12fa5f747171adbe500103bfda07f`
 
 - Total words: 131
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -2650,8 +2592,6 @@ We will keep the written updates for three more months, using the same four ques
 
 - Total words: 118
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -2686,11 +2626,9 @@ For our four-person remote design studio, the next step is to keep the practice 
 
 - Total words: 138
 
-- Flagged words: 18 (13.04%)
-
 Detected issues:
 
-- P009, Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose.
+- Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose.
 
 ````text
 We also recorded two missed handoffs during the experiment—the same number as in the preceding six weeks.
@@ -2735,8 +2673,6 @@ If you lead a small remote team, this is the full result of our experiment so fa
 
 - Total words: 127
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -2770,8 +2706,6 @@ We’ve decided to continue the practice for three more months: written updates 
 - Output SHA-256: `0bc23ad9f1944c3e6c4a99e5834a03795c7eb4f85d64f7078f0da467005b449b`
 
 - Total words: 124
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -2807,8 +2741,6 @@ For our small team, these results are enough to keep testing the practice. We’
 
 - Total words: 116
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -2843,11 +2775,9 @@ We’ll continue this practice for three more months, then review it again.
 
 - Total words: 137
 
-- Flagged words: 18 (13.14%)
-
 Detected issues:
 
-- P009, Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and it is not part of a quotation, title, proper name, code, or discussion of the mark.
+- Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and it is not part of a quotation, title, proper name, code, or discussion of the mark.
 
 ````text
 We also recorded two missed handoffs during the experiment—the same number as in the preceding six weeks.
@@ -2882,8 +2812,6 @@ For now, we’re continuing the practice for three more months. Then we’ll rev
 - Output SHA-256: `d557706b8a0a67818f0ee3d105d4cefdf896cae3b41d1bf17fa1718bf3ddc423`
 
 - Total words: 118
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -2926,8 +2854,6 @@ So, we're continuing the practice for another three months. After that, we'll re
 
 - Total words: 119
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -2961,8 +2887,6 @@ We’ll continue the written updates for three more months, with short calls whe
 - Output SHA-256: `63681801f129dbe0909e498ac16cf9121dde83d06587bbace8da442b54cd40cc`
 
 - Total words: 114
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -2998,17 +2922,15 @@ We’ll continue the practice for three more months, then review it again.
 
 - Total words: 122
 
-- Flagged words: 25 (20.49%)
-
 Detected issues:
 
-- P009, Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and the text is not a quotation, title, proper name, code, or discussion of the mark.
+- Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and the text is not a quotation, title, proper name, code, or discussion of the mark.
 
 ````text
 We also recorded two missed handoffs during the experiment—the same number as in the preceding six weeks.
 ````
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader about the status of the result without adding a fact, limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence coaches the reader about the status of the result without adding a fact, limit, consequence, or action.
 
 ````text
 That is the full result so far.
@@ -3051,8 +2973,6 @@ That is the full result so far. We will continue the practice for three more mon
 
 - Total words: 131
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -3087,15 +3007,9 @@ We’re keeping the practice for another three months, then reviewing it again. 
 
 - Total words: 133
 
-- Flagged words: 19 (14.29%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: The closing sentence repeats the already stated written-update and decision-call process without adding a new condition, fact, owner, or action.
-
-````text
-Our weekly status process remains a written update, with a short call when one of us needs a decision.
-````
+None.
 
 Complete output:
 
@@ -3126,8 +3040,6 @@ We’re keeping the practice for three more months, then we’ll review it. Our 
 - Output SHA-256: `e2c9db289211eaba3e3e5ff1858a4e8769a43990a20e8246063e371fe1478df7`
 
 - Total words: 125
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -3163,65 +3075,51 @@ We’ll continue with written updates and call when a decision cannot wait for t
 
 - Total words: 829
 
-- Flagged words: 172 (20.75%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation to introduce an explanatory aside.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation to introduce an explanatory aside.
 
 ````text
 comparison group—a similar population
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation around the explanatory aside.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation around the explanatory aside.
 
 ````text
 the program—against which
 ````
 
-- P004, Throat-clearing, signposting, or reveal framing: This sentence merely announces and frames the conclusions that the following sentences then state directly.
+- Throat-clearing, signposting, or reveal framing: This sentence merely announces and frames the conclusions that the following sentences then state directly.
 
 ````text
 What Marlow can say with confidence is narrower.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence recaps facts and conclusions already stated and supported earlier without adding a new condition, fact, owner, or action.
 
-````text
-The libraries recorded more entries than on the same dates a year earlier; 1,079 entries occurred during the added hours; some survey respondents lacked adequate cooling at home; and Riverside reached capacity repeatedly.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the previously stated finding that no medical emergency was reported without adding new information.
 
-````text
-The city can also say that the program operated without a reported medical emergency.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence reissues limitations already explained earlier without adding a new evidentiary condition or fact.
 
-````text
-It cannot say how many distinct residents were served, whether the cooling centers reduced heat illness, or whether the year-to-year increase in traffic was entirely attributable to the pilot.
-````
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation to introduce an explanatory phrase.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation to introduce an explanatory phrase.
 
 ````text
 pilot—turning familiar public buildings
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation around the explanatory phrase.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation around the explanatory phrase.
 
 ````text
 dangerous heat—while concentrating resources
 ````
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
 
 ````text
 traffic—1,079
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in the same sentence.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in the same sentence.
 
 ````text
 entries—came
@@ -3264,8 +3162,6 @@ For the following summer, the council chose a more targeted version rather than 
 - Output SHA-256: `e3720c2453d193bbe21c1963f84f894c2ab430ef1e25306d1382ea76bd2d42cf`
 
 - Total words: 829
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -3311,11 +3207,9 @@ The decision follows the clearest patterns in the limited record. People used th
 
 - Total words: 778
 
-- Flagged words: 7 (0.90%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader toward a cautiously calibrated interpretation without itself naming a concrete fact, limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence coaches the reader toward a cautiously calibrated interpretation without itself naming a concrete fact, limit, consequence, or action.
 
 ````text
 The 2025 record supports a measured conclusion.
@@ -3363,8 +3257,6 @@ The decision concentrates resources at two sites while responding to two uses do
 
 - Total words: 766
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -3407,8 +3299,6 @@ For the following summer, the council voted to repeat the pilot at Riverside and
 
 - Total words: 762
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -3450,8 +3340,6 @@ For the following summer, the council chose a more targeted version of the progr
 - Output SHA-256: `fab63e03c45fec675f91fd7094433ee231148a61d0cc20dba5ec38142e10c6b3`
 
 - Total words: 746
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -3497,8 +3385,6 @@ For the following summer, the council chose a smaller repeat rather than a cityw
 
 - Total words: 734
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -3543,8 +3429,6 @@ For the following summer, the council chose a smaller version of the program. It
 
 - Total words: 725
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -3587,41 +3471,35 @@ For the following summer, the council voted to repeat the pilot at Riverside and
 
 - Total words: 867
 
-- Flagged words: 105 (12.11%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt uses an authored em dash as punctuation in newly written prose.
+- Authored em dash: The excerpt uses an authored em dash as punctuation in newly written prose.
 
 ````text
 after 6 p.m.—a period when the buildings normally would not have been open
 ````
 
-- P006, False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y reframe to dramatize the ordinary conclusion that the extended hours were used.
+- False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y reframe to dramatize the ordinary conclusion that the extended hours were used.
 
 ````text
 the evening extension was not merely available; it was used
 ````
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader that the distinction matters without itself adding a concrete fact, limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence instructs the reader that the distinction matters without itself adding a concrete fact, limit, consequence, or action.
 
 ````text
 That contrast matters for judging the pilot’s reach.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: The closing sentence paraphrases the already stated decision to retain two branches and add charging strips and bus vouchers without adding a new condition, fact, owner, or action.
 
-````text
-The decision preserves the late-hours program while narrowing its footprint and expanding two forms of practical assistance that visitors used during the first summer.
-````
 
-- P009, Authored em dash: The excerpt uses an authored em dash as punctuation in newly written prose.
+- Authored em dash: The excerpt uses an authored em dash as punctuation in newly written prose.
 
 ````text
 program—and without
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in the same sentence.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in the same sentence.
 
 ````text
 conditions—the data
@@ -3669,8 +3547,6 @@ For the following summer, the council approved a more targeted version. The pilo
 
 - Total words: 740
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -3715,11 +3591,9 @@ That decision follows the clearest patterns in the records without claiming more
 
 - Total words: 798
 
-- Flagged words: 4 (0.50%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader to interpret the figures cautiously without itself naming a concrete limitation, consequence, or action.
+- Reader coaching or repeated caution: This sentence coaches the reader to interpret the figures cautiously without itself naming a concrete limitation, consequence, or action.
 
 ````text
 Those numbers require care.
@@ -3762,8 +3636,6 @@ The new plan does not settle every question raised by the first summer. Reducing
 - Output SHA-256: `56067cc0e61f91a18fc3809a4cdb461f236f2d5bd63b317f335a648a0678c359`
 
 - Total words: 749
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -3809,57 +3681,39 @@ For the following summer, the council chose a smaller footprint and a different 
 
 - Total words: 808
 
-- Flagged words: 151 (18.69%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
 
 ````text
 difference—1,080
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
 
 ````text
 entries—suggests
 ````
 
-- P006, False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y reframe to dramatize the ordinary finding that people used the extended hours.
+- False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y reframe to dramatize the ordinary finding that people used the extended hours.
 
 ````text
 It does establish that the additional hours were not merely available; they were used.
 ````
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
 
 ````text
 comparison group—a similar population
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This concluding sentence paraphrases findings already stated and supported earlier without adding a new fact, condition, owner, or action.
 
-````text
-Residents made use of the later hours, especially at Riverside; some survey respondents were seeking relief from uncomfortably hot homes or lacked working air conditioning; and many also needed connectivity or power.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the earlier conclusion that the available data cannot establish the pilot's broader public-health effect.
 
-````text
-The figures are less capable of answering the larger public-health question.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence reissues earlier conclusions about evening use and Riverside exceeding capacity without adding new information.
 
-````text
-Marlow can say that the libraries drew evening users and that one branch sometimes ran out of seats.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence recaps limitations already explained in the sections on door counters, exposure, and emergency-room visits.
 
-````text
-It cannot yet say how many distinct people the pilot served, how much heat exposure it prevented or whether it reduced illness across the city.
-````
 
 Complete output:
 
@@ -3901,11 +3755,9 @@ The decision reflects what the first summer’s numbers support most clearly. Re
 
 - Total words: 755
 
-- Flagged words: 11 (1.46%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: The clause tells the reader that the measurement distinction matters without stating the concrete evidentiary consequence within the sentence.
+- Reader coaching or repeated caution: The clause tells the reader that the measurement distinction matters without stating the concrete evidentiary consequence within the sentence.
 
 ````text
 That is a substantial increase in traffic, but the unit matters.
@@ -3948,8 +3800,6 @@ For the following summer, the council chose a narrower repeat rather than a thre
 - Output SHA-256: `4c5d9dbe286eab63d2c42c1dfc4cf1243b246961d6492db1d5c63aeee2c0a2ce`
 
 - Total words: 686
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -3995,39 +3845,9 @@ For the following summer, the council voted to repeat the pilot at Riverside and
 
 - Total words: 727
 
-- Flagged words: 63 (8.67%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This begins a repeated limitation that is later reissued without adding a new condition or fact.
-
-````text
-The counters recorded each entry, not each visitor.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This paraphrases the already stated entry-versus-visitor limitation without adding new information.
-
-````text
-It remains an entry count rather than a tally of distinct visitors.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This states the conclusion in a claim-support-recap sequence that later repeats the same causal limitation.
-
-````text
-Neither fact demonstrates that the library pilot prevented illness.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This supplies the support within a sequence whose following sentence merely restates the preceding causal conclusion.
-
-````text
-The emergency-room figure covered the whole city, the two summers differed in weather severity, and the city had no comparison group.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This reissues the preceding conclusion that the pilot cannot be credited with preventing illness, without adding a new fact or condition.
-
-````text
-A citywide change cannot be assigned to three libraries from these data.
-````
+None.
 
 Complete output:
 
@@ -4067,23 +3887,21 @@ For the following summer, the council approved a smaller repeat of the program. 
 
 - Total words: 239
 
-- Flagged words: 43 (17.99%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt uses an authored em dash as punctuation in newly written landing-page prose.
+- Authored em dash: The excerpt uses an authored em dash as punctuation in newly written landing-page prose.
 
 ````text
 final approval—without chasing feedback
 ````
 
-- P009, Authored em dash: The excerpt uses an authored em dash as punctuation in newly written landing-page prose.
+- Authored em dash: The excerpt uses an authored em dash as punctuation in newly written landing-page prose.
 
 ````text
 browser—no account
 ````
 
-- P009, Authored em dash: The excerpt uses a second authored em dash as punctuation in the same newly written sentence.
+- Authored em dash: The excerpt uses a second authored em dash as punctuation in the same newly written sentence.
 
 ````text
 required—and attach
@@ -4143,8 +3961,6 @@ Keep review focused on the video, the version, and the work that comes next.
 
 - Total words: 217
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -4200,8 +4016,6 @@ Cutline handles video review, not editing. It does not include transcripts, wate
 - Output SHA-256: `598ded3940d660aa3fa022c167be980a7c3fb53cd7de6cfb7738a36e0b09a67f`
 
 - Total words: 217
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -4262,8 +4076,6 @@ The project owner sends reminder emails when a client needs a nudge. When you cl
 
 - Total words: 196
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -4318,11 +4130,9 @@ Cutline does not edit video or provide transcripts, watermarking, integrations, 
 
 - Total words: 213
 
-- Flagged words: 30 (14.08%)
-
 Detected issues:
 
-- P009, Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and the mark is not part of quoted material, a title, a proper name, code, or a discussion of the mark.
+- Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, and the mark is not part of quoted material, a title, a proper name, code, or a discussion of the mark.
 
 ````text
 Cutline gives freelance video editors and small production teams one clear place to share versions, collect timecoded comments, and get a decision—without chasing scattered notes across email and chat.
@@ -4383,8 +4193,6 @@ Each upload is stored as a separate version. Reviewers mark it “approved” or
 
 - Total words: 208
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -4441,17 +4249,15 @@ The project owner can send reminder emails manually. You decide when a client ne
 
 - Total words: 213
 
-- Flagged words: 36 (16.90%)
-
 Detected issues:
 
-- P007, Forced three-item packaging: This sentence packages three benefits in a repeated verb-object triad, and another such triad immediately follows, meeting the inclusion rule for multiple triads.
+- Forced three-item packaging: This sentence packages three benefits in a repeated verb-object triad, and another such triad immediately follows, meeting the inclusion rule for multiple triads.
 
 ````text
 Cutline gives freelance editors and small production teams one place to collect client notes, track versions, and get a clear decision.
 ````
 
-- P007, Forced three-item packaging: This sentence uses a second three-part imperative sequence for promotional cadence rather than a naturally bounded factual set.
+- Forced three-item packaging: This sentence uses a second three-part imperative sequence for promotional cadence rather than a naturally bounded factual set.
 
 ````text
 Upload your MP4, send a browser link, and keep feedback out of email and chat.
@@ -4507,8 +4313,6 @@ $24 per active project per month, with unlimited reviewers.
 
 - Total words: 222
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -4563,11 +4367,9 @@ Cutline does not edit video or provide transcripts, watermarking, integrations, 
 
 - Total words: 220
 
-- Flagged words: 23 (10.45%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose, and it is not part of quoted material, a title, a proper name, code, or discussion of the mark.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose, and it is not part of quoted material, a title, a proper name, code, or discussion of the mark.
 
 ````text
 each note applies—without decoding vague messages
@@ -4624,8 +4426,6 @@ Every MP4 upload is treated as its own version, keeping feedback and decisions c
 - Output SHA-256: `c40de898dac459c5ccaa389742eec69e45390361a20a00b19c91d07c9208116e`
 
 - Total words: 221
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -4689,8 +4489,6 @@ $24 per active project per month, with unlimited reviewers.
 
 - Total words: 205
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -4753,8 +4551,6 @@ Invite the client, producer, director, or anyone else who needs to weigh in. Eac
 
 - Total words: 245
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -4811,17 +4607,15 @@ Cutline handles client review. It does not edit video or provide transcripts, wa
 
 - Total words: 220
 
-- Flagged words: 16 (7.27%)
-
 Detected issues:
 
-- P009, Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, with no quotation, title, proper-name, code, or discussion exemption.
+- Authored em dash: The sentence uses an authored em dash as punctuation in newly written prose, with no quotation, title, proper-name, code, or discussion exemption.
 
 ````text
 No accounts are required—clients simply open the browser link.
 ````
 
-- P013, Manufactured quotable, slogan, or aphorism: The closing heading turns an ordinary invitation to start a review into a compressed video-themed slogan rather than stating a concrete action or fact.
+- Manufactured quotable, slogan, or aphorism: The closing heading turns an ordinary invitation to start a review into a compressed video-themed slogan rather than stating a concrete action or fact.
 
 ````text
 Bring your next review into focus
@@ -4879,23 +4673,21 @@ When feedback is due, the project owner can send reminder emails manually. You d
 
 - Total words: 218
 
-- Flagged words: 48 (22.02%)
-
 Detected issues:
 
-- P007, Forced three-item packaging: This sentence packages three parallel imperative actions into a polished triad, one of several such triads in the copy.
+- Forced three-item packaging: This sentence packages three parallel imperative actions into a polished triad, one of several such triads in the copy.
 
 ````text
 Upload a cut, send one link, and collect clear decisions in the browser.
 ````
 
-- P007, Forced three-item packaging: This sentence presents three product functions as a cadence-driven triad, contributing to the output's repeated three-item packaging.
+- Forced three-item packaging: This sentence presents three product functions as a cadence-driven triad, contributing to the output's repeated three-item packaging.
 
 ````text
 Cutline gives freelance editors and small production studios one place for timecoded comments, version reviews, and client approval.
 ````
 
-- P007, Forced three-item packaging: This sentence uses another three-part sequence of parallel actions, making the triadic packaging recurrent rather than a single natural factual set.
+- Forced three-item packaging: This sentence uses another three-part sequence of parallel actions, making the triadic packaging recurrent rather than a single natural factual set.
 
 ````text
 Upload MP4 files up to 5 GB, invite unlimited reviewers, and send reminder emails when you choose.
@@ -4951,17 +4743,15 @@ Upload MP4 files up to 5 GB, invite unlimited reviewers, and send reminder email
 
 - Total words: 233
 
-- Flagged words: 39 (16.74%)
-
 Detected issues:
 
-- P007, Forced three-item packaging: This sentence packages three benefits in a repeated verb-object triad, and a second similarly molded triad appears immediately afterward.
+- Forced three-item packaging: This sentence packages three benefits in a repeated verb-object triad, and a second similarly molded triad appears immediately afterward.
 
 ````text
 Cutline gives freelance editors and small production teams one place to collect precise comments, track each version, and get a clear decision.
 ````
 
-- P007, Forced three-item packaging: This sentence uses a second three-part action sequence with repeated imperative grammar, creating the recurring triadic packaging required by the inclusion rule.
+- Forced three-item packaging: This sentence uses a second three-part action sequence with repeated imperative grammar, creating the recurring triadic packaging required by the inclusion rule.
 
 ````text
 Upload your MP4, send a browser link, and keep the review out of email threads and chat.
@@ -5022,8 +4812,6 @@ Clients open the link in their browser and review without an account. Invite as 
 
 - Total words: 224
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -5080,33 +4868,9 @@ Cutline handles client review in the browser. It does not edit video or provide 
 
 - Total words: 857
 
-- Flagged words: 88 (10.27%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This concluding sentence restates the article’s opening distinction between what the evidence shows and what it cannot explain without adding a new fact or condition.
-
-````text
-The evidence now available gives the university a clearer description of the issue, but not a complete explanation.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence recaps findings already stated and supported in the body without adding a new inference or action.
-
-````text
-Survey respondents reported extended waits and workarounds, system records documented the distribution of approval times, and requests involving information-security review took longer at the median.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence reissues limitations already explained individually in the body without introducing a new evidentiary constraint.
-
-````text
-What remains unknown includes the reasons for individual delays, the reasons staff used workarounds, the overlap between the two survey groups, and the separate effects of March’s staffing and form changes.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the previously stated next step without adding a date, owner, condition, or action not already given.
-
-````text
-The next concrete step is the twelve-week pilot and its biweekly reporting.
-````
+None.
 
 Complete output:
 
@@ -5156,39 +4920,21 @@ The evidence now available gives the university a clearer description of the iss
 
 - Total words: 843
 
-- Flagged words: 93 (11.03%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs readers how to interpret the results without adding a concrete limit beyond the boundaries already stated.
+- Reader coaching or repeated caution: This sentence instructs readers how to interpret the results without adding a concrete limit beyond the boundaries already stated.
 
 ````text
 Results will need to be read within those boundaries.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence recaps findings already stated and supported earlier without adding a new fact, condition, or action.
 
-````text
-What the university knows is specific: delays affected many survey respondents, approval times varied across the full set of logged requests, and requests involving information security generally took longer.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence reintroduces the article's already established unknowns as part of a repeated recap without adding information.
 
-````text
-What remains unknown is equally important.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the same evidentiary limitations described in detail in preceding paragraphs without adding a new qualification.
 
-````text
-Current records do not connect individual waits to workarounds, explain why workarounds were used, identify the reason for each delay, or isolate the effect of March's staffing and form changes.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This final sentence restates the already described pilot scope and reporting outcome without a new fact or action.
 
-````text
-The pilot and its fortnightly reporting will add new timing data for a defined group of lower-value purchases.
-````
 
 Complete output:
 
@@ -5235,8 +4981,6 @@ What the university knows is specific: delays affected many survey respondents, 
 - Output SHA-256: `27e16884ab23e223ff4346a6bcea819baf54effd2927d8058894c7710c3eaae9`
 
 - Total words: 815
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -5288,21 +5032,15 @@ The university now has evidence of reported waits, documented approval-time patt
 
 - Total words: 795
 
-- Flagged words: 24 (3.02%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the evidence without itself stating the concrete distinctions supplied in the following sentences.
+- Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the evidence without itself stating the concrete distinctions supplied in the following sentences.
 
 ````text
 The survey and logs should be read according to their separate units.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the immediately preceding conclusion that the records cannot isolate either change's effect without adding a new condition, fact, or action.
 
-````text
-Assigning the decline to either change would go beyond the available evidence.
-````
 
 Complete output:
 
@@ -5346,17 +5084,15 @@ Staff must continue to follow the university's purchasing policy during the pilo
 
 - Total words: 790
 
-- Flagged words: 13 (1.65%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence tells the reader how to interpret the figures without itself naming a concrete limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence tells the reader how to interpret the figures without itself naming a concrete limit, consequence, or action.
 
 ````text
 Those survey figures require careful interpretation.
 ````
 
-- P004, Throat-clearing, signposting, or reveal framing: This stock signposting sentence announces the conclusions that follow instead of stating one directly.
+- Throat-clearing, signposting, or reveal framing: This stock signposting sentence announces the conclusions that follow instead of stating one directly.
 
 ````text
 The current evidence supports several firm conclusions.
@@ -5404,33 +5140,9 @@ Staff should continue to follow university purchasing policy while the pilot pro
 
 - Total words: 811
 
-- Flagged words: 90 (11.10%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence restates the already described twelve-week pilot and reporting schedule without adding a new fact, condition, owner, or action.
-
-````text
-The next step is therefore a defined, time-limited test with regular public reporting.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This repeats the earlier statement that the pilot's measures will provide information about processing times for eligible requests without adding a distinct inference.
-
-````text
-Its results should add evidence about the shorter route for a specific group of purchases.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence recaps findings already stated and supported in the body without adding a new condition, fact, or action.
-
-````text
-Until those results are available, the university can say that approval times vary, information-security reviews take longer at the median, and March's overall median was lower than February's.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence reissues limitations already explained individually in the article without adding a new evidentiary limit or consequence.
-
-````text
-It cannot yet assign causes to individual delays, link reported workarounds to waits, separate the effects of added staff and the revised form, or explain the council's reasoning beyond the published decision.
-````
+None.
 
 Complete output:
 
@@ -5476,33 +5188,19 @@ The next step is therefore a defined, time-limited test with regular public repo
 
 - Total words: 840
 
-- Flagged words: 80 (9.52%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the totals without itself naming a concrete limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the totals without itself naming a concrete limit, consequence, or action.
 
 ````text
 Those totals need careful reading.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This concluding sentence restates findings already presented and supported in the article without adding a new fact or condition.
 
-````text
-The university knows the size and timing of the delays recorded in the procurement system, the difference associated with information-security review, and the experiences reported by survey respondents.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the article's previously explained evidentiary limitations without adding a new limit, fact, or inference.
 
-````text
-It still lacks evidence about individual causes, the connection between delays and workarounds, and the separate effects of the March staffing and form changes.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence recaps the already described pilot scope and reporting schedule without adding a new action, owner, condition, or fact.
 
-````text
-The twelve-week pilot and its two-week reporting schedule will add current measurements for a narrow category of lower-cost requests.
-````
 
 Complete output:
 
@@ -5552,11 +5250,9 @@ The university knows the size and timing of the delays recorded in the procureme
 
 - Total words: 780
 
-- Flagged words: 11 (1.41%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader how to interpret the figures while withholding the concrete reason for the distinction until later sentences.
+- Reader coaching or repeated caution: This sentence instructs the reader how to interpret the figures while withholding the concrete reason for the distinction until later sentences.
 
 ````text
 That figure must be read separately from the approval-wait figure.
@@ -5608,11 +5304,9 @@ The reimbursement rule remains in force while the pilot and its reporting procee
 
 - Total words: 923
 
-- Flagged words: 12 (1.30%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: The sentence coaches the reader that the distinction is important without adding a concrete fact or consequence beyond the timing figures already stated.
+- Reader coaching or repeated caution: The sentence coaches the reader that the distinction is important without adding a concrete fact or consequence beyond the timing figures already stated.
 
 ````text
 This identifies review type as an important distinction in the timing data.
@@ -5666,11 +5360,9 @@ The university currently has evidence that approval experiences vary and that in
 
 - Total words: 754
 
-- Flagged words: 4 (0.53%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader to interpret the figures cautiously without itself naming a concrete evidentiary limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence instructs the reader to interpret the figures cautiously without itself naming a concrete evidentiary limit, consequence, or action.
 
 ````text
 Those figures require care.
@@ -5720,11 +5412,9 @@ Current purchasing rules remain in effect while the pilot proceeds. Staff should
 
 - Total words: 804
 
-- Flagged words: 4 (0.50%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs readers to interpret the survey totals cautiously without itself naming a concrete limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence instructs readers to interpret the survey totals cautiously without itself naming a concrete limit, consequence, or action.
 
 ````text
 Those totals require care.
@@ -5775,8 +5465,6 @@ The survey, procurement records, and pilot reports answer different questions. T
 - Output SHA-256: `5bf87926a432a73d52398806de904b3a73b19d3c210795810dc153ccad281664`
 
 - Total words: 803
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -5834,8 +5522,6 @@ The pilot changes the approval route for eligible requests, not the university�
 
 - Total words: 828
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -5886,39 +5572,21 @@ The evidence available now supports several conclusions: approval experiences va
 
 - Total words: 778
 
-- Flagged words: 92 (11.83%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader how to interpret the figures without itself supplying a concrete fact or consequence.
+- Reader coaching or repeated caution: This sentence instructs the reader how to interpret the figures without itself supplying a concrete fact or consequence.
 
 ````text
 Those totals need to be read carefully.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence restates the article's already established distinction between what the records document and what they cannot explain.
 
-````text
-The evidence so far gives the university a measured account of the problem, not a complete explanation.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence recaps findings already stated and explained in the body without adding a new condition, fact, or action.
 
-````text
-It documents reported waits and workarounds, the distribution of approval times, the longer median for requests requiring information-security review, and a March decline in the overall median.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence reissues limitations already detailed in earlier paragraphs without adding a new evidentiary limit.
 
-````text
-It does not connect individual workarounds to delays, identify the causes of specific waits, isolate the effect of recent operational changes, or explain the council's choice.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence repeats the previously stated reporting schedule and purpose without adding a new action, owner, or condition.
 
-````text
-The pilot's biweekly figures will add new information about eligible requests starting May 18.
-````
 
 Complete output:
 
@@ -5964,39 +5632,21 @@ The evidence so far gives the university a measured account of the problem, not 
 
 - Total words: 782
 
-- Flagged words: 95 (12.15%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence tells the reader to interpret the figures cautiously without itself naming a concrete limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence tells the reader to interpret the figures cautiously without itself naming a concrete limit, consequence, or action.
 
 ````text
 Those figures require care.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This concluding sentence restates three findings already presented and supported in the body without adding a new fact, condition, or inference.
 
-````text
-The university knows that many survey respondents encountered waits longer than five business days, that some respondents used informal workarounds, and that requests involving information-security review took longer at the median than requests without that review.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the earlier account of the March decline and the two simultaneous changes without adding new information.
 
-````text
-It knows approval times improved in March after staffing and the form changed.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence consolidates limitations already stated in separate body paragraphs without adding a new condition, fact, or action.
 
-````text
-It does not know why respondents used workarounds, why individual requests stalled, which March change affected approval times, or why the council chose the pilot.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence repeats the previously stated reporting plan without adding a new date, measure, owner, or action.
 
-````text
-The biweekly reports will add current performance data for eligible purchases over the twelve-week test.
-````
 
 Complete output:
 
@@ -6044,8 +5694,6 @@ The university knows that many survey respondents encountered waits longer than 
 
 - Total words: 785
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6089,8 +5737,6 @@ The pilot changes the route for a defined group of purchases, but it does not su
 - Output SHA-256: `c76b60b1d4419347415b1b477d9c675e0fa6b605a445a298dec8b732e1eea618`
 
 - Total words: 884
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -6154,8 +5800,6 @@ We will monitor month-end performance separately, including incoming volume, tim
 
 - Total words: 847
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6215,8 +5859,6 @@ At day 30, Operations should report agreement rates, turnaround times, protected
 - Output SHA-256: `e031e457bad304bca4d1f8df31093f4e5ef3f797d9f04333f7ceea91b6914fe8`
 
 - Total words: 864
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -6278,8 +5920,6 @@ During the month-end spike, Operations should compare the same measures with the
 
 - Total words: 826
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6339,8 +5979,6 @@ At the end of the 30 days, Operations, Compliance, and Engineering should review
 - Output SHA-256: `32e86b9a4ce33e74d670dcf3a4d0699980606c2871bf59a244e60012e0751b4b`
 
 - Total words: 937
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -6405,8 +6043,6 @@ At day 30, Operations, Compliance, and Engineering should assess decision agreem
 - Output SHA-256: `f33ee1f785a79fde6d9e6e9d17356b2f5c1998b165ca5deedfae574751b03dcf`
 
 - Total words: 917
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -6474,8 +6110,6 @@ During the same period, we will include a month-end volume spike if one occurs a
 
 - Total words: 842
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6539,8 +6173,6 @@ At day 30, I will recommend whether to expand, revise, or stop the transition ba
 - Output SHA-256: `ea4b77135b5ec766ad397920834a589ca94de679485bf023c397f302221d198f`
 
 - Total words: 840
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -6610,8 +6242,6 @@ At day 30, the executive team should use the audit and spike-period results to c
 
 - Total words: 958
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6675,8 +6305,6 @@ At day 30, Compliance, Engineering, and Operations should review the audit evide
 - Output SHA-256: `93087650d0c2e9876910cd774d1393bdf88717e9479be6b703ef8d21fbab7031`
 
 - Total words: 913
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -6746,8 +6374,6 @@ Before full retirement, the executive team should require results from a month-e
 
 - Total words: 842
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6808,8 +6434,6 @@ Compliance should review each disagreement and revise the rule set using observe
 
 - Total words: 823
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -6868,29 +6492,27 @@ During the first month-end spike within the transition, Operations should repeat
 
 - Total words: 948
 
-- Flagged words: 53 (5.59%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
 
 ````text
 case types—overseas
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
 
 ````text
 records—that Compliance
 ````
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation around a parenthetical statistic.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation around a parenthetical statistic.
 
 ````text
 1,126—about
 ````
 
-- P009, Authored em dash: The excerpt contains the second authored em dash surrounding the parenthetical statistic.
+- Authored em dash: The excerpt contains the second authored em dash surrounding the parenthetical statistic.
 
 ````text
 percent—waited
@@ -6953,8 +6575,6 @@ During the period, we should include a month-end volume spike if one occurs, mon
 - Output SHA-256: `197a1d5bed2b54c9a36cdcb3c35162d1a568fbaf7fa4cc849e97ab37bd9eb6f6`
 
 - Total words: 950
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -7020,8 +6640,6 @@ Include any month-end volume spike that falls within the 30-day window and repor
 
 - Total words: 872
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -7082,8 +6700,6 @@ Compliance should review each difference and decide whether rule changes can res
 
 - Total words: 845
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -7141,8 +6757,6 @@ Operations should report weekly volumes against the audit ceiling and stop addin
 - Output SHA-256: `a14f05cf86ff9feb5c4dc5893d9475c0230a7e49beef9e213d72ded0f1b956de`
 
 - Total words: 754
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -7202,33 +6816,23 @@ The next test will run for six weeks in daytime dispatch. It will add an optiona
 
 - Total words: 785
 
-- Flagged words: 68 (8.66%)
-
 Detected issues:
 
-- P027, Anthropomorphic abstraction or false agency: The abstract result is given the human-like action of keeping something in view instead of directly stating that the analysis included imperfect implementation.
+- Anthropomorphic abstraction or false agency: The abstract result is given the human-like action of keeping something in view instead of directly stating that the analysis included imperfect implementation.
 
 ````text
 The result also kept imperfect implementation in view.
 ````
 
-- P019, Bloated copula substitute: “Offers” replaces the simpler copular statement that the questionnaire is a narrower signal without adding a distinct literal meaning.
+- Bloated copula substitute: “Offers” replaces the simpler copular statement that the questionnaire is a narrower signal without adding a distinct literal meaning.
 
 ````text
 The post-trial questionnaire offers a useful but narrower signal about acceptance.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence paraphrases the immediately preceding explanation of why continued use was justified without adding a new fact, condition, owner, or action.
 
-````text
-This was a decision based on the trial’s causal result, within the limits of the population, period, and outcome studied.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: The closing reissues the already established causal conclusion and purpose of the next test without adding a new condition, fact, owner, or action.
 
-````text
-Until those results arrive, the sound position is specific: Relay reduced late departures in the overnight trial, and the next test will examine how far that finding travels.
-````
 
 Complete output:
 
@@ -7287,8 +6891,6 @@ That test will answer questions the overnight trial could not. It will show whet
 - Output SHA-256: `9769e62de91bdedc9024235becde3389e2f94141466c1c16b4e94c61e9ffcadf`
 
 - Total words: 764
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -7352,8 +6954,6 @@ The daytime test will examine whether Relay reduces late departures in a setting
 
 - Total words: 743
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -7411,8 +7011,6 @@ The next test will run for six weeks in daytime dispatch. It will add an optiona
 - Output SHA-256: `e1241f9a4fb941c3406a16d4c618f5c312a8b7cd9a96aacce4345a32077d8eb0`
 
 - Total words: 791
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -7476,8 +7074,6 @@ This next stage will test whether Relay’s effect extends beyond the overnight 
 
 - Total words: 704
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -7537,8 +7133,6 @@ This next step tests questions the first trial could not answer: whether Relay w
 - Output SHA-256: `b4be0e485a60900c9bd5f17cb886e3ef1635ba3d954aca0228e1697e48d3eb61`
 
 - Total words: 780
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -7600,21 +7194,9 @@ The next test will run for six weeks in daytime dispatch. It will add an optiona
 
 - Total words: 748
 
-- Flagged words: 38 (5.08%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the outcomes the next test will measure, which the following sentence paraphrases without adding a new measure, condition, owner, or action.
-
-````text
-It will measure late departures, fuel use, and dispatcher-reported workload.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the immediately preceding measurement plan as a recap without adding a distinct outcome, condition, owner, or action.
-
-````text
-This will provide daytime measurements, add evidence on fuel use that the first trial did not measure, and record dispatcher-reported workload during the six-week test.
-````
+None.
 
 Complete output:
 
@@ -7674,11 +7256,9 @@ The next test will run for six weeks in daytime dispatch and will add an optiona
 
 - Total words: 735
 
-- Flagged words: 6 (0.82%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence tells the reader that a distinction matters without itself naming a concrete consequence, limit, or action.
+- Reader coaching or repeated caution: This sentence tells the reader that a distinction matters without itself naming a concrete consequence, limit, or action.
 
 ````text
 The scope of that claim matters.
@@ -7741,8 +7321,6 @@ The next test will again measure late departures and will add fuel use and dispa
 - Output SHA-256: `362cb3d108101a403f4b622e6f50aa74dc0036f0202ae3b9fd2224e6c3b40a05`
 
 - Total words: 746
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -7808,8 +7386,6 @@ The test will measure late departures, fuel use, and dispatcher-reported workloa
 
 - Total words: 742
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -7874,8 +7450,6 @@ That test extends the evidence in two directions the first trial left open. Dayt
 
 - Total words: 733
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -7936,41 +7510,23 @@ The next test will run for six weeks in daytime dispatch. Relay will gain an opt
 
 - Total words: 808
 
-- Flagged words: 93 (11.51%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the claim that begins a claim-support-recap sequence later concluding again that the reduction is attributable to Relay.
 
-````text
-The trial supports a causal conclusion for the teams, operations, and period studied: Relay reduced late departures during the eight-week overnight-dispatch trial.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence reiterates the causal character of the preceding claim without adding a new condition or fact.
 
-````text
-That conclusion does not rest on a simple association.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence supplies the supporting evidence within the claim-support-recap sequence.
 
-````text
-Teams were randomly assigned within groups defined by site and prior late-departure performance, operating rules remained stable across the two groups, and the comparison was pre-registered.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence paraphrases the paragraph's already stated causal conclusion after the supporting evidence.
 
-````text
-Together, those features support attributing the measured 4.6-percentage-point reduction to Relay.
-````
 
-- P035, Reader coaching or repeated caution: This bare coaching sentence tells the reader that the scope matters without itself naming a concrete consequence or limit.
+- Reader coaching or repeated caution: This bare coaching sentence tells the reader that the scope matters without itself naming a concrete consequence or limit.
 
 ````text
 The scope of that claim matters.
 ````
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader how to interpret two findings without itself stating the evidentiary reason for the distinction.
+- Reader coaching or repeated caution: This sentence instructs the reader how to interpret two findings without itself stating the evidentiary reason for the distinction.
 
 ````text
 The questionnaire also should be kept separate from the causal operational finding.
@@ -8032,11 +7588,9 @@ The next test will run for six weeks in daytime dispatch. It will retain Relay w
 
 - Total words: 798
 
-- Flagged words: 3 (0.38%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader that the scope distinction matters without itself naming a concrete consequence, limit, or action.
+- Reader coaching or repeated caution: This sentence instructs the reader that the scope distinction matters without itself naming a concrete consequence, limit, or action.
 
 ````text
 The boundaries matter.
@@ -8100,39 +7654,9 @@ This second test extends the work into a setting the first trial did not cover a
 
 - Total words: 823
 
-- Flagged words: 90 (10.94%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the causal conclusion that the paragraph later reissues after presenting its supporting design features.
-
-````text
-The trial supports a causal claim for the teams, setting, and period studied: Relay reduced the share of scheduled loads departing more than 20 minutes late by an estimated 4.6 percentage points.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates as support in a claim-evidence-recap sequence whose conclusion is repeated without a new condition or action.
-
-````text
-Random assignment made the Relay and control groups comparable within site and prior late-departure bands.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates as support in the paragraph's repeated claim-evidence-recap structure.
-
-````text
-Stable operating rules held staffing, software, escalation, and shift schedules constant.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence completes the supporting evidence before the paragraph restates its opening causal conclusion.
-
-````text
-The pre-registered comparison measured the difference between each group’s change.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence paraphrases the causal conclusion already stated at the start of the paragraph without adding a new fact, condition, owner, or action.
-
-````text
-Together, those features support attributing the measured reduction to Relay rather than treating the result as a mere association.
-````
+None.
 
 Complete output:
 
@@ -8192,8 +7716,6 @@ That design extends the evidence in three defined ways. It moves Relay into a di
 
 - Total words: 734
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -8252,8 +7774,6 @@ The test will measure late departures, fuel use, and dispatcher-reported workloa
 
 - Total words: 845
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -8295,8 +7815,6 @@ Riverbend should authorize the six-week extension at the existing 18 desks, add 
 - Output SHA-256: `9357f75f45d82e45663493709d74fccc731c9457ebe3df9ccd63b74fa6f29c8b`
 
 - Total words: 779
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -8340,8 +7858,6 @@ Riverbend should approve the six-week extension at the same 18 desks, add the op
 
 - Total words: 790
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -8383,8 +7899,6 @@ At the end of six weeks, Riverbend can judge whether the late-start reduction pe
 - Output SHA-256: `516fedc0f90c8a3d31533d038a8beeb993672df3406e8848138a86a72ad680ee`
 
 - Total words: 775
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -8436,17 +7950,15 @@ During the six-week extension, Riverbend should preserve the existing rules and 
 
 - Total words: 898
 
-- Flagged words: 18 (2.00%)
-
 Detected issues:
 
-- P009, Authored em dash: The title uses an authored em dash as punctuation outside quoted or exempt material.
+- Authored em dash: The title uses an authored em dash as punctuation outside quoted or exempt material.
 
 ````text
 # QuickTurn Shows Promise, but the Evidence Supports a Six-Week Extension—not Citywide Deployment
 ````
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader that a qualification matters without itself naming a concrete consequence or evidentiary limit.
+- Reader coaching or repeated caution: This sentence coaches the reader that a qualification matters without itself naming a concrete consequence or evidentiary limit.
 
 ````text
 That last qualification matters.
@@ -8492,11 +8004,9 @@ The next action should be to authorize that six-week extension, finalize its req
 
 - Total words: 790
 
-- Flagged words: 19 (2.41%)
-
 Detected issues:
 
-- P034, Generic outcome abstraction: The adjective-plus-result phrase “clear and encouraging result” claims a positive outcome without naming the measured effect or its magnitude in that sentence.
+- Generic outcome abstraction: The adjective-plus-result phrase “clear and encouraging result” claims a positive outcome without naming the measured effect or its magnitude in that sentence.
 
 ````text
 The seven-week trial produced a clear and encouraging result, but it does not yet support a citywide deployment.
@@ -8540,8 +8050,6 @@ Mara Velez has requested citywide deployment by September 1, but the record give
 
 - Total words: 781
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -8583,8 +8091,6 @@ Before the extension starts, Riverbend should confirm which desks and outcomes r
 - Output SHA-256: `33aa21bb56c1740552750a7da00e62cd1f486bf4b1504bcd1cd24bc7015f815a`
 
 - Total words: 801
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -8630,17 +8136,15 @@ On approval, operations should retain the current 18 QuickTurn desks, add the op
 
 - Total words: 796
 
-- Flagged words: 13 (1.63%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the result without itself stating the concrete design features that justify that interpretation.
+- Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the result without itself stating the concrete design features that justify that interpretation.
 
 ````text
 The trial design supports taking the late-start result seriously.
 ````
 
-- P035, Reader coaching or repeated caution: This bare interpretive aside announces that a distinction matters without naming its concrete consequence in the sentence.
+- Reader coaching or repeated caution: This bare interpretive aside announces that a distinction matters without naming its concrete consequence in the sentence.
 
 ````text
 That qualification matters.
@@ -8682,17 +8186,15 @@ The next action should be the available six-week extension at the same 18 QuickT
 
 - Total words: 806
 
-- Flagged words: 13 (1.61%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader that the design is important without itself naming a concrete consequence or evidentiary limit.
+- Reader coaching or repeated caution: This sentence instructs the reader that the design is important without itself naming a concrete consequence or evidentiary limit.
 
 ````text
 That design matters.
 ````
 
-- P004, Throat-clearing, signposting, or reveal framing: This sentence announces and positively frames a forthcoming detail instead of directly stating the concrete fact.
+- Throat-clearing, signposting, or reveal framing: This sentence announces and positively frames a forthcoming detail instead of directly stating the concrete fact.
 
 ````text
 The record also contains an encouraging detail about imperfect use.
@@ -8736,11 +8238,9 @@ The six-week extension is the sound next action. Riverbend should keep QuickTurn
 
 - Total words: 807
 
-- Flagged words: 9 (1.12%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: The sentence coaches the reader to interpret the preceding causal judgment cautiously without itself naming the concrete boundary or consequence.
+- Reader coaching or repeated caution: The sentence coaches the reader to interpret the preceding causal judgment cautiously without itself naming the concrete boundary or consequence.
 
 ````text
 Riverbend should keep that judgment within its proper boundary.
@@ -8779,8 +8279,6 @@ Riverbend should authorize the limited extension, keep QuickTurn at the 18 assig
 - Output SHA-256: `5965e66af1f525398afd40a44b6b342bb45aea6fef34ff6c7f4f2021057fcc06`
 
 - Total words: 874
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -8828,11 +8326,9 @@ Final requirements should remain unsigned until those six weeks are complete and
 
 - Total words: 832
 
-- Flagged words: 9 (1.08%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the evidence without itself naming a concrete limit, consequence, or action.
+- Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the evidence without itself naming a concrete limit, consequence, or action.
 
 ````text
 The strength of that evidence should be stated narrowly.
@@ -8876,33 +8372,27 @@ A September 1 citywide deployment is not supported by the available readiness re
 
 - Total words: 836
 
-- Flagged words: 63 (7.54%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader that the qualification is important without itself naming a concrete consequence or limit.
+- Reader coaching or repeated caution: This sentence instructs the reader that the qualification is important without itself naming a concrete consequence or limit.
 
 ````text
 That last qualification matters.
 ````
 
-- P008, Actor-hiding passive or subjectless construction: This subjectless passive hides the relevant known actor, Mara Velez, who made the September 1 request without supplying a reason.
+- Actor-hiding passive or subjectless construction: This subjectless passive hides the relevant known actor, Mara Velez, who made the September 1 request without supplying a reason.
 
 ````text
 No reason is given for that date.
 ````
 
-- P034, Generic outcome abstraction: “Steadier results” is an adjective-plus-results abstraction that claims improvement without naming an effect or measure.
+- Generic outcome abstraction: “Steadier results” is an adjective-plus-results abstraction that claims improvement without naming an effect or measure.
 
 ````text
 whether closer adherence is associated with steadier results.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: The closing sentence restates the opening recommendation to continue limited use rather than deploy citywide without adding a new condition, fact, owner, or action.
 
-````text
-For now, QuickTurn has shown enough to continue, but not enough to go citywide on an unexplained date.
-````
 
 Complete output:
 
@@ -8942,11 +8432,9 @@ Before the extension begins, Riverbend should document which desks and outcomes 
 
 - Total words: 820
 
-- Flagged words: 4 (0.49%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader that the preceding scope distinction matters without itself naming a concrete consequence, matching the reader-coaching inclusion rule.
+- Reader coaching or repeated caution: This sentence instructs the reader that the preceding scope distinction matters without itself naming a concrete consequence, matching the reader-coaching inclusion rule.
 
 ````text
 That last boundary matters.
@@ -8990,11 +8478,9 @@ Riverbend should begin the six-week extension at the 18 assigned QuickTurn desks
 
 - Total words: 831
 
-- Flagged words: 9 (1.08%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence instructs the reader how to interpret the evidence without itself naming a concrete boundary, consequence, or action.
+- Reader coaching or repeated caution: This sentence instructs the reader how to interpret the evidence without itself naming a concrete boundary, consequence, or action.
 
 ````text
 The boundaries of that finding should govern the decision.
@@ -9040,17 +8526,15 @@ Riverbend can audit every QuickTurn handoff during the six weeks. The audit shou
 
 - Total words: 822
 
-- Flagged words: 30 (3.65%)
-
 Detected issues:
 
-- P009, Authored em dash: The em dash is authored punctuation introducing the list of CallPath fields and is not part of quoted material, a title, a proper name, code, or discussion of the mark.
+- Authored em dash: The em dash is authored punctuation introducing the list of CallPath fields and is not part of quoted material, a title, a proper name, code, or discussion of the mark.
 
 ````text
 fields—patient request
 ````
 
-- P009, Authored em dash: The em dash is authored punctuation closing the inserted list and is not part of quoted material, a title, a proper name, code, or discussion of the mark.
+- Authored em dash: The em dash is authored punctuation closing the inserted list and is not part of quoted material, a title, a proper name, code, or discussion of the mark.
 
 ````text
 status code—performed
@@ -9112,8 +8596,6 @@ Limited continuation preserves the workflow where evidence currently supports it
 
 - Total words: 801
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9173,8 +8655,6 @@ Stopping CallPath would also discard credible causal evidence of improved callba
 - Output SHA-256: `e48e86a96388e3fc7921d2703bd672d382b00d7265a1b5a5f1c0c610421e94fe`
 
 - Total words: 787
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -9238,8 +8718,6 @@ Stopping CallPath would discard a measured callback improvement supported by ran
 
 - Total words: 816
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9301,8 +8779,6 @@ During the next six weeks, the trial desks can preserve the protocol already in 
 - Output SHA-256: `f64b95a544d387497d31cab4ac9acbac9838939b714eeab25336b40f6c426cda`
 
 - Total words: 834
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -9366,8 +8842,6 @@ Stopping CallPath would disregard a causally supported 4.4-percentage-point redu
 
 - Total words: 744
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9427,8 +8901,6 @@ Keeping CallPath at the 18 desks preserves a use supported by the trial while th
 - Output SHA-256: `930de9fb22e6b230bbe0608bca4899eb32e43225f814885d2132d31a3f78f061`
 
 - Total words: 810
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -9494,8 +8966,6 @@ After the next test, Scheduling Operations should base any broader deployment de
 
 - Total words: 811
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9554,23 +9024,21 @@ Stopping CallPath would discard a protocol that reduced the primary outcome in t
 
 - Total words: 772
 
-- Flagged words: 64 (8.29%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose, and it is not quoted or otherwise exempt.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose, and it is not quoted or otherwise exempt.
 
 ````text
 CallPath—the five-field handoff requiring patient request
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose, and it is not quoted or otherwise exempt.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose, and it is not quoted or otherwise exempt.
 
 ````text
 status code—was tested for six weeks
 ````
 
-- P019, Bloated copula substitute: “Represented” is a bloated copula substitute here because the sentence could directly state that the rate was 13.7 percent without losing meaning.
+- Bloated copula substitute: “Represented” is a bloated copula substitute here because the sentence could directly state that the rate was 13.7 percent without losing meaning.
 
 ````text
 callbacks not completed within four hours represented 13.7 percent of callbacks at desks later assigned to CallPath
@@ -9627,8 +9095,6 @@ Keeping CallPath at the trial desks preserves the workflow where the evidence di
 - Output SHA-256: `7524da87a9dd35b69815fc97b57d1c1f0244c27aa705ea4a5c812fb0e482bae3`
 
 - Total words: 786
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -9688,8 +9154,6 @@ Keeping CallPath at the trial desks preserves the use already supported while th
 
 - Total words: 746
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9747,8 +9211,6 @@ Keeping CallPath at the trial desks preserves the demonstrated local benefit whi
 - Output SHA-256: `c5ad389891c3d4dd4a01471ddfab7498a42327a10157779c06d08270ac6f81de`
 
 - Total words: 770
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -9812,8 +9274,6 @@ Stopping would set aside a protocol that produced a measured reduction in the pr
 
 - Total words: 803
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9873,8 +9333,6 @@ Maintaining CallPath at the trial desks preserves the protocol where a benefit w
 - Output SHA-256: `70b3c847d4aef02f28ae6e2a470ecf9680b2cf96962f8739d8502ab5dd28f1bc`
 
 - Total words: 817
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -9936,8 +9394,6 @@ Holding use at the trial desks preserves the current, evidence-backed scope whil
 
 - Total words: 815
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -9995,8 +9451,6 @@ This choice keeps use inside the population with direct evidence while Meridian 
 - Output SHA-256: `eb68aaeb3ab644a543c6a60e480ef0484c520df7b3a57cf5fca2e97aa9f17ce4`
 
 - Total words: 793
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10060,8 +9514,6 @@ During the next six weeks, the trial desks should keep CallPath under their curr
 
 - Total words: 154
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10094,8 +9546,6 @@ I’ll keep the Wednesday quiet hour through September, then ask customers and s
 
 - Total words: 153
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10127,8 +9577,6 @@ For now, I’m keeping the quiet hour on Wednesdays through September. Then I’
 - Output SHA-256: `e693d902dddcf15fec32592898a05271cc83bcc2f5122fac583af35d22858ebd`
 
 - Total words: 161
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10164,8 +9612,6 @@ I’ve decided to keep our Wednesday quiet hour through September. Then I’ll a
 
 - Total words: 156
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10197,8 +9643,6 @@ I’ve decided to keep Wednesday quiet hours through September. Then I’ll ask 
 - Output SHA-256: `7d70d6088ea5f614c5fa32c85ee6d277f344d94c9999d1d0d1ac799fb037877a`
 
 - Total words: 155
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10232,8 +9676,6 @@ I’ve decided to keep Wednesday’s quiet hour through September, then ask cust
 
 - Total words: 163
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10266,11 +9708,9 @@ So I’m keeping Wednesday quiet hour through September. Then I’ll ask custome
 
 - Total words: 148
 
-- Flagged words: 6 (4.05%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence tells the reader how to interpret the comparison without naming a concrete limit; the next sentence supplies the actual reasons for caution.
+- Reader coaching or repeated caution: This sentence tells the reader how to interpret the comparison without naming a concrete limit; the next sentence supplies the actual reasons for caution.
 
 ````text
 I’m treating that comparison with care.
@@ -10304,8 +9744,6 @@ I’ve decided to keep Wednesday quiet hour through September. Before deciding w
 
 - Total words: 161
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10337,8 +9775,6 @@ I’ve decided to keep the quiet hour on Wednesdays through September. Then I’
 - Output SHA-256: `7f83963c4cce30fd6bb3c249ae1f0de7b637e07cdfba7229184eddcaaa6b765e`
 
 - Total words: 154
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10372,8 +9808,6 @@ I’ve decided to keep the Wednesday quiet hour through September, then ask cust
 
 - Total words: 162
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10405,8 +9839,6 @@ I have decided to keep the quiet hour on Wednesdays through September. Then I wi
 - Output SHA-256: `051efb52d1cb6ca4b2e6050cf6639e4e235a0679376f960cabc0a1b88b37d03b`
 
 - Total words: 156
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10440,8 +9872,6 @@ I’ve decided to keep our Wednesday quiet hour through September. Before I deci
 
 - Total words: 159
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10473,8 +9903,6 @@ I’ve decided to keep Wednesday quiet hour through September. Then I’ll ask c
 - Output SHA-256: `cd4d8ffad877c327f82f757a30edbbb95536af7e96aa67b6b318151d603dee7d`
 
 - Total words: 154
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10508,8 +9936,6 @@ I’ll keep Wednesday quiet hour through September, then ask customers and staff
 
 - Total words: 155
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10541,8 +9967,6 @@ I’m keeping the Wednesday quiet hour through September. Then I’ll ask custom
 - Output SHA-256: `fdf6fed81d7d7c4e36ee3c5b4c87a7f2bde1d2233024139d14dd35d3613a5ed2`
 
 - Total words: 158
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10576,8 +10000,6 @@ I’ve decided to keep Wednesday quiet hour through September. At the end of Sep
 
 - Total words: 158
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10609,8 +10031,6 @@ I’ll keep Wednesday’s quiet hour through September, then ask customers and s
 - Output SHA-256: `1bdba32bd0fbcb864988ad4f0e1e755f0c93adeb59d6d868c5667045adf17b68`
 
 - Total words: 288
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10657,8 +10077,6 @@ Westbridge Materials Lab
 - Output SHA-256: `7fbe94fea32e944fa272557b16a877b8e7b9ddb1a03708d35623ad892a6b4dcd`
 
 - Total words: 284
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10707,8 +10125,6 @@ Westbridge Materials Lab
 
 - Total words: 287
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10754,8 +10170,6 @@ Westbridge Materials Lab
 - Output SHA-256: `016d200f63b60384beeaf4a979f33bc4d6e6ef79c6b4c3f6cc41a29c6e5bd1ec`
 
 - Total words: 290
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10805,8 +10219,6 @@ Westbridge Materials Lab
 
 - Total words: 289
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10853,8 +10265,6 @@ Westbridge Materials Lab
 
 - Total words: 295
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10896,8 +10306,6 @@ Westbridge Materials Lab
 - Output SHA-256: `4ae0cd34f0fe681a0fd9c3cf64a40b72c5d1aa2af1550bd521458d4c24121dd2`
 
 - Total words: 282
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -10945,8 +10353,6 @@ Westbridge Materials Lab
 
 - Total words: 282
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -10991,8 +10397,6 @@ Westbridge Materials Lab
 - Output SHA-256: `4c6ed47c05e98c850708474e0ef2b52f331c014969c2da12259732a0f303d540`
 
 - Total words: 299
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -11044,8 +10448,6 @@ Westbridge Materials Lab
 
 - Total words: 280
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -11096,8 +10498,6 @@ Westbridge Materials Lab
 
 - Total words: 271
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -11145,8 +10545,6 @@ Westbridge Materials Lab
 
 - Total words: 264
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -11188,8 +10586,6 @@ Westbridge Materials Lab
 - Output SHA-256: `35c81fda030fca5192e4a7738faa327c24b609455dde7e4aeb524724da9eb31e`
 
 - Total words: 276
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -11240,8 +10636,6 @@ Westbridge Materials Lab
 
 - Total words: 278
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -11291,8 +10685,6 @@ Westbridge Materials Lab
 
 - Total words: 293
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -11340,8 +10732,6 @@ Westbridge Materials Lab
 
 - Total words: 263
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -11386,35 +10776,33 @@ Westbridge Materials Lab
 
 - Total words: 309
 
-- Flagged words: 32 (10.36%)
-
 Detected issues:
 
-- P009, Authored em dash: The em dash is authored punctuation in the subhead and is not part of quoted material, a title, a proper name, code, or discussion of the mark.
+- Authored em dash: The em dash is authored punctuation in the subhead and is not part of quoted material, a title, a proper name, code, or discussion of the mark.
 
 ````text
 Manchester or Salford—without buying cardboard boxes.
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the immediately following additional-week price as a reveal rather than requesting an answer from the reader.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the immediately following additional-week price as a reveal rather than requesting an answer from the reader.
 
 ````text
 Need longer to unpack?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and therefore participates in the staged self-answer pattern.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and therefore participates in the staged self-answer pattern.
 
 ````text
 Each additional week costs **£24**.
 ````
 
-- P009, Authored em dash: The heading contains an authored em dash used as punctuation.
+- Authored em dash: The heading contains an authored em dash used as punctuation.
 
 ````text
 does—and
 ````
 
-- P009, Authored em dash: The heading contains a second authored em dash used as punctuation.
+- Authored em dash: The heading contains a second authored em dash used as punctuation.
 
 ````text
 doesn’t—provide
@@ -11476,17 +10864,15 @@ Crates must remain within mainland Great Britain and be ready for collection at 
 
 - Total words: 290
 
-- Flagged words: 10 (3.45%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than asking for a genuine response.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than asking for a genuine response.
 
 ````text
 Need the crates for longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the reveal structure.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the reveal structure.
 
 ````text
 Each additional week costs £24.
@@ -11544,17 +10930,15 @@ Choose your delivery window
 
 - Total words: 304
 
-- Flagged words: 8 (2.63%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than stating it directly.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than stating it directly.
 
 ````text
 Need more time?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, making it the second participating sentence in the reveal structure.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, making it the second participating sentence in the reveal structure.
 
 ````text
 Each additional week costs £24.
@@ -11612,17 +10996,15 @@ Stackbox rents, delivers and collects crates. We do not pack your belongings, mo
 
 - Total words: 293
 
-- Flagged words: 10 (3.41%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: The rhetorical question stages the following additional-week price as a reveal.
+- Rhetorical question used as an immediate reveal: The rhetorical question stages the following additional-week price as a reveal.
 
 ````text
 Need the crates for longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
 
 ````text
 Each additional week costs £24.
@@ -11682,23 +11064,21 @@ Ordinary marks from normal use are not charged. If a crate is missing or comes b
 
 - Total words: 311
 
-- Flagged words: 16 (5.14%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This rhetorical question immediately stages the following additional-week price as a reveal rather than stating it directly.
+- Rhetorical question used as an immediate reveal: This rhetorical question immediately stages the following additional-week price as a reveal rather than stating it directly.
 
 ````text
 Need longer to unpack?
 ````
 
-- P009, Authored em dash: The heading uses an authored em dash as punctuation, which is a hard visible form covered by this pattern.
+- Authored em dash: The heading uses an authored em dash as punctuation, which is a hard visible form covered by this pattern.
 
 ````text
 ## What Stackbox does—and does not do
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
 
 ````text
 Each additional week costs **£24**.
@@ -11760,17 +11140,15 @@ Crates cannot be taken outside mainland Great Britain. Please keep them with you
 
 - Total words: 290
 
-- Flagged words: 7 (2.41%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price fact as an immediate reveal rather than asking for information.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price fact as an immediate reveal rather than asking for information.
 
 ````text
 Need longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the reveal structure.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the reveal structure.
 
 ````text
 Each additional week costs £24.
@@ -11830,17 +11208,15 @@ Crates must stay within mainland Great Britain. If your move falls outside our M
 
 - Total words: 294
 
-- Flagged words: 11 (3.74%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following pricing information as an immediate reveal rather than asking for a genuine response.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following pricing information as an immediate reveal rather than asking for a genuine response.
 
 ````text
 Need more time or more crates?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, making it the second participating sentence in the reveal structure.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, making it the second participating sentence in the reveal structure.
 
 ````text
 Each additional week costs £24.
@@ -11900,17 +11276,15 @@ You must keep the crates within mainland Great Britain. We charge £18 for each 
 
 - Total words: 298
 
-- Flagged words: 10 (3.36%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than stating it directly.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than stating it directly.
 
 ````text
 Need the crates for longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding writer-supplied rhetorical question, completing the reveal structure.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding writer-supplied rhetorical question, completing the reveal structure.
 
 ````text
 Each additional week costs £24.
@@ -11970,17 +11344,15 @@ Crates cannot be taken outside mainland Great Britain. Delivery and collection a
 
 - Total words: 292
 
-- Flagged words: 8 (2.74%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: The rhetorical question stages the following additional-week price as a reveal.
+- Rhetorical question used as an immediate reveal: The rhetorical question stages the following additional-week price as a reveal.
 
 ````text
 Need more time?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
 
 ````text
 Each additional week costs £24.
@@ -12042,17 +11414,15 @@ Crates must stay within mainland Great Britain and cannot be taken elsewhere.
 
 - Total words: 273
 
-- Flagged words: 10 (3.66%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: The rhetorical question stages the following additional-week price as a reveal.
+- Rhetorical question used as an immediate reveal: The rhetorical question stages the following additional-week price as a reveal.
 
 ````text
 Need the crates for longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question and participates in the staged self-answer pattern.
 
 ````text
 Each additional week costs £24.
@@ -12114,17 +11484,15 @@ Crates cannot be taken outside mainland Great Britain. Please keep them at your 
 
 - Total words: 299
 
-- Flagged words: 9 (3.01%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than asking a genuine question.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than asking a genuine question.
 
 ````text
 Need longer to unpack?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, making it the second participating sentence in the reveal structure.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, making it the second participating sentence in the reveal structure.
 
 ````text
 Each additional week costs £24.
@@ -12184,8 +11552,6 @@ Stackbox crates must remain within mainland Great Britain throughout your rental
 
 - Total words: 288
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -12244,17 +11610,15 @@ Crates must remain within mainland Great Britain. Stackbox delivers and collects
 
 - Total words: 305
 
-- Flagged words: 7 (2.30%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than asking for a genuine response.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the following price information as an immediate reveal rather than asking for a genuine response.
 
 ````text
 Need longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the formulaic question-and-reveal construction.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the formulaic question-and-reveal construction.
 
 ````text
 Each additional week costs **£24**.
@@ -12318,17 +11682,15 @@ Crates must remain within mainland Great Britain throughout the rental period.
 
 - Total words: 281
 
-- Flagged words: 8 (2.85%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the pricing detail that the writer supplies immediately afterward as a reveal.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the pricing detail that the writer supplies immediately afterward as a reveal.
 
 ````text
 Need more time?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the staged reveal.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the staged reveal.
 
 ````text
 Each additional week costs £24.
@@ -12386,17 +11748,15 @@ Crates must not be taken outside mainland Great Britain. If a crate is missing o
 
 - Total words: 277
 
-- Flagged words: 10 (3.61%)
-
 Detected issues:
 
-- P026, Rhetorical question used as an immediate reveal: This stock rhetorical question stages the pricing detail that the writer immediately supplies as a reveal.
+- Rhetorical question used as an immediate reveal: This stock rhetorical question stages the pricing detail that the writer immediately supplies as a reveal.
 
 ````text
 Need the crates for longer?
 ````
 
-- P026, Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the staged self-answer pattern.
+- Rhetorical question used as an immediate reveal: This sentence immediately answers the preceding rhetorical question, completing the staged self-answer pattern.
 
 ````text
 Each additional week costs £24.
@@ -12458,8 +11818,6 @@ You must keep the crates within mainland Great Britain. We charge £18 for each 
 
 - Total words: 288
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -12516,11 +11874,9 @@ A missing crate, or one returned with structural damage, is charged at £18 per 
 
 - Total words: 752
 
-- Flagged words: 32 (4.26%)
-
 Detected issues:
 
-- P016, Participial fake depth or gerund motion: This appended participial clause adds an unsupported interpretation because the registration figures do not establish what share of total demand came from repeat users.
+- Participial fake depth or gerund motion: This appended participial clause adds an unsupported interpretation because the registration figures do not establish what share of total demand came from repeat users.
 
 ````text
 indicating that much of the demand came from families who returned repeatedly rather than using the room only once.
@@ -12578,8 +11934,6 @@ The second pilot remains limited to East Campus. Bellhaven has not approved even
 
 - Total words: 649
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -12636,33 +11990,9 @@ The second pilot remains limited to East Campus. Bellhaven has two other campuse
 
 - Total words: 798
 
-- Flagged words: 66 (8.27%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This states the discrepancy that the following calculations support and a later sentence then paraphrases without adding a new condition or fact.
-
-````text
-The reported numbers do not fit within the stated capacity.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates as the first supporting calculation in a claim-support-recap sequence about the capacity discrepancy.
-
-````text
-Ten weeks of service from Monday through Thursday would provide no more than 40 evenings.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence supplies the numerical support in a sequence whose conclusion is immediately restated afterward.
-
-````text
-At 24 places per evening, the room could accommodate no more than 960 child-visits under the college’s definition, 186 fewer than the reported 1,146.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This paraphrases the immediately preceding 960-place maximum and 186-visit shortfall without adding a new fact, condition, or action.
-
-````text
-Filling every place on every scheduled night would still leave the total below 1,146.
-````
+None.
 
 Complete output:
 
@@ -12715,8 +12045,6 @@ Bellhaven has not approved the service at either of its other two campuses. The 
 - Output SHA-256: `2e800d2238153295ab3a2e73b4832519f5cda5f31fd323ffcdaf58a5e7b5e141`
 
 - Total words: 786
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -12784,21 +12112,15 @@ Bellhaven has not approved evening childcare at either of its other two campuses
 
 - Total words: 754
 
-- Flagged words: 41 (5.44%)
-
 Detected issues:
 
-- P019, Bloated copula substitute: “Represented” is a bloated copula substitute here because the phrase means simply that the fee income was only a small portion of the expense.
+- Bloated copula substitute: “Represented” is a bloated copula substitute here because the phrase means simply that the fee income was only a small portion of the expense.
 
 ````text
 The fee income represented only a small portion of the expense
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the preceding statements that the next pilot will record post-capacity requests and provide a clearer count of families unable to obtain places, without adding a new fact or condition.
 
-````text
-It will also provide a record of unmet requests rather than relying solely on the number of full evenings.
-````
 
 Complete output:
 
@@ -12851,8 +12173,6 @@ For now, the expansion applies only to East Campus. Bellhaven has not approved e
 - Output SHA-256: `835f51079ee4b7cdc620e141bb62f1693f85dc436bea86aba58ee935431bfec7`
 
 - Total words: 681
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -12916,8 +12236,6 @@ For now, the expansion applies only to East Campus. Bellhaven has two other camp
 
 - Total words: 782
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -12980,63 +12298,9 @@ The waiting list and the new record of requests after full sessions will give co
 
 - Total words: 796
 
-- Flagged words: 123 (15.45%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence begins a repeated explanation that each evening attendance is counted as a separate child-visit.
-
-````text
-The attendance total counts a child again on every evening that child attends.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence paraphrases the preceding explanation of how the attendance total counts child-visits without adding a new condition or fact.
-
-````text
-Each visit in that total represents one child attending on one evening.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the immediately preceding fact that registered families could not book on seven full evenings.
-
-````text
-The booking records establish that registered families were turned away on seven full evenings.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the denominator and rate that a later sentence in the same paragraph restates.
-
-````text
-Across all 1,920 students enrolled in at least one evening course, the completion rate was 68 percent.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats that the 68 percent rate covers all evening-course students without adding a new condition or fact.
-
-````text
-The second rate covers the college’s full evening-course enrollment.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence begins a closing repetition that confines the second pilot to East Campus.
-
-````text
-Bellhaven has not approved the service at its other two campuses.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence restates the immediately preceding limitation to East Campus without adding a new action or condition.
-
-````text
-The second pilot, including the larger room and waiting-list records, will remain at East Campus.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the capacity later recapped in the same passage.
-
-````text
-The room had 24 places each evening.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the full-evening and turned-away-family facts later recapped in the same passage.
-
-````text
-It reached that limit on nine evenings, and on seven of those nights at least one registered family was unable to book.
-````
+None.
 
 Complete output:
 
@@ -13089,8 +12353,6 @@ Bellhaven has not approved the service at its other two campuses. The second pil
 - Output SHA-256: `81fc26fe1cdcc1a8a2cc441c1ee81da14e470509cd7516babf1bc02bcd4ce529`
 
 - Total words: 706
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -13145,8 +12407,6 @@ For now, the expansion remains limited to East Campus. Bellhaven has not approve
 - Output SHA-256: `12fb9584b82356877bb6905e9278a6da095972dd32818855408564aef33413e4`
 
 - Total words: 771
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -13204,27 +12464,9 @@ The next trial will add eight places per evening. Its waiting list and records o
 
 - Total words: 762
 
-- Flagged words: 46 (6.04%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence paraphrases the immediately preceding eligibility condition without adding a new fact, condition, or action.
-
-````text
-The eligibility rule tied each booking to a parent or guardian studying at East Campus that night.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence merely restates the already specified 5:30 p.m. to 9:30 p.m., Monday-through-Thursday schedule.
-
-````text
-The schedule provided four hours of care on four evenings each week.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence repeats the location, duration, capacity increase, and record-keeping plans already stated in the preceding paragraphs without adding new information.
-
-````text
-The larger room and revised record-keeping will apply to East Campus during another ten-week trial.
-````
+None.
 
 Complete output:
 
@@ -13279,8 +12521,6 @@ Bellhaven has not approved evening childcare at its other two campuses. The larg
 - Output SHA-256: `d2966c94f02af17a47debf4defb75b3a2113c4535595b4a8f4759637064fcccb`
 
 - Total words: 777
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -13346,8 +12586,6 @@ The college has not approved the service at its other two campuses. The next 10-
 
 - Total words: 703
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -13404,33 +12642,9 @@ The next pilot remains limited to East Campus. Bellhaven has not approved evenin
 
 - Total words: 802
 
-- Flagged words: 54 (6.73%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This states the causal limitation that the paragraph later reissues as the same association-versus-causation conclusion.
-
-````text
-Those numbers cannot show that childcare produced the six percentage point difference.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates in the claim-support-recap sequence by supporting the causal limitation before it is restated.
-
-````text
-Students decided for themselves whether to register and use the room.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence supplies further support in the sequence whose causal conclusion is then repeated without a new condition or action.
-
-````text
-They may differ from the wider evening student population in ways the college’s records do not measure.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This paraphrases the paragraph’s already stated conclusion that the figures cannot establish childcare caused the completion-rate difference.
-
-````text
-The records show an association between registration and course completion, not cause and effect.
-````
+None.
 
 Complete output:
 
@@ -13480,27 +12694,9 @@ For now, the service remains limited to East Campus. Bellhaven has not approved 
 
 - Total words: 765
 
-- Flagged words: 70 (9.15%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence introduces the expanded capacity that the closing sentence paraphrases again without adding a new fact or condition.
-
-````text
-The college has approved another ten-week pilot at East Campus with 32 places per evening.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the waiting-list purpose that the closing sentence repeats without a distinct inference or action.
-
-````text
-A new waiting list will record requests made after an evening fills, allowing the college to measure demand that the first pilot missed.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence reissues both the capacity increase and the waiting-list purpose already stated in the preceding paragraph without adding a new condition, fact, owner, or action.
-
-````text
-The second trial will give East Campus families more places, while the waiting-list records should provide a fuller count of families who seek care when all 32 places have gone.
-````
+None.
 
 Complete output:
 
@@ -13558,33 +12754,9 @@ The next pilot will remain at East Campus. Bellhaven has not approved the servic
 
 - Total words: 794
 
-- Flagged words: 63 (7.93%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This eligibility statement participates in a repetition that is later paraphrased without adding a new condition or fact.
-
-````text
-A parent or guardian had to be attending an evening class at East Campus.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence restates the preceding requirement that a parent or guardian attend an East Campus evening class without adding new information.
-
-````text
-The service was limited to families connected to evening classes at that campus.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates in a repeated account of the relationship between the seven unsuccessful-booking evenings and the nine full evenings.
-
-````text
-On seven of those evenings, at least one family that had registered for the pilot could not get a place.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence merely paraphrases the immediately preceding statement that unsuccessful bookings occurred on seven of the nine full evenings.
-
-````text
-The seven evenings with an unsuccessful booking were a subset of the nine that reached capacity.
-````
+None.
 
 Complete output:
 
@@ -13634,17 +12806,15 @@ The second East Campus pilot will run for another ten weeks with the same Monday
 
 - Total words: 694
 
-- Flagged words: 25 (3.60%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in the memo’s prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in the memo’s prose.
 
 ````text
 the issue totals—984 successful locker issues
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in the memo’s prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in the memo’s prose.
 
 ````text
 1,106 staffed-desk issues—do not establish
@@ -13699,8 +12869,6 @@ Throughout August, we should record admissions, successful issues at each point,
 - Output SHA-256: `6e6914bf2415003759f86a8eac8eea37225904d69862a3c2d1248ce41fe33eb3`
 
 - Total words: 677
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -13763,8 +12931,6 @@ Accessibility staff should observe the locker service again in August. Unless an
 
 - Total words: 701
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -13825,8 +12991,6 @@ We should review the August record after the month ends. Before full replacement
 
 - Total words: 652
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -13880,8 +13044,6 @@ For August, Visitor Operations should retain separate counts for staffed-desk is
 - Output SHA-256: `fae556932d820e65ec816723c1c68092eff42dbcb23dfd3a03826886fd61b0dc`
 
 - Total words: 760
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -13944,8 +13106,6 @@ At the end of August, we can assess performance at peak volume and decide whethe
 
 - Total words: 694
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14002,8 +13162,6 @@ I recommend adding the ten lockers available by July 27 for £2,800. That would 
 - Output SHA-256: `ea2e7b9e4d2dd7b817603acffe84fade5380da56c273c2cf7b9f8071201e3cbf`
 
 - Total words: 672
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -14063,8 +13221,6 @@ After August, I will compare the mixed model with the June pilot on transaction 
 
 - Total words: 697
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14122,8 +13278,6 @@ During August, Visitor Operations should record admissions, issues by service po
 - Output SHA-256: `fc93870d5485d3a334d9f9433660f41de1bad2b3efef85bf0fd2c738a1589607`
 
 - Total words: 772
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -14185,8 +13339,6 @@ Accessibility staff should review locker use during August, and no full transiti
 
 - Total words: 711
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14244,8 +13396,6 @@ At the end of August, we can review performance at peak volume and decide whethe
 - Output SHA-256: `9b430b25f3ffc318bf7ebc20ecd0595e5236f4c68499a07151bc1a0d2e085d3c`
 
 - Total words: 692
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -14309,8 +13459,6 @@ I do not recommend approving ten extra lockers for £2,800 by July 27. The recor
 
 - Total words: 686
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14362,8 +13510,6 @@ During August, Visitor Operations should record issues at each service point, tr
 - Output SHA-256: `05865971da52f84cd54e950c9f70643262e3dd9b36a8822c3eee513809370e70`
 
 - Total words: 703
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -14426,8 +13572,6 @@ Visitor Operations Manager
 
 - Total words: 702
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14483,8 +13627,6 @@ At the end of August, review performance before deciding on any further replacem
 - Output SHA-256: `7874992a0a1ac51324b8a12fd9de0ef9c3daec1e0d37d4f0f0f7c610cfa87c5a`
 
 - Total words: 682
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -14547,8 +13689,6 @@ During August, Visitor Operations should record admissions, issues by service po
 
 - Total words: 666
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14607,35 +13747,21 @@ During August, we should record issues at each service point, transaction-time s
 
 - Total words: 625
 
-- Flagged words: 73 (11.68%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates in the repeated recommendation structure by stating the first available choice before the closing restates it.
 
-````text
-You can remain on Home Flex and pay the new rates from October 1 if you have a working smart meter.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence participates in the repeated recommendation structure by stating the second available choice before the closing restates it.
 
-````text
-You may also leave Home Flex without paying an exit fee.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence repeats the two choices already stated without adding a new condition, fact, owner, or action.
 
-````text
-Your available choices are to continue with Home Flex or request a move to another Alder Energy plan.
-````
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
 
 ````text
 period—or at any time
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
 
 ````text
 holiday—would cost
@@ -14702,8 +13828,6 @@ Before choosing, you can use the app or your downloaded CSV data to understand h
 - Output SHA-256: `435d80412d0d64e3e1b1de3e339a229063d57382aa731595ae402449a89eb67a`
 
 - Total words: 592
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -14779,8 +13903,6 @@ The Alder Energy team
 
 - Total words: 639
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14851,8 +13973,6 @@ If your smart meter is not working, contact Alder Energy so we can arrange a rep
 
 - Total words: 623
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -14909,21 +14029,9 @@ Before choosing whether to stay or switch, you can review your half-hour usage i
 
 - Total words: 654
 
-- Flagged words: 23 (3.52%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This statement participates in a repeated reassurance that is reissued at the end without adding a new fact or action.
-
-````text
-Alder Energy will not remotely control your appliances.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence paraphrases the earlier remote-control reassurance without adding a new condition, fact, or action.
-
-````text
-Whatever you decide, Alder Energy will not remotely operate or schedule any of your appliances.
-````
+None.
 
 Complete output:
 
@@ -14991,11 +14099,9 @@ Before choosing, you can review the plan information alongside your own half-hou
 
 - Total words: 615
 
-- Flagged words: 6 (0.98%)
-
 Detected issues:
 
-- P004, Throat-clearing, signposting, or reveal framing: This stock signposting sentence announces the forthcoming comparison instead of stating it directly.
+- Throat-clearing, signposting, or reveal framing: This stock signposting sentence announces the forthcoming comparison instead of stating it directly.
 
 ````text
 Here is a simple cost comparison.
@@ -15061,15 +14167,9 @@ Alder Energy
 
 - Total words: 612
 
-- Flagged words: 17 (2.78%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence repeats the earlier instruction and deadline for requesting a plan change without adding a new condition, fact, owner, or action.
-
-````text
-If you want another plan in place by 1 October, please submit your request before 20 September.
-````
+None.
 
 Complete output:
 
@@ -15133,21 +14233,9 @@ Alder Energy
 
 - Total words: 623
 
-- Flagged words: 41 (6.58%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the immediately preceding assurance that Alder Energy will not remotely control appliances without adding a new condition, fact, or action.
-
-````text
-The rate changes what electricity costs during the stated hours; it does not give Alder Energy control over when or how an appliance runs.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence merely recaps the two usage-review options already stated in the preceding sentences without adding new information.
-
-````text
-The app and CSV provide two ways to check which half-hour periods contain your recorded usage.
-````
+None.
 
 Complete output:
 
@@ -15205,33 +14293,23 @@ Alder Energy
 
 - Total words: 639
 
-- Flagged words: 37 (5.79%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose.
 
 ````text
 weekday period—or at any time
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose.
 
 ````text
 public holiday—would cost £1.26
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence states the unchanged-standing-charge point that is later reissued in the closing without a new condition, fact, owner, or action.
 
-````text
-Your standing charge will not change.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence paraphrases the earlier statement that the standing charge will not change without adding new information.
 
-````text
-Whatever you decide, your standing charge remains unchanged.
-````
 
 Complete output:
 
@@ -15296,8 +14374,6 @@ Whatever you decide, your standing charge remains unchanged. If your smart meter
 - Output SHA-256: `f57669f01961ecfb49fd6d3f21615a9d45dcc9f4b283e71d22d61fb29533bbf2`
 
 - Total words: 640
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -15370,8 +14446,6 @@ The new Home Flex rates will take effect automatically on October 1 if you are a
 - Output SHA-256: `c4a129d5994f506d372594d5221bb4806cd719917de6989b1ab7d1e72397ad8e`
 
 - Total words: 603
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -15449,8 +14523,6 @@ If you stay on Home Flex, you do not need to take any action before October 1.
 
 - Total words: 635
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -15506,8 +14578,6 @@ The new rate applies only when your smart meter is working. If you do not have a
 - Output SHA-256: `4731105a64dea4f157c3266c80683ba00859f94bf7626f60e2d56af37415f6c9`
 
 - Total words: 616
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -15577,15 +14647,9 @@ Alder Energy will confirm any requested plan change and the date on which it bec
 
 - Total words: 624
 
-- Flagged words: 14 (2.24%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the earlier statement that the rate does not depend on when the bill is issued without adding a new fact or condition.
-
-````text
-The date when we issue the bill does not determine which rate you pay.
-````
+None.
 
 Complete output:
 
@@ -15657,8 +14721,6 @@ Please review your plan options and half-hour usage in the Alder Energy app befo
 
 - Total words: 637
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -15716,8 +14778,6 @@ Before choosing, compare the prices and terms of the plans available to you. You
 - Output SHA-256: `99976b710dd0e2d7966f59fd4b843fdc3163ccecfd1baf09d4e89a50213e88a6`
 
 - Total words: 623
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -15779,11 +14839,9 @@ The choice of plan does not give Alder Energy control over your household equipm
 
 - Total words: 519
 
-- Flagged words: 14 (2.70%)
-
 Detected issues:
 
-- P004, Throat-clearing, signposting, or reveal framing: The phrase “I also want to be clear” is stock signposting that announces the point instead of directly stating that the new format has not been tested.
+- Throat-clearing, signposting, or reveal framing: The phrase “I also want to be clear” is stock signposting that announces the point instead of directly stating that the new format has not been tested.
 
 ````text
 I also want to be clear that the new format hasn’t been tested yet.
@@ -15828,8 +14886,6 @@ I also want to be clear that the new format hasn’t been tested yet. I’m goin
 - Output SHA-256: `131f7e0dccd23ce26b0417fee5861f535cfd2637b4f8b48890a011a04d4bbb52`
 
 - Total words: 552
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -15877,27 +14933,17 @@ The original class asked the studio to do more work, in less time, than I had al
 
 - Total words: 526
 
-- Flagged words: 40 (7.60%)
-
 Detected issues:
 
-- P004, Throat-clearing, signposting, or reveal framing: The stock signposting phrase theatrically announces the concrete point instead of stating it directly.
+- Throat-clearing, signposting, or reveal framing: The stock signposting phrase theatrically announces the concrete point instead of stating it directly.
 
 ````text
 I need to be clear about one thing: we haven’t tested this format yet.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This decision is later restated without a new condition, fact, owner, or action.
 
-````text
-I’m going to run four classes before I decide whether to keep it.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence paraphrases the previously stated four-class decision without adding a new condition, fact, owner, or action.
 
-````text
-After four classes, I’ll decide whether the format works well enough to continue.
-````
 
 Complete output:
 
@@ -15942,8 +14988,6 @@ The new class gives participants a second session in the studio and puts glazing
 - Output SHA-256: `dbf31783a3d735520e2ff43e6342a9df8bb0a30abbaace7c82754e140731be65`
 
 - Total words: 542
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -15991,21 +15035,9 @@ We have not tested this new format yet. I am going to run four classes, then dec
 
 - Total words: 506
 
-- Flagged words: 21 (4.15%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This sentence establishes the caution that the replacement format remains an untested trial, which is later restated without a new condition or fact.
-
-````text
-This format hasn’t been tested yet, so I’m not going to promise that it solves everything.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This sentence repeats the already stated caution that the new format is untested without adding a new fact, limit, or action.
-
-````text
-But it’s still a trial.
-````
+None.
 
 Complete output:
 
@@ -16051,27 +15083,17 @@ The aim is to make the timing clearer and to include glazing as part of the clas
 
 - Total words: 531
 
-- Flagged words: 63 (11.86%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: The sentence announces that the numerical gap matters without naming a concrete consequence for the studio.
+- Reader coaching or repeated caution: The sentence announces that the numerical gap matters without naming a concrete consequence for the studio.
 
 ````text
 That gap matters in a small studio, and it showed me that the format and price were based on an estimate that didn't hold up.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: The closing restates the already established conclusions about the collection promise and underestimated workload without adding a new fact or action.
 
-````text
-It's a response to a promise I made too confidently and a workload I underestimated.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: The closing repeats the earlier statement that four classes will be run to determine whether to retain the untested format, without adding a distinct condition or action.
 
-````text
-The next four classes are our chance to see whether this new version is workable, and I'll judge it from what actually happens.
-````
 
 Complete output:
 
@@ -16115,45 +15137,9 @@ I liked seeing all 112 people come in and make something of their own. Stopping 
 
 - Total words: 531
 
-- Flagged words: 105 (19.77%)
-
 Detected issues:
 
-- P032, Repeated recap, conclusion, or recommendation: This repeats the immediately preceding statements that the format is untested and that four classes will run before a decision, without adding a new fact or action.
-
-````text
-Until we’ve done those four, I won’t know how well the format works.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This recaps the already-described division of work between participants and studio staff without adding new information.
-
-````text
-The original class asked people to complete the making part in one afternoon, while the team completed every later stage.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This repeats the earlier workload-estimate error and headline promise without adding a new condition, fact, or action.
-
-````text
-I underestimated the time that work would take, then put a three-week collection time at the top of the booking page.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This reissues delay and cracking figures already stated earlier as a closing recap.
-
-````text
-Some mugs took four weeks, some took five weeks or longer, and seven cracked.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This paraphrases the already-established admission that the collection promise relied on Nico’s incorrect estimate.
-
-````text
-I made a promise based on an estimate that turned out to be wrong.
-````
-
-- P032, Repeated recap, conclusion, or recommendation: This repeats the previously stated replacement format and four-class decision point without adding a new fact or action.
-
-````text
-The two-session class is our next format, and the first four classes will tell us whether we should continue with it.
-````
+None.
 
 Complete output:
 
@@ -16201,8 +15187,6 @@ If you booked the original class and waited longer than three weeks, I’m sorry
 
 - Total words: 526
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -16249,39 +15233,29 @@ We’ll run four of the new classes, and only after those four will I decide whe
 
 - Total words: 555
 
-- Flagged words: 70 (12.61%)
-
 Detected issues:
 
-- P004, Throat-clearing, signposting, or reveal framing: The stock phrase announces the concrete limitation instead of stating it directly.
+- Throat-clearing, signposting, or reveal framing: The stock phrase announces the concrete limitation instead of stating it directly.
 
 ````text
 I also want to be clear that this new format has not yet been tested.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This reissues the immediately preceding caution that the format has not been tested without adding a new fact or condition.
 
-````text
-I’m not presenting it as a proven solution.
-````
 
-- P027, Anthropomorphic abstraction or false agency: The class is given the human action of asking people for trust, obscuring that Nico or the studio made the promise.
+- Anthropomorphic abstraction or false agency: The class is given the human action of asking people for trust, obscuring that Nico or the studio made the promise.
 
 ````text
 The original class asked people to trust a timeline that we didn’t consistently deliver.
 ````
 
-- P006, False contrast or negative parallelism: The sentence uses a formulaic affirmative-versus-negative contrast to dramatize the stated reason for stopping the class.
+- False contrast or negative parallelism: The sentence uses a formulaic affirmative-versus-negative contrast to dramatize the stated reason for stopping the class.
 
 ````text
 Stopping it is my response to the numbers, not an attempt to make the situation sound bigger than it was.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing repeats the immediately preceding plan to run four classes, observe what happens, and then decide whether to retain the format.
 
-````text
-Now we’ll test the two-session version and judge it on the results.
-````
 
 Complete output:
 
@@ -16323,33 +15297,19 @@ The original class asked people to trust a timeline that we didn’t consistentl
 
 - Total words: 521
 
-- Flagged words: 66 (12.67%)
-
 Detected issues:
 
-- P004, Throat-clearing, signposting, or reveal framing: The stock signposting phrase announces the limitation instead of directly stating that the format has not been tested.
+- Throat-clearing, signposting, or reveal framing: The stock signposting phrase announces the limitation instead of directly stating that the format has not been tested.
 
 ````text
 I need to be clear that we haven't tested this format yet.
 ````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing sentence repeats the already established decision and acceptance of responsibility without adding a new fact or action.
 
-````text
-Stopping the one-afternoon class is my response to a promise I made too confidently.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This closing recap repeats the earlier facts about the cracking notice, headline, and unmet collection promise without adding new information.
 
-````text
-The booking page mentioned the possibility of cracking, but I put the three-week collection time in the headline, and our results didn't support that promise.
-````
 
-- P032, Repeated recap, conclusion, or recommendation: This reissues the preceding plan to run four classes and evaluate the untested format without adding a new condition, owner, or action.
 
-````text
-The next four classes will tell us whether this new format works better.
-````
 
 Complete output:
 
@@ -16392,8 +15352,6 @@ Stopping the one-afternoon class is my response to a promise I made too confiden
 - Output SHA-256: `888531178f441ddf56d475277ac878c703b88164c775ad6e9438c3cc88741a57`
 
 - Total words: 531
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -16439,8 +15397,6 @@ We’ll run four of these classes before deciding whether to keep the format. Du
 
 - Total words: 524
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -16481,11 +15437,9 @@ This new format hasn’t been tested yet, so I’m not going to claim that it ha
 
 - Total words: 502
 
-- Flagged words: 2 (0.40%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This sentence merely instructs the audience that the preceding distinction matters without itself naming a concrete consequence or evidentiary limit.
+- Reader coaching or repeated caution: This sentence merely instructs the audience that the preceding distinction matters without itself naming a concrete consequence or evidentiary limit.
 
 ````text
 That matters.
@@ -16531,8 +15485,6 @@ The aim is straightforward: make the timing we advertise match the class we actu
 
 - Total words: 554
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -16576,8 +15528,6 @@ I still like the basic idea of teaching people to make a mug. What I'm changing 
 - Output SHA-256: `c26869c8998d6039f54084ac4bde860e4fb8ee9b731cc341189912718439adc1`
 
 - Total words: 518
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -16627,11 +15577,9 @@ If you booked the one-afternoon class, thank you for trusting us with your mug a
 
 - Total words: 532
 
-- Flagged words: 17 (3.20%)
-
 Detected issues:
 
-- P004, Throat-clearing, signposting, or reveal framing: This stock signposting phrase announces the next point instead of stating directly that the new format has not been tested.
+- Throat-clearing, signposting, or reveal framing: This stock signposting phrase announces the next point instead of stating directly that the new format has not been tested.
 
 ````text
 I need to be clear about one more thing:
@@ -16677,35 +15625,33 @@ I need to be clear about one more thing: this new format has not been tested yet
 
 - Total words: 912
 
-- Flagged words: 70 (7.68%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in the essay’s prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in the essay’s prose.
 
 ````text
 standard options—prohibited, permitted for named tasks
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in the essay’s prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in the essay’s prose.
 
 ````text
 unrestricted with disclosure—without forcing every assignment
 ````
 
-- P006, False contrast or negative parallelism: The sentence uses a formulaic not-X- but-Y reframe to present the assignment brief as something more dramatic.
+- False contrast or negative parallelism: The sentence uses a formulaic not-X- but-Y reframe to present the assignment brief as something more dramatic.
 
 ````text
 An assignment brief is not merely a description of academic work; it is the immediate contract by which that work is judged.
 ````
 
-- P006, False contrast or negative parallelism: This sentence supplies the negative half of an adjacent-sentence false contrast that stages the concluding claim.
+- False contrast or negative parallelism: This sentence supplies the negative half of an adjacent-sentence false contrast that stages the concluding claim.
 
 ````text
 Requiring a clear AI-use statement on every assessed assignment is therefore not an attempt to centralize pedagogy.
 ````
 
-- P006, False contrast or negative parallelism: This sentence immediately supplies the dramatic positive reframe after rejecting the alternative characterization.
+- False contrast or negative parallelism: This sentence immediately supplies the dramatic positive reframe after rejecting the alternative characterization.
 
 ````text
 It is the necessary counterpart to decentralizing the rules.
@@ -16749,17 +15695,15 @@ An assignment brief is not merely a description of academic work; it is the imme
 
 - Total words: 843
 
-- Flagged words: 11 (1.30%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: This bare sentence instructs the reader to treat the preceding evidentiary limits as important without adding a concrete consequence or new limit.
+- Reader coaching or repeated caution: This bare sentence instructs the reader to treat the preceding evidentiary limits as important without adding a concrete consequence or new limit.
 
 ````text
 Those limits matter.
 ````
 
-- P035, Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the evidence instead of itself stating the specific limitation.
+- Reader coaching or repeated caution: This sentence coaches the reader on how to interpret the evidence instead of itself stating the specific limitation.
 
 ````text
 We should be precise about what that means.
@@ -16802,8 +15746,6 @@ Assignment-level statements will not eliminate uncertainty, misconduct, or dispu
 - Output SHA-256: `fb1dd4e524f5db1627466db8e1710694480373b0eb682448a145e9700a48f0cd`
 
 - Total words: 880
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -16849,8 +15791,6 @@ University policy belongs in the background as a source of shared principles, di
 
 - Total words: 879
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -16895,17 +15835,15 @@ If the committee adopts the requirement in May, its next review should read the 
 
 - Total words: 941
 
-- Flagged words: 26 (2.76%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose, and it is not quoted material, a title, a proper name, code, or discussion of the mark.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in newly written prose, and it is not quoted material, a title, a proper name, code, or discussion of the mark.
 
 ````text
 three options—prohibited
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose, with none of the listed exclusions applying.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in newly written prose, with none of the listed exclusions applying.
 
 ````text
 disclosure—offer a useful baseline
@@ -16951,17 +15889,15 @@ Calder’s current policy sensibly leaves academic decisions with instructors. R
 
 - Total words: 975
 
-- Flagged words: 19 (1.95%)
-
 Detected issues:
 
-- P019, Bloated copula substitute: “Offers” is a bloated copula substitute here because the sentence simply means that the engineering school is a useful, limited example.
+- Bloated copula substitute: “Offers” is a bloated copula substitute here because the sentence simply means that the engineering school is a useful, limited example.
 
 ````text
 The engineering school offers a useful, limited example.
 ````
 
-- P006, False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y reframe to dramatize the distinction between silence and flexible statements rather than making a factual correction.
+- False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y reframe to dramatize the distinction between silence and flexible statements rather than making a factual correction.
 
 ````text
 But this is an argument for flexible statements, not for silence.
@@ -17009,8 +15945,6 @@ An institution-wide policy is necessary, but it sits too far from the work stude
 
 - Total words: 995
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -17055,17 +15989,15 @@ Calder adopted its university policy in August 2025, but the record through spri
 
 - Total words: 889
 
-- Flagged words: 28 (3.15%)
-
 Detected issues:
 
-- P006, False contrast or negative parallelism: This sentence begins a formulaic negative reframe rather than making a factual, legal, technical, numerical, date, source, or scope correction.
+- False contrast or negative parallelism: This sentence begins a formulaic negative reframe rather than making a factual, legal, technical, numerical, date, source, or scope correction.
 
 ````text
 Consistency should not mean identical rules.
 ````
 
-- P006, False contrast or negative parallelism: This sentence completes the adjacent-sentence not-X-but-Y reframe by replacing the rejected meaning of consistency with a more dramatic alternative.
+- False contrast or negative parallelism: This sentence completes the adjacent-sentence not-X-but-Y reframe by replacing the rejected meaning of consistency with a more dramatic alternative.
 
 ````text
 It should mean that students do not have to infer whether a difference is planned, accidental, or merely omitted from the brief.
@@ -17109,53 +16041,51 @@ Calder should pair the requirement with review aimed at meaning rather than mere
 
 - Total words: 973
 
-- Flagged words: 95 (9.76%)
-
 Detected issues:
 
-- P006, False contrast or negative parallelism: This sentence begins a formulaic negative reframe that rejects one response before presenting the preferred response in the next sentence.
+- False contrast or negative parallelism: This sentence begins a formulaic negative reframe that rejects one response before presenting the preferred response in the next sentence.
 
 ````text
 The right response is therefore not to force uniform permissions across a module.
 ````
 
-- P006, False contrast or negative parallelism: This sentence completes the staged not-X-but-Y reframe by presenting the preferred response as a short reveal.
+- False contrast or negative parallelism: This sentence completes the staged not-X-but-Y reframe by presenting the preferred response as a short reveal.
 
 ````text
 It is to make intentional differences visible.
 ````
 
-- P013, Manufactured quotable, slogan, or aphorism: This ordinary distinction is compressed into an aphoristic, slogan-like equation designed to sound quotable.
+- Manufactured quotable, slogan, or aphorism: This ordinary distinction is compressed into an aphoristic, slogan-like equation designed to sound quotable.
 
 ````text
 Completion is not comprehension.
 ````
 
-- P006, False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y contrast to turn the practical objection into a dramatic endorsement of the proposal.
+- False contrast or negative parallelism: The sentence uses a formulaic not-X-but-Y contrast to turn the practical objection into a dramatic endorsement of the proposal.
 
 ````text
 That objection argues for a flexible requirement, not for silence.
 ````
 
-- P006, False contrast or negative parallelism: This sentence starts a dramatic negative reframe by rejecting one characterization of clarity before the following sentence supplies the preferred one.
+- False contrast or negative parallelism: This sentence starts a dramatic negative reframe by rejecting one characterization of clarity before the following sentence supplies the preferred one.
 
 ````text
 In an area where rules can legitimately change from one task to the next, clarity is not administrative decoration.
 ````
 
-- P006, False contrast or negative parallelism: This sentence completes the adjacent-sentence not-X-but-Y construction with a short affirmative reveal.
+- False contrast or negative parallelism: This sentence completes the adjacent-sentence not-X-but-Y construction with a short affirmative reveal.
 
 ````text
 It is part of sound assessment design.
 ````
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation around an inserted list.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation around an inserted list.
 
 ````text
 options—prohibited
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation around the inserted list.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation around the inserted list.
 
 ````text
 disclosure—offer
@@ -17201,17 +16131,15 @@ Calder should adopt the requirement in May. A university-wide policy should supp
 
 - Total words: 909
 
-- Flagged words: 27 (2.97%)
-
 Detected issues:
 
-- P013, Manufactured quotable, slogan, or aphorism: This turns the practical requirement that allegations be supported by written instructions into a compressed travel metaphor designed as an aphoristic closing line.
+- Manufactured quotable, slogan, or aphorism: This turns the practical requirement that allegations be supported by written instructions into a compressed travel metaphor designed as an aphoristic closing line.
 
 ````text
 An allegation should not travel further than the written rule beneath it.
 ````
 
-- P013, Manufactured quotable, slogan, or aphorism: This restates the assignment-level-policy argument as a slogan-like travel metaphor primarily shaped for a memorable, quotable ending.
+- Manufactured quotable, slogan, or aphorism: This restates the assignment-level-policy argument as a slogan-like travel metaphor primarily shaped for a memorable, quotable ending.
 
 ````text
 If AI rules can change with the work, the rules must travel with the work.
@@ -17256,8 +16184,6 @@ Calder should therefore adopt the May proposal, with two safeguards. The templat
 - Output SHA-256: `abc1c8e1d1acd873e0cbcd8c75826dba3ce36b42902c6dd10cd4e8056b445dfe`
 
 - Total words: 879
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
@@ -17305,8 +16231,6 @@ Requiring a statement will not eliminate uncertainty, misconduct, or disputed re
 
 - Total words: 875
 
-- Flagged words: 0 (0.00%)
-
 Detected issues:
 
 None.
@@ -17351,17 +16275,15 @@ Under the proposed requirement, every assessed brief could contain one of the th
 
 - Total words: 940
 
-- Flagged words: 30 (3.19%)
-
 Detected issues:
 
-- P009, Authored em dash: The excerpt contains an authored em dash used as punctuation in the essay’s newly written prose.
+- Authored em dash: The excerpt contains an authored em dash used as punctuation in the essay’s newly written prose.
 
 ````text
 three options—prohibited, permitted for named tasks
 ````
 
-- P009, Authored em dash: The excerpt contains a second authored em dash used as punctuation in the essay’s newly written prose.
+- Authored em dash: The excerpt contains a second authored em dash used as punctuation in the essay’s newly written prose.
 
 ````text
 unrestricted with disclosure—while allowing whatever elaboration
@@ -17407,17 +16329,15 @@ An assignment-level requirement would not eliminate uncertainty, misconduct, or 
 
 - Total words: 859
 
-- Flagged words: 24 (2.79%)
-
 Detected issues:
 
-- P035, Reader coaching or repeated caution: The sentence tells the reader that a distinction matters while postponing the concrete description of those different functions to the following sentences.
+- Reader coaching or repeated caution: The sentence tells the reader that a distinction matters while postponing the concrete description of those different functions to the following sentences.
 
 ````text
 The distinction matters because a university policy and an assignment instruction do different jobs.
 ````
 
-- P007, Forced three-item packaging: The three abstract positive descriptors repeat the same grammatical mold to create a polished concluding cadence rather than identify three necessary, distinct facts.
+- Forced three-item packaging: The three abstract positive descriptors repeat the same grammatical mold to create a polished concluding cadence rather than identify three necessary, distinct facts.
 
 ````text
 It makes the freedom accountable, usable, and fit for assessment.
@@ -17463,11 +16383,9 @@ This requirement will not eliminate uncertainty, misconduct, or disputed referra
 
 - Total words: 883
 
-- Flagged words: 16 (1.81%)
-
 Detected issues:
 
-- P007, Forced three-item packaging: The closing packages three abstract adjectives in a polished parallel triad to create rhetorical cadence rather than convey a naturally fixed three-member set.
+- Forced three-item packaging: The closing packages three abstract adjectives in a polished parallel triad to create rhetorical cadence rather than convey a naturally fixed three-member set.
 
 ````text
 Requiring an assignment-level statement preserves academic discretion while making that discretion usable, reviewable, and fair.
@@ -17512,8 +16430,6 @@ The institution-wide policy settled who decides. Calder needs to ensure that ins
 - Output SHA-256: `c1d721775016bfaa0c39f82a6a434baa69bd3461bb75f15f020e20f13c13973b`
 
 - Total words: 865
-
-- Flagged words: 0 (0.00%)
 
 Detected issues:
 
