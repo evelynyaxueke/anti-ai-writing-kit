@@ -165,7 +165,7 @@ test('plain stdin rejects an interactive terminal before reading', (t) => {
     stderr: stderr.stream
   }), 2);
   assert.equal(stdout.read(), '');
-  assert.match(stderr.read(), /requires framed input to be attached/u);
+  assert.match(stderr.read(), /requires complete framed input to be attached/u);
 });
 
 test('final gate rejects terminal line breaks for stdin and file candidates', (t) => {
