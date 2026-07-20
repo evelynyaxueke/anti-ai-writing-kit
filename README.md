@@ -27,39 +27,11 @@ The report tests whether our approach works. It does not declare a ranking or po
 2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
 3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
 
-## Reliability checks
-
-The controller requires a complete initial read, a checksum-backed active-preference receipt, a mechanical scan when Node.js is available, a private paragraph ledger, a one-answer sentence test, a reader-trust deletion pass, a source-silence and relationship-scope review, and another scan after every edit. These checks reject preview leads, recap closings, claim-evidence-claim repetition, reader coaching, repeated demonstrations of caution, paragraphs whose only function is summary or transition, and relationships extended beyond the source's named scope. The source audit checks all/every quantifiers, coverage status outcome by outcome, future causal-proof claims, capability promotion from records or audits, restatement labels, and repeated recommendations. A prior status cannot be assigned to a list unless every item has it, and auditable recorded events do not prove missing events, completeness, adherence, or compliance.
-
-The gate prefers a fresh mode-`0600` temporary candidate file, with interactive stdin framed by `__ANTI_AI_CANDIDATE_INPUT_EOF__` only as a fallback. It requires UTF-8 without a BOM and LF-only internal line breaks, and rejects leading blank lines, terminal horizontal whitespace, and a terminal line break. The checked candidate must already contain every final Markdown character. After the latest PASS, the receipt and exact candidate are treated as a locked pair; any character change requires the semantic check and gate again.
-
-Long customized files are emitted in line-and-byte-bounded, digest-bound numbered chunks, with the active EOF marker in the final chunk. Each manifest uses the absolute loader path, so its commands work outside the skill directory. The final gate checks the same digest before delivery. The scanner catches visible candidates, including aggregate group-boundary wording, recap labels, reader coaching, stacked limits, and selected wording that may transfer a relationship beyond its supplied scope, expand a subgroup to all assigned members, bundle unsupported prior-coverage claims, promote an audit capability, repeat a recommendation, or assign causal proof to future work. Candidate checks trigger review; they do not decide the underlying semantics. The scanner cannot judge factual accuracy, semantic repetition, or causal proof capacity by itself, so the private review is still required.
-
 ## Scope and limits
 
 This kit helps an agent produce cleaner prose and review its own draft. It does not determine who wrote a piece, promise a detector result, teach a personal voice by itself, or supply platform-specific templates.
 
 No rule file can force perfect instruction following in every model or every run. The compact controller and EOF checks reduce partial loading. They cannot repair a runtime that never opens the registered skill path. Agents with weaker instruction following may still miss a semantic rule even after the mechanical scan passes. A local PASS receipt applies to the candidate supplied to the script. Unless the runtime or a test runner compares that candidate with the emitted assistant message, the receipt cannot prove byte-for-byte equality with what was sent.
-
-## Use with an agent
-
-Install the whole folder. A folder-aware agent can resolve customized rules, run both scripts, guide customization, add rules, and reset the local preference file.
-
-Invoke the skill, then send a topic, brief, draft, or finished piece:
-
-```text
-Use anti-ai-writing-kit to write, edit, or review this without AI smell.
-```
-
-With no customized file, the controller uses its default Sections 1 through 7. With a nonempty customized file, the controller stays active while the customized numbered rules replace those defaults. Section 8 adds personal preferences.
-
-## Use with webpage AI
-
-If a chat product cannot load a skill folder, upload or paste `SKILL.md`.
-
-If you have personal rules, upload both `SKILL.md` and `skill-customized.md`. Do not upload the customized file alone because it does not contain the permanent controller.
-
-Scripts may be unavailable in a plain chat. In that case, tell the model to read `SKILL.md` and a new-format custom file through their EOF markers. A legacy custom file has no marker, so the model must obtain its line count and read consecutive ranges through physical EOF. Then it must perform the manual delivery gate in `SKILL.md`.
 
 ## Rule overview
 
@@ -103,6 +75,14 @@ After installing in the Codex app, open the command menu with `Cmd+K` or `Cmd+Sh
 ### Other agents
 
 Use the agent's supported skill, plugin, or custom-instruction location and point it at the whole folder. `SKILL.md` alone is a manual fallback when relative scripts and references are unavailable.
+
+## Use with webpage AI
+
+If a chat product cannot load a skill folder, upload or paste `SKILL.md`.
+
+If you have personal rules, upload both `SKILL.md` and `skill-customized.md`. Do not upload the customized file alone because it does not contain the permanent controller.
+
+Scripts may be unavailable in a plain chat. In that case, tell the model to read `SKILL.md` and a new-format custom file through their EOF markers. A legacy custom file has no marker, so the model must obtain its line count and read consecutive ranges through physical EOF. Then it must perform the manual delivery gate in `SKILL.md`.
 
 ## Model choice
 
