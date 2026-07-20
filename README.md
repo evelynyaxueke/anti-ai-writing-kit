@@ -23,7 +23,7 @@ Lower AI-smell rates are better.
 | Humanizer | 2.21% | 2.47% | 1.90% |
 | No skill | 4.24% | 4.73% | 3.61% |
 
-The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. [Read the full report](reports/2026-07-20-anti-ai-writing-skills-comparison-report.md).
 
 ## Scope and limits
 
