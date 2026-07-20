@@ -8,12 +8,6 @@ This is a kit, not a single prompt:
 - `operations/kit-operations.md` handles customization, reset, and rule maintenance.
 - `skill-customized.md` stores each user's local preferences.
 
-## Getting started
-
-1. Customize it once. Type `customize` and the agent will create your local preference file.
-2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
-3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
-
 ## Test report
 
 We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. All generations used `gpt-5.6-sol` with medium reasoning.
@@ -26,6 +20,12 @@ We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer),
 | No skill | 4.24% |
 
 The report tests whether our approach works. It does not declare a ranking or position among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
+
+## Getting started
+
+1. Customize it once. Type `customize` and the agent will create your local preference file.
+2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
+3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
 
 ## Reliability checks
 
