@@ -23,19 +23,27 @@ We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer),
 
 The report tests whether our approach works. It does not declare a ranking or position among peer skills. [Read the full report](reports/2026-07-19-anti-ai-writing-skills-comparison-report.md).
 
-## Getting started
+## Use with webpage AI
+
+Download [SKILL.md](SKILL.md). You can edit the file before uploading it to your chat.
+
+## Use with agentic AI
+
+Use the whole folder with an agentic AI that can load skills and run files.
+
+### Getting started
 
 1. Customize it once. Type `customize` and the agent will create your local preference file.
 2. Use it for drafting or editing. Send a topic, brief, draft, or finished piece.
 3. Add rules when you find a new AI-writing habit. The agent will place the rule in the right section.
 
-## Scope and limits
+### Scope and limits
 
 This kit helps an agent produce cleaner prose and review its own draft. It does not determine who wrote a piece, promise a detector result, teach a personal voice by itself, or supply platform-specific templates.
 
 No rule file can force perfect instruction following in every model or every run. The compact controller and EOF checks reduce partial loading. They cannot repair a runtime that never opens the registered skill path. Agents with weaker instruction following may still miss a semantic rule even after the mechanical scan passes. A local PASS receipt applies to the candidate supplied to the script. Unless the runtime or a test runner compares that candidate with the emitted assistant message, the receipt cannot prove byte-for-byte equality with what was sent.
 
-## Rule overview
+### Rule overview
 
 The complete runtime rules fit in one compact file:
 
@@ -50,9 +58,9 @@ The complete runtime rules fit in one compact file:
 
 The longer taxonomy, phrase families, explanations, and examples live in `references/patterns-and-examples.md`. A fail condition should remain in `SKILL.md`; the reference should never be the only place that defines one.
 
-## Install
+### Install
 
-### Codex
+#### Codex
 
 Choose one location.
 
@@ -74,23 +82,15 @@ For a private repository, the machine must be signed in to an account with acces
 
 After installing in the Codex app, open the command menu with `Cmd+K` or `Cmd+Shift+P`, then choose `Force Reload Skills`. If the skill does not appear, start a new Codex task or restart Codex. A turn that began before installation cannot see a newly installed skill.
 
-### Other agents
+#### Other agents
 
 Use the agent's supported skill, plugin, or custom-instruction location and point it at the whole folder. `SKILL.md` alone is a manual fallback when relative scripts and references are unavailable.
 
-## Use with webpage AI
-
-If a chat product cannot load a skill folder, upload or paste `SKILL.md`.
-
-If you have personal rules, upload both `SKILL.md` and `skill-customized.md`. Do not upload the customized file alone because it does not contain the permanent controller.
-
-Scripts may be unavailable in a plain chat. In that case, tell the model to read `SKILL.md` and a new-format custom file through their EOF markers. A legacy custom file has no marker, so the model must obtain its line count and read consecutive ranges through physical EOF. Then it must perform the manual delivery gate in `SKILL.md`.
-
-## Model choice
+### Model choice
 
 Use a current model with dependable instruction following for long or evidence-sensitive work. Smaller models can still benefit from the kit, but they are more likely to miss cross-sentence contrast, rhythm problems, evidence gaps, or the semantic final pass.
 
-## Customize
+### Customize
 
 Type:
 
@@ -104,7 +104,7 @@ Existing customized files remain supported. A file without the new format marker
 
 Rough replies are enough during customization. You can add a fragment, give an example, remove a rule, or say the section is fine.
 
-## Add a rule
+### Add a rule
 
 Tell the agent what to remember and whether the change is personal or public.
 
@@ -118,7 +118,7 @@ Put this in the default skill: avoid X because it sounds fake.
 
 The agent first searches for an existing rule, then revises the smallest applicable section. A public rule change may also require an example update, a scanner check, and a test.
 
-## Reset
+### Reset
 
 Type:
 
