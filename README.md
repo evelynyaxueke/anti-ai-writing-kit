@@ -14,16 +14,35 @@ This is a kit, not a single prompt:
 
 We tested Anti-AI Writing Kit, [Humanizer](https://github.com/blader/humanizer), [Stop Slop](https://github.com/hardikpandya/stop-slop), and a no-skill baseline on English direct-writing tasks. Each condition used the same prompt set, model settings, and evaluation method. All generations used `gpt-5.6-sol` with medium reasoning.
 
-Lower AI-smell rates are better.
+The primary AI-smell rate excludes `P032: Repeated recap, conclusion, or recommendation`. Repetition is reported separately as redundant explanation because it is a writing-quality problem, not a reliable AI-writing pattern. This is a post-hoc reporting correction. The frozen outputs and adjudicated findings were not changed or regenerated.
 
-| Condition | Combined rate | Stage 1 rate | Stage 2 rate |
+Lower primary AI-smell rates are better.
+
+| Condition | Stage 1 | Stage 2 | Combined |
 |---|---:|---:|---:|
-| Anti-AI Writing Kit | 1.45% | 1.38% | 1.52% |
-| Stop Slop | 2.11% | 1.89% | 2.37% |
-| Humanizer | 2.21% | 2.47% | 1.90% |
-| No skill | 4.24% | 4.73% | 3.61% |
+| Anti-AI Writing Kit | 0.16% | 0.38% | 0.26% |
+| Stop Slop | 0.55% | 0.43% | 0.50% |
+| Humanizer | 0.89% | 0.95% | 0.92% |
+| No skill | 3.09% | 2.75% | 2.94% |
 
-The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. [Read the full report](reports/2026-07-20-anti-ai-writing-skills-comparison-report.md).
+Combined redundant-explanation rates from the same frozen peer outputs:
+
+| Condition | Redundant explanation |
+|---|---:|
+| Anti-AI Writing Kit | 0.92% |
+| Stop Slop | 1.61% |
+| Humanizer | 1.30% |
+| No skill | 1.30% |
+
+The current-skill follow-up used another 64 generations and is reported separately because the peer skills were not regenerated in that batch.
+
+| Set | Primary AI smell | Redundant explanation | Original mixed rate |
+|---|---:|---:|---:|
+| Combined | 0.08% | 1.37% | 1.45% |
+| Stage 1 | 0.03% | 1.36% | 1.38% |
+| Stage 2 | 0.14% | 1.38% | 1.52% |
+
+The report tests whether our approach works and whether the skill loads completely. It does not establish a fixed ranking among peer skills. The original mixed rates remain in the report as audit history. [Read the full report](reports/2026-07-20-anti-ai-writing-skills-comparison-report.md).
 
 ## Scope and limits
 
